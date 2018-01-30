@@ -1,11 +1,10 @@
 package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.commands.Clamp;
-import org.usfirst.frc.team6135.robot.commands.ResetTestEncoder;
-import org.usfirst.frc.team6135.robot.commands.TestMotor;
+//import org.usfirst.frc.team6135.robot.commands.ResetTestEncoder;
+//import org.usfirst.frc.team6135.robot.commands.TestMotor;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**

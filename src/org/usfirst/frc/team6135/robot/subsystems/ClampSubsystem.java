@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6135.robot.subsystems;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
+import org.usfirst.frc.team6135.robot.commands.ClampAnalog;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -13,8 +14,7 @@ public class ClampSubsystem extends Subsystem {
     // here. Call these from Commands.
 
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new ClampAnalog());
     }
     
     public void setSpeed(double speed) {

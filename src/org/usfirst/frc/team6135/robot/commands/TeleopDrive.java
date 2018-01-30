@@ -1,5 +1,6 @@
 package org.usfirst.frc.team6135.robot.commands;
 
+import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 
@@ -26,8 +27,8 @@ public class TeleopDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double x = Math.abs(Robot.oi.xboxController.getRawAxis(X_AXIS))>DEADZONE?Robot.oi.xboxController.getRawAxis(X_AXIS):0;
-        double y = Math.abs(Robot.oi.xboxController.getRawAxis(Y_AXIS))>DEADZONE?-Robot.oi.xboxController.getRawAxis(Y_AXIS):0;
+    	double x = Math.abs(OI.xboxController.getRawAxis(X_AXIS))>DEADZONE?OI.xboxController.getRawAxis(X_AXIS):0;
+        double y = Math.abs(OI.xboxController.getRawAxis(Y_AXIS))>DEADZONE?-OI.xboxController.getRawAxis(Y_AXIS):0;
         double l = Math.max(-RobotMap.DRIVE_SPEED, Math.min(RobotMap.DRIVE_SPEED, y + x));//constrain to [-1,1]
         double r = Math.max(-RobotMap.DRIVE_SPEED, Math.min(RobotMap.DRIVE_SPEED, y - x));
         Robot.drive.setMotorsVBus(l, r);
