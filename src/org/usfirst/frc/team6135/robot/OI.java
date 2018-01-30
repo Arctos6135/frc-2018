@@ -42,26 +42,21 @@ public class OI {
 	// button.whenReleased(new ExampleCommand());
 	
 	public static Joystick xboxController;
+	public static Joystick attachmentsController;
 	public static JoystickButton testMotor;
 	public static JoystickButton resetEncoder;
 	public static JoystickButton runClamp;
 	public static JoystickButton runClampOpposite;
 	
 	public OI() {
+		//Port 0 is on the right of the programming laptop and port 1 is on the left.
 		xboxController = new Joystick(0);
-		/*
-		testMotor = new JoystickButton(xboxController, 5);
-		testMotor.whenPressed(new TestMotor(1.0));
-		testMotor.whenReleased(new TestMotor(0));
+		attachmentsController = new Joystick(1);
 		
-		//For resetting the encoder value during motor speed testing
-		resetEncoder = new JoystickButton(xboxController, 6);
-		resetEncoder.whenPressed(new ResetTestEncoder());
-		*/
-		runClamp = new JoystickButton(xboxController, 3);
+		runClamp = new JoystickButton(attachmentsController, 3);
 		runClamp.whenPressed(new Clamp(0.70));
 		runClamp.whenReleased(new Clamp(0));
-		runClampOpposite = new JoystickButton(xboxController, 4);
+		runClampOpposite = new JoystickButton(attachmentsController, 4);
 		runClampOpposite.whenPressed(new Clamp(-0.70));
 		runClampOpposite.whenReleased(new Clamp(0));
 	}
