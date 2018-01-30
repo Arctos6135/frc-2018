@@ -28,7 +28,6 @@ public class TestMotor extends Command {
     protected void execute() {
     	Robot.test.setSpeed(speed);
     	
-    	
     	SmartDashboard.putNumber("Encoder Value", RobotMap.testEncoder.getDistance());
     }
 

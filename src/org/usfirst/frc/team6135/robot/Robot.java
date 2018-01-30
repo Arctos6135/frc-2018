@@ -1,8 +1,8 @@
 
 package org.usfirst.frc.team6135.robot;
 
-import org.usfirst.frc.team6135.robot.commands.TeleopDrive;
-import org.usfirst.frc.team6135.robot.commands.TestMotor;
+//import org.usfirst.frc.team6135.robot.commands.TestMotor;
+//import org.usfirst.frc.team6135.robot.commands.PrintEncoderPulses;
 import org.usfirst.frc.team6135.robot.subsystems.ClampSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6135.robot.subsystems.TestMotorSubsystem;
@@ -110,8 +110,8 @@ public class Robot extends IterativeRobot {
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
-		//TestMotor runTestMotor = new TestMotor(0.90);
-		//runTestMotor.start();
+		//Command printEncoderPulses = new PrintEncoderPulses();
+		//printEncoderPulses.start();
 	}
 
 	/**

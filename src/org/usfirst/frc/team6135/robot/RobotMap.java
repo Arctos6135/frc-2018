@@ -26,7 +26,7 @@ public class RobotMap {
 	// public static int rangefinderModule = 1;
 	public static final int DIAMETER = 8; //INCHES
 	public static final double CIRCUMFERENCE = DIAMETER*Math.PI;
-	public static final double DRIVE_ENCODER_PPR = 4096;
+	public static final double DRIVE_ENCODER_PPR = 2048;
 	public static final double DISTANCE_PER_PULSE = CIRCUMFERENCE/DRIVE_ENCODER_PPR;
 	public static double DRIVE_SPEED = 1.0;
 	
