@@ -5,9 +5,11 @@ import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ *	Handles driving
+ *	Called as a default command by DriveTrain
  */
 public class TeleopDrive extends Command {
 	
@@ -27,6 +29,7 @@ public class TeleopDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	SmartDashboard.putNumber("TeleopDrive", System.currentTimeMillis());
     	double x = Math.abs(OI.xboxController.getRawAxis(X_AXIS))>DEADZONE?OI.xboxController.getRawAxis(X_AXIS):0;
         double y = Math.abs(OI.xboxController.getRawAxis(Y_AXIS))>DEADZONE?-OI.xboxController.getRawAxis(Y_AXIS):0;
         double l = Math.max(-RobotMap.DRIVE_SPEED, Math.min(RobotMap.DRIVE_SPEED, y + x));//constrain to [-1,1]
