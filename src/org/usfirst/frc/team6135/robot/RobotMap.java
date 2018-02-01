@@ -42,7 +42,6 @@ public class RobotMap {
     public static Encoder testEncoder = new Encoder(2, 3, false, EncodingType.k4X);
 	
 	public static void init() {
-		
 		//Set back motors to follow the front motors
 		leftBackDriveMotor.set(ControlMode.Follower, leftFrontDriveMotor.getDeviceID());
 		rightBackDriveMotor.set(ControlMode.Follower, rightFrontDriveMotor.getDeviceID());
