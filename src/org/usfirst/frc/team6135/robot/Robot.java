@@ -1,11 +1,10 @@
 
 package org.usfirst.frc.team6135.robot;
 
-//import org.usfirst.frc.team6135.robot.commands.TestMotor;
-//import org.usfirst.frc.team6135.robot.commands.PrintEncoderPulses;
-import org.usfirst.frc.team6135.robot.subsystems.ClampSubsystem;
+import org.usfirst.frc.team6135.robot.subsystems.IntakeSubsystem;
+import org.usfirst.frc.team6135.robot.commands.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.DriveStraightDistance;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team6135.robot.subsystems.TestMotorSubsystem;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -32,8 +31,7 @@ public class Robot extends IterativeRobot {
 	public static Alliance color;
 	public static int station; //Starting position of robot
 	public static String gameData;
-	public static TestMotorSubsystem test;
-	public static ClampSubsystem clamp;
+	public static IntakeSubsystem intake;
 	
 
 	Command autonomousCommand;
@@ -47,11 +45,10 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		RobotMap.init();
 		drive = new DriveTrain();
-		test = new TestMotorSubsystem();
-		clamp = new ClampSubsystem();
+		intake = new IntakeSubsystem();
 		oi = new OI();
-		//chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
+		chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
 		SmartDashboard.putData("Auto mode", chooser);
 		
 		//Camera feed initialization
@@ -90,8 +87,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		gameData = DriverStation.getInstance().getGameSpecificMessage();//update wpilib
 		if(gameData.length() > 0){
-			if(gameData.charAt(0) == 'L')
-			{
+			if(gameData.charAt(0) == 'L'){
 				//Put left auto code here
 			} else {
 				//Put right auto code here

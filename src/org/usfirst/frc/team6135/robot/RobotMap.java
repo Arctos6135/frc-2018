@@ -30,26 +30,28 @@ public class RobotMap {
 	public static final double DISTANCE_PER_PULSE = CIRCUMFERENCE/DRIVE_ENCODER_PPR;
 	public static double DRIVE_SPEED = 1.0;
 	
+	
 	public static TalonSRX leftFrontDriveMotor = new TalonSRX(3);
     public static TalonSRX leftBackDriveMotor = new TalonSRX(2);	
     public static TalonSRX rightFrontDriveMotor = new TalonSRX(1);
     public static TalonSRX rightBackDriveMotor = new TalonSRX(4);
     
-    public static VictorSP testMotor = new VictorSP(4);
-    public static VictorSP clampLeft = new VictorSP(5);
-    public static VictorSP clampRight = new VictorSP(6);
+    public static VictorSP intakeLeft = new VictorSP(5);
+    public static VictorSP intakeRight = new VictorSP(6);
     
-    public static Encoder testEncoder = new Encoder(2, 3, false, EncodingType.k4X);
+    public static Encoder rightEncoder = new Encoder(2, 3, false, EncodingType.k4X);
+    public static Encoder leftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
 	
 	public static void init() {
 		//Set back motors to follow the front motors
 		leftBackDriveMotor.set(ControlMode.Follower, leftFrontDriveMotor.getDeviceID());
 		rightBackDriveMotor.set(ControlMode.Follower, rightFrontDriveMotor.getDeviceID());
 		
-		leftFrontDriveMotor.set(ControlMode.Velocity, 0);
-		rightFrontDriveMotor.set(ControlMode.Velocity, 0);
-		testEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
-		clampRight.setInverted(false);
-		clampLeft.setInverted(true);
+		leftFrontDriveMotor.set(ControlMode.PercentOutput, 0);
+		rightFrontDriveMotor.set(ControlMode.PercentOutput, 0);
+		leftEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
+		rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
+		intakeRight.setInverted(false);
+		intakeLeft.setInverted(true);
 	}
 }

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * 
  * Called as a default command by ClampSubsystem.
  */
-public class ClampAnalog extends Command {
+public class IntakeAnalog extends Command {
 
 	public static final int LT = 2;
 	public static final int RT = 3;
@@ -29,8 +29,8 @@ public class ClampAnalog extends Command {
 			return 1.0;
 		}
 	}
-    public ClampAnalog() {
-        requires(Robot.clamp);
+    public IntakeAnalog() {
+        requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
@@ -42,15 +42,15 @@ public class ClampAnalog extends Command {
     	final double ltVal = Math.abs(OI.attachmentsController.getRawAxis(LT));
     	final double rtVal = Math.abs(OI.attachmentsController.getRawAxis(RT));
     	if(ltVal <= DEADZONE && rtVal > DEADZONE) {
-    		Robot.clamp.setSpeed(constrain(rtVal));
+    		Robot.intake.setSpeed(constrain(rtVal));
     	}
     	else if(ltVal > DEADZONE && rtVal <= DEADZONE) {
     		//Set to negative of LT since here we want to reverse the intake
-    		Robot.clamp.setSpeed(-constrain(ltVal));
+    		Robot.intake.setSpeed(-constrain(ltVal));
     	}
     	else {
     		//Driver messed up - Both LT and RT are pressed
-    		Robot.clamp.setSpeed(0);
+    		Robot.intake.setSpeed(0);
     	}
     }
 
@@ -61,12 +61,12 @@ public class ClampAnalog extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.clamp.setSpeed(0);
+    	Robot.intake.setSpeed(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.clamp.setSpeed(0);
+    	Robot.intake.setSpeed(0);
     }
 }
