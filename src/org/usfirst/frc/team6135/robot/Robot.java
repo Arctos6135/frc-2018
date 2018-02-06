@@ -2,6 +2,7 @@
 package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.subsystems.IntakeSubsystem;
+import org.usfirst.frc.team6135.robot.subsystems.TestSolenoidSubsystem;
 import org.usfirst.frc.team6135.robot.commands.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.DriveStraightDistance;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
@@ -32,6 +33,7 @@ public class Robot extends IterativeRobot {
 	public static int station; //Starting position of robot
 	public static String gameData;
 	public static IntakeSubsystem intake;
+	public static TestSolenoidSubsystem testSolenoidSubsystem;
 	
 
 	Command autonomousCommand;
@@ -46,6 +48,7 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 		drive = new DriveTrain();
 		intake = new IntakeSubsystem();
+		testSolenoidSubsystem = new TestSolenoidSubsystem();
 		oi = new OI();
 		chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
 		chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));

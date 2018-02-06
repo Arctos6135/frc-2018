@@ -1,9 +1,11 @@
 package org.usfirst.frc.team6135.robot;
 
-import org.usfirst.frc.team6135.robot.commands.OperateIntake;
+//import org.usfirst.frc.team6135.robot.commands.OperateIntake;
 //import org.usfirst.frc.team6135.robot.commands.ResetTestEncoder;
 //import org.usfirst.frc.team6135.robot.commands.TestMotor;
+import org.usfirst.frc.team6135.robot.commands.OperateTestSolenoid;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -42,12 +44,20 @@ public class OI {
 	
 	public static Joystick xboxController;
 	public static Joystick attachmentsController;
-	public static JoystickButton testMotor;
-	public static JoystickButton resetEncoder;
+	
+	public static JoystickButton testSolenoidForward;
+	public static JoystickButton testSolenoidReverse;
 	
 	public OI() {
 		//Port 0 is on the right of the programming laptop and port 1 is on the left.
 		xboxController = new Joystick(0);
 		attachmentsController = new Joystick(1);
+		
+		testSolenoidForward = new JoystickButton(attachmentsController, 3);
+		testSolenoidReverse = new JoystickButton(attachmentsController, 4);
+		testSolenoidForward.whenPressed(new OperateTestSolenoid(DoubleSolenoid.Value.kForward));
+		testSolenoidForward.whenReleased(new OperateTestSolenoid(DoubleSolenoid.Value.kOff));
+		testSolenoidReverse.whenPressed(new OperateTestSolenoid(DoubleSolenoid.Value.kReverse));
+		testSolenoidReverse.whenReleased(new OperateTestSolenoid(DoubleSolenoid.Value.kOff));
 	}
 }

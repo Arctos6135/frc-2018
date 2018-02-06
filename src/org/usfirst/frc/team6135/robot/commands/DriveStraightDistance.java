@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveStraightDistance extends Command {
 
 	private double distance;
-	private double speed;
+	//private double speed;
 	private double leftSpeed;
 	private double rightSpeed;
 	private double adjustValue = 0.05;
@@ -21,7 +21,7 @@ public class DriveStraightDistance extends Command {
         // eg. requires(chassis);
     	requires(Robot.drive);
     	this.distance = distance;
-    	this.speed = speed;
+    	//this.speed = speed;
     	leftSpeed = speed;
     	rightSpeed = speed;
     }

@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
 
@@ -35,6 +36,8 @@ public class RobotMap {
     public static TalonSRX leftBackDriveMotor = new TalonSRX(2);	
     public static TalonSRX rightFrontDriveMotor = new TalonSRX(1);
     public static TalonSRX rightBackDriveMotor = new TalonSRX(4);
+    
+    public static DoubleSolenoid testSolenoid = new DoubleSolenoid(0, 1);
     
     public static VictorSP intakeLeft = new VictorSP(5);
     public static VictorSP intakeRight = new VictorSP(6);
