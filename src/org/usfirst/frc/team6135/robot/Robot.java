@@ -2,7 +2,7 @@
 package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.subsystems.IntakeSubsystem;
-import org.usfirst.frc.team6135.robot.subsystems.TestSolenoidSubsystem;
+import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
 import org.usfirst.frc.team6135.robot.commands.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.DriveStraightDistance;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+//import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -33,7 +33,7 @@ public class Robot extends IterativeRobot {
 	public static int station; //Starting position of robot
 	public static String gameData;
 	public static IntakeSubsystem intake;
-	public static TestSolenoidSubsystem testSolenoidSubsystem;
+	public static GearShiftSubsystem gearShiftSubsystem;
 	
 
 	Command autonomousCommand;
@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 		drive = new DriveTrain();
 		intake = new IntakeSubsystem();
-		testSolenoidSubsystem = new TestSolenoidSubsystem();
+		gearShiftSubsystem = new GearShiftSubsystem();
 		oi = new OI();
 		chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
 		chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
@@ -147,6 +147,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		LiveWindow.run();
+		//According to documentation, this method is deprecated since it's no longer required
+		//LiveWindow.run();
 	}
 }

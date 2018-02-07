@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 /**
  *
  */
-public class TestSolenoidSubsystem extends Subsystem {
+public class GearShiftSubsystem extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -20,7 +20,7 @@ public class TestSolenoidSubsystem extends Subsystem {
     }
     
     public void set(DoubleSolenoid.Value value) {
-    	RobotMap.testSolenoid.set(value);
+    	RobotMap.gearshiftSolenoid.set(value);
     }
 }
 

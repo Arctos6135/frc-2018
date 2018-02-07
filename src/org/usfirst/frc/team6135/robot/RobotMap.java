@@ -37,7 +37,7 @@ public class RobotMap {
     public static TalonSRX rightFrontDriveMotor = new TalonSRX(1);
     public static TalonSRX rightBackDriveMotor = new TalonSRX(4);
     
-    public static DoubleSolenoid testSolenoid = new DoubleSolenoid(0, 1);
+    public static DoubleSolenoid gearshiftSolenoid = new DoubleSolenoid(0, 1);
     
     public static VictorSP intakeLeft = new VictorSP(5);
     public static VictorSP intakeRight = new VictorSP(6);
