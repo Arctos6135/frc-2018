@@ -31,7 +31,7 @@ public class RobotMap {
 	public static final double DISTANCE_PER_PULSE = CIRCUMFERENCE/DRIVE_ENCODER_PPR;
 	public static double DRIVE_SPEED = 1.0;
 	
-	
+	//NOTE: 2018 Robot has 6 minicims instead of 4!
 	public static TalonSRX leftFrontDriveMotor = new TalonSRX(3);
     public static TalonSRX leftBackDriveMotor = new TalonSRX(2);	
     public static TalonSRX rightFrontDriveMotor = new TalonSRX(1);
@@ -39,6 +39,8 @@ public class RobotMap {
     
     public static DoubleSolenoid gearshiftSolenoid = new DoubleSolenoid(0, 1);
     
+    public static VictorSP elevatorVictor = new VictorSP(3);
+    public static VictorSP tiltVictor = new VictorSP(4);
     public static VictorSP intakeLeft = new VictorSP(5);
     public static VictorSP intakeRight = new VictorSP(6);
     

@@ -42,6 +42,20 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 	
+	/*
+	 * CONTROLS - Implemented and planned:
+	 * Drive:
+	 * 	Left Analog Stick: Forwards/Backwards
+	 * 	Right Analog Stick: Left/Right
+	 * 	Left Bumper: Shift gear to slower configuration
+	 * 	Right Bumper: Shift gear to faster configuration
+	 * Attachments:
+	 * 	Left Analog Stick: Elevator (Max. speed = 50%)
+	 * 	Right Analog Stick: Tilt (Max. speed = 30%, up/down)
+	 * 	Left Trigger: Intake Out (Analog)
+	 * 	Right Trigger: Intake In (Analog)
+	 */
+	
 	public static Joystick xboxController;
 	public static Joystick attachmentsController;
 	
