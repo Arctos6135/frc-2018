@@ -2,6 +2,7 @@ package org.usfirst.frc.team6135.robot.commands;
 
 import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;
+import org.usfirst.frc.team6135.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -14,8 +15,6 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class IntakeAnalog extends Command {
 
-	public static final int LT = 2;
-	public static final int RT = 3;
 	public static final double DEADZONE = 0.15;
 	
 	double constrain(final double val) {
@@ -39,8 +38,8 @@ public class IntakeAnalog extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	final double ltVal = Math.abs(OI.attachmentsController.getRawAxis(LT));
-    	final double rtVal = Math.abs(OI.attachmentsController.getRawAxis(RT));
+    	final double ltVal = Math.abs(OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.LTRIGGER));
+    	final double rtVal = Math.abs(OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.RTRIGGER));
     	if(ltVal <= DEADZONE && rtVal > DEADZONE) {
     		Robot.intake.setSpeed(constrain(rtVal));
     	}

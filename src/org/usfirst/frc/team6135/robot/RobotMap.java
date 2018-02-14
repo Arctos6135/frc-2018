@@ -25,6 +25,34 @@ public class RobotMap {
 	// number and the module. For example you with a rangefinder:
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
+	
+	/*
+	 * A mapping of the XBox controller. Use this static class instead of 
+	 * magic numbers or individual constants to keep everything clear.
+	 */
+	public static class ControllerMap {
+		public static final int LSTICK_X_AXIS = 0;
+		public static final int LSTICK_Y_AXIS = 1;
+		public static final int RSTICK_X_AXIS = 4;
+		public static final int RSTICK_Y_AXIS = 5;
+		public static final int LTRIGGER = 2;
+		public static final int RTRIGGER = 3;
+		
+		public static final int BUTTON_A = 1;
+		public static final int BUTTON_B = 2;
+		public static final int BUTTON_X = 3;
+		public static final int BUTTON_Y = 4;
+		public static final int LBUMPER = 5;
+		public static final int RBUMPER = 6;
+		public static final int BUTTON_BACK = 7;
+		public static final int BUTTON_START = 8;
+		public static final int BUTTON_LSTICK = 9;
+		public static final int BUTTON_RSTICK = 10;
+	}
+	
+	public static final double ELEVATOR_TOP_SPEED = 0.5;
+	public static final double TILT_TOP_SPEED = 0.3;
+	
 	public static final int DIAMETER = 8; //INCHES
 	public static final double CIRCUMFERENCE = DIAMETER*Math.PI;
 	public static final double DRIVE_ENCODER_PPR = 2048;

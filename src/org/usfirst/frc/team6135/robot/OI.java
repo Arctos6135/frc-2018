@@ -56,7 +56,7 @@ public class OI {
 	 * 	Right Trigger: Intake In (Analog)
 	 */
 	
-	public static Joystick xboxController;
+	public static Joystick driveController;
 	public static Joystick attachmentsController;
 	
 	public static JoystickButton gearShiftFast;
@@ -64,12 +64,12 @@ public class OI {
 	
 	public OI() {
 		//Port 0 is on the right of the programming laptop and port 1 is on the left.
-		xboxController = new Joystick(0);
+		driveController = new Joystick(0);
 		attachmentsController = new Joystick(1);
 		
-		//Fast gear = left bumper
-		gearShiftFast = new JoystickButton(attachmentsController, 6);
-		gearShiftSlow = new JoystickButton(attachmentsController, 5);
+		//Fast gear = right bumper
+		gearShiftFast = new JoystickButton(attachmentsController, RobotMap.ControllerMap.RBUMPER);
+		gearShiftSlow = new JoystickButton(attachmentsController, RobotMap.ControllerMap.LBUMPER);
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
 		gearShiftFast.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));

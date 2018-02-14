@@ -1,11 +1,9 @@
 
 package org.usfirst.frc.team6135.robot;
 
-import org.usfirst.frc.team6135.robot.subsystems.IntakeSubsystem;
-import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
+import org.usfirst.frc.team6135.robot.subsystems.*;
 import org.usfirst.frc.team6135.robot.commands.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.DriveStraightDistance;
-import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -29,11 +27,14 @@ public class Robot extends IterativeRobot {
 	//public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
 	public static DriveTrain drive;
+	public static IntakeSubsystem intake;
+	public static GearShiftSubsystem gearShiftSubsystem;
+	public static ElevatorSubsystem elevatorSubsystem;
+	public static TiltSubsystem tiltSubsystem;
+	
 	public static Alliance color;
 	public static int station; //Starting position of robot
 	public static String gameData;
-	public static IntakeSubsystem intake;
-	public static GearShiftSubsystem gearShiftSubsystem;
 	
 
 	Command autonomousCommand;
@@ -49,6 +50,8 @@ public class Robot extends IterativeRobot {
 		drive = new DriveTrain();
 		intake = new IntakeSubsystem();
 		gearShiftSubsystem = new GearShiftSubsystem();
+		elevatorSubsystem = new ElevatorSubsystem();
+		tiltSubsystem = new TiltSubsystem();
 		oi = new OI();
 		chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
 		chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
