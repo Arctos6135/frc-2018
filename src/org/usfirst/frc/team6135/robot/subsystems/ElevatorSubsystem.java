@@ -1,7 +1,7 @@
 package org.usfirst.frc.team6135.robot.subsystems;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.commands.ElevatorAnalog;
+import org.usfirst.frc.team6135.robot.commands.teleopcommands.ElevatorAnalog;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 

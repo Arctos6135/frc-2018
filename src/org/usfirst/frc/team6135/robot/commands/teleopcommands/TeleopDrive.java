@@ -1,4 +1,4 @@
-package org.usfirst.frc.team6135.robot.commands;
+package org.usfirst.frc.team6135.robot.commands.teleopcommands;
 
 import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;
@@ -31,8 +31,8 @@ public class TeleopDrive extends Command {
     protected void execute() {
     	double x = Math.abs(OI.driveController.getRawAxis(X_AXIS))>DEADZONE?OI.driveController.getRawAxis(X_AXIS):0;
         double y = Math.abs(OI.driveController.getRawAxis(Y_AXIS))>DEADZONE?-OI.driveController.getRawAxis(Y_AXIS):0;
-        double l = Math.max(-RobotMap.DRIVE_SPEED, Math.min(RobotMap.DRIVE_SPEED, y + x));//constrain to [-1,1]
-        double r = Math.max(-RobotMap.DRIVE_SPEED, Math.min(RobotMap.DRIVE_SPEED, y - x));
+        double l = Math.max(-RobotMap.Speeds.DRIVE_SPEED, Math.min(RobotMap.Speeds.DRIVE_SPEED, y + x));//constrain to [-1,1]
+        double r = Math.max(-RobotMap.Speeds.DRIVE_SPEED, Math.min(RobotMap.Speeds.DRIVE_SPEED, y - x));
         Robot.drive.setMotorsVBus(l, r);
     }
 

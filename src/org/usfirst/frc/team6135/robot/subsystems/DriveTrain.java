@@ -1,7 +1,7 @@
 package org.usfirst.frc.team6135.robot.subsystems;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.commands.TeleopDrive;
+import org.usfirst.frc.team6135.robot.commands.teleopcommands.TeleopDrive;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 

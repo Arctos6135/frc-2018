@@ -1,9 +1,6 @@
 package org.usfirst.frc.team6135.robot;
 
-//import org.usfirst.frc.team6135.robot.commands.OperateIntake;
-//import org.usfirst.frc.team6135.robot.commands.ResetTestEncoder;
-//import org.usfirst.frc.team6135.robot.commands.TestMotor;
-import org.usfirst.frc.team6135.robot.commands.GearShift;
+import org.usfirst.frc.team6135.robot.commands.teleoputils.GearShift;
 
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;

@@ -3,10 +3,10 @@ package org.usfirst.frc.team6135.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
 
 /**
@@ -50,14 +50,34 @@ public class RobotMap {
 		public static final int BUTTON_RSTICK = 10;
 	}
 	
-	public static final double ELEVATOR_TOP_SPEED = 0.5;
-	public static final double TILT_TOP_SPEED = 0.3;
+	/*
+	 * Holds values for the dimensions of the arena. 
+	 * Used in fallback (hard-coded) auto
+	 * All units are in inches
+	 */
+	public static class ArenaDimensions {
+		//12.0 feet
+		//Actual auto line is 10 feet from the alliance wall, but an extra 2ft is added just in case
+		public static final double BASELINE_DISTANCE = 12.0 * 12;
+		
+	}
 	
-	public static final int DIAMETER = 8; //INCHES
-	public static final double CIRCUMFERENCE = DIAMETER*Math.PI;
+	/*
+	 * Holds constants for the the top speeds of things to keep stuff organized 
+	 */
+	public static class Speeds {
+		public static final double ELEVATOR_SPEED = 0.5;
+		public static final double TILT_SPEED = 0.3;
+		public static final double AUTO_SPEED = 0.6;
+		//This value is not final since there might be commands that change it
+		public static double DRIVE_SPEED = 1.0;
+	}
+	
+	
+	public static final int WHEEL_DIAMETER = 6; //INCHES
+	public static final double WHEEL_CIRCUMFRENCE = WHEEL_DIAMETER*Math.PI;
 	public static final double DRIVE_ENCODER_PPR = 2048;
-	public static final double DISTANCE_PER_PULSE = CIRCUMFERENCE/DRIVE_ENCODER_PPR;
-	public static double DRIVE_SPEED = 1.0;
+	public static final double DISTANCE_PER_PULSE = WHEEL_CIRCUMFRENCE/DRIVE_ENCODER_PPR;
 	
 	//NOTE: 2018 Robot has 6 minicims instead of 4!
 	public static TalonSRX leftFrontDriveMotor = new TalonSRX(3);

@@ -1,6 +1,8 @@
-package org.usfirst.frc.team6135.robot.commands;
+package org.usfirst.frc.team6135.robot.commands.autoutils;
 
 import org.usfirst.frc.team6135.robot.Robot;
+import org.usfirst.frc.team6135.robot.RobotMap;
+
 import static org.usfirst.frc.team6135.robot.RobotMap.*;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -41,8 +43,8 @@ public class DriveStraightDistance extends Command {
     		leftSpeed += adjustValue;
     		rightSpeed -= adjustValue;
     	}
-    	leftSpeed = Math.max(Math.min(1.0, leftSpeed), -1.0);
-    	rightSpeed = Math.max(Math.min(1.0, rightSpeed), -1.0);
+    	leftSpeed = Math.max(Math.min(RobotMap.Speeds.DRIVE_SPEED, leftSpeed), -RobotMap.Speeds.DRIVE_SPEED);
+    	rightSpeed = Math.max(Math.min(RobotMap.Speeds.DRIVE_SPEED, rightSpeed), -RobotMap.Speeds.DRIVE_SPEED);
     	Robot.drive.setMotorsVBus(leftSpeed, rightSpeed);
     }
 

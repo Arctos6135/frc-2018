@@ -2,8 +2,8 @@
 package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.subsystems.*;
-import org.usfirst.frc.team6135.robot.commands.AutoTurn;
-import org.usfirst.frc.team6135.robot.commands.DriveStraightDistance;
+import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;

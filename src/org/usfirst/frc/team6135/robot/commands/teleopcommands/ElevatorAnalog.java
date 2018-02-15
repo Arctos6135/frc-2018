@@ -1,4 +1,4 @@
-package org.usfirst.frc.team6135.robot.commands;
+package org.usfirst.frc.team6135.robot.commands.teleopcommands;
 
 import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;
@@ -27,7 +27,7 @@ public class ElevatorAnalog extends Command {
     protected void execute() {
     	final double joystickVal = OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.LSTICK_Y_AXIS);
     	if(Math.abs(joystickVal) > DEADZONE) {
-    		RobotMap.elevatorVictor.set(joystickVal * RobotMap.ELEVATOR_TOP_SPEED);
+    		RobotMap.elevatorVictor.set(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
     	}
     	else {
     		RobotMap.elevatorVictor.set(0);
