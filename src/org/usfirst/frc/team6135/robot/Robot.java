@@ -46,9 +46,11 @@ public class Robot extends IterativeRobot {
 	
 	public static UsbCamera camera;
 	public static Scalar redUpperBound1 = new Scalar(10, 255, 255);
-	public static Scalar redLowerBound1 = new Scalar(0, 210, 90);
-	public static Scalar redLowerBound2 = new Scalar(245, 210, 90);
+	public static Scalar redLowerBound1 = new Scalar(0, 210, 130);
+	public static Scalar redLowerBound2 = new Scalar(245, 210, 130);
 	public static Scalar redUpperBound2 = new Scalar(255, 255, 255);
+	public static Scalar blueUpperBound = new Scalar(170, 255, 255);
+	public static Scalar blueLowerBound = new Scalar(145, 190, 75);
 	
 	public static PlaceCubeFromMiddle placeCubeFromMiddle;
 	public static PlaceCubeSameSide placeCubeLeftSide;
@@ -96,7 +98,7 @@ public class Robot extends IterativeRobot {
         camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setResolution(RobotMap.CAMFEED_WIDTH, RobotMap.CAMFEED_HEIGHT);
         camera.setBrightness(100);
-        camera.setExposureManual(8);
+        camera.setExposureManual(20);
         camera.setFPS(1);
         //Vision processing is done in a separate thread
         boolean teamIsRed = true;
@@ -117,12 +119,15 @@ public class Robot extends IterativeRobot {
         			//Obtain the frame from the camera (1 second timeout)
         			sink.grabFrame(originalImg, 1);
         			//Convert the colour space from BGR to HSV
-        			Imgproc.cvtColor(originalImg, hsvImg, Imgproc.COLOR_BGR2HSV);
+        			Imgproc.cvtColor(originalImg, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
         			//Filter out the colours
         			if(teamIsRed) {
         				Core.inRange(hsvImg, redLowerBound1, redUpperBound1, filteredImg1);
         				Core.inRange(hsvImg, redLowerBound2, redUpperBound2, filteredImg2);
         				Core.addWeighted(filteredImg1, 1.0, filteredImg2, 1.0, 0.0, processedImg);
+        			}
+        			else {
+        				Core.inRange(hsvImg, blueLowerBound, blueUpperBound, processedImg);
         			}
         			source.putFrame(processedImg);
         		}
