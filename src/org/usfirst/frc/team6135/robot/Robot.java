@@ -45,6 +45,10 @@ public class Robot extends IterativeRobot {
 	public static String gameData;
 	
 	public static UsbCamera camera;
+	public static Scalar redUpperBound1 = new Scalar(10, 255, 255);
+	public static Scalar redLowerBound1 = new Scalar(0, 210, 90);
+	public static Scalar redLowerBound2 = new Scalar(245, 210, 90);
+	public static Scalar redUpperBound2 = new Scalar(255, 255, 255);
 	
 	public static PlaceCubeFromMiddle placeCubeFromMiddle;
 	public static PlaceCubeSameSide placeCubeLeftSide;
@@ -91,8 +95,11 @@ public class Robot extends IterativeRobot {
 		//Camera feed initialization
         camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setResolution(RobotMap.CAMFEED_WIDTH, RobotMap.CAMFEED_HEIGHT);
+        camera.setBrightness(100);
+        camera.setExposureManual(8);
         camera.setFPS(1);
         //Vision processing is done in a separate thread
+        boolean teamIsRed = true;
         (new Thread(new Runnable() {
         	@Override
         	public void run() {
@@ -102,8 +109,9 @@ public class Robot extends IterativeRobot {
         		//Create matrices to store the images later
         		Mat originalImg = new Mat();
         		Mat hsvImg = new Mat();
-        		//Mat processedImg = new Mat();
-        		Mat threshold = new Mat();
+        		Mat filteredImg1 = new Mat();
+        		Mat filteredImg2 = new Mat();
+        		Mat processedImg = new Mat();
         		
         		while(!Thread.interrupted()) {
         			//Obtain the frame from the camera (1 second timeout)
@@ -111,8 +119,12 @@ public class Robot extends IterativeRobot {
         			//Convert the colour space from BGR to HSV
         			Imgproc.cvtColor(originalImg, hsvImg, Imgproc.COLOR_BGR2HSV);
         			//Filter out the colours
-        			Core.inRange(hsvImg, new Scalar(21, 128, 25), new Scalar(57, 255, 255), threshold);
-        			source.putFrame(threshold);
+        			if(teamIsRed) {
+        				Core.inRange(hsvImg, redLowerBound1, redUpperBound1, filteredImg1);
+        				Core.inRange(hsvImg, redLowerBound2, redUpperBound2, filteredImg2);
+        				Core.addWeighted(filteredImg1, 1.0, filteredImg2, 1.0, 0.0, processedImg);
+        			}
+        			source.putFrame(processedImg);
         		}
         	}
         })).start();
