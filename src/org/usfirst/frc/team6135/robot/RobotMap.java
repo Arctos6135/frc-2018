@@ -81,6 +81,9 @@ public class RobotMap {
 	public static final double DRIVE_ENCODER_PPR = 2048;
 	public static final double DISTANCE_PER_PULSE = WHEEL_CIRCUMFRENCE/DRIVE_ENCODER_PPR;
 	
+	public static final int CAMFEED_WIDTH = 640;
+	public static final int CAMFEED_HEIGHT = 360;
+	
 	//NOTE: 2018 Robot has 6 minicims instead of 4!
 	public static TalonSRX leftFrontDriveMotor = new TalonSRX(3);
     public static TalonSRX leftBackDriveMotor = new TalonSRX(2);	

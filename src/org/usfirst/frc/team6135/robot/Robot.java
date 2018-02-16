@@ -2,10 +2,17 @@
 package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.subsystems.*;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team6135.robot.commands.autocommands.*;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -37,6 +44,8 @@ public class Robot extends IterativeRobot {
 	public static int station; //Starting position of robot
 	public static String gameData;
 	
+	public static UsbCamera camera;
+	
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -63,10 +72,37 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Place Cube: Robot is in the middle (alliance side right)", new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_RIGHT));
 		SmartDashboard.putData("Auto mode", chooser);
 		
+		station = DriverStation.getInstance().getLocation();
+		color = DriverStation.getInstance().getAlliance();
+		
 		//Camera feed initialization
-        CameraServer.getInstance().startAutomaticCapture();
-        station = DriverStation.getInstance().getLocation();
-        color = DriverStation.getInstance().getAlliance();
+        camera = CameraServer.getInstance().startAutomaticCapture();
+        camera.setResolution(RobotMap.CAMFEED_WIDTH, RobotMap.CAMFEED_HEIGHT);
+        camera.setFPS(1);
+        //Vision processing is done in a separate thread
+        (new Thread(new Runnable() {
+        	@Override
+        	public void run() {
+        		//Create a sink and a source
+        		CvSink sink = CameraServer.getInstance().getVideo();
+        		CvSource source = CameraServer.getInstance().putVideo("Test Stream", RobotMap.CAMFEED_WIDTH, RobotMap.CAMFEED_HEIGHT);
+        		//Create matrices to store the images later
+        		Mat originalImg = new Mat();
+        		Mat hsvImg = new Mat();
+        		//Mat processedImg = new Mat();
+        		Mat threshold = new Mat();
+        		
+        		while(!Thread.interrupted()) {
+        			//Obtain the frame from the camera (1 second timeout)
+        			sink.grabFrame(originalImg, 1);
+        			//Convert the colour space from BGR to HSV
+        			Imgproc.cvtColor(originalImg, hsvImg, Imgproc.COLOR_BGR2HSV);
+        			//Filter out the colours
+        			Core.inRange(hsvImg, new Scalar(21, 128, 25), new Scalar(57, 255, 255), threshold);
+        			source.putFrame(threshold);
+        		}
+        	}
+        })).start();
 	}
 
 	/**
@@ -138,9 +174,6 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		//TeleopDrive teleopDrive = new TeleopDrive();
-		//teleopDrive.start();
-		
 	}
 
 	/**
