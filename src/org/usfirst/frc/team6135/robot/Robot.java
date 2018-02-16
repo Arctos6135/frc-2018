@@ -2,6 +2,7 @@
 package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.subsystems.*;
+import org.usfirst.frc.team6135.robot.commands.autocommands.*;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
 
@@ -53,8 +54,11 @@ public class Robot extends IterativeRobot {
 		elevatorSubsystem = new ElevatorSubsystem();
 		tiltSubsystem = new TiltSubsystem();
 		oi = new OI();
-		chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
-		chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
+		
+		//chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
+		//chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
+		chooser.addDefault("Drive Past Baseline", new DrivePastBaseLine());
+		chooser.addObject("Robot on same side as switch", new PlaceCubeSameSide());
 		SmartDashboard.putData("Auto mode", chooser);
 		
 		//Camera feed initialization
@@ -91,6 +95,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		/*
 		gameData = DriverStation.getInstance().getGameSpecificMessage();//update wpilib
 		if(gameData.length() > 0){
 			if(gameData.charAt(0) == 'L'){
@@ -98,8 +103,9 @@ public class Robot extends IterativeRobot {
 			} else {
 				//Put right auto code here
 			}
-		}
+		}*/
 		
+		//Retrieve the selected auto command
 		autonomousCommand = chooser.getSelected();
 
 		/*
@@ -109,11 +115,9 @@ public class Robot extends IterativeRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
-		// schedule the autonomous command (example)
+		//Run the selected auto command
 		if (autonomousCommand != null)
 			autonomousCommand.start();
-		//Command printEncoderPulses = new PrintEncoderPulses();
-		//printEncoderPulses.start();
 	}
 
 	/**

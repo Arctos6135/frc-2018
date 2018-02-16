@@ -59,9 +59,10 @@ public class RobotMap {
 		//12.0 feet
 		//Actual auto line is 10 feet from the alliance wall, but an extra 2ft is added just in case
 		public static final double BASELINE_DISTANCE = 12.0 * 12;
-		
+		public static final double SWITCH_DISTANCE = 14.0 * 12;
 	}
 	
+	public static final double ROBOT_LENGTH = 32.0;
 	/*
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */
