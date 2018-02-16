@@ -46,6 +46,12 @@ public class Robot extends IterativeRobot {
 	
 	public static UsbCamera camera;
 	
+	public static PlaceCubeFromMiddle placeCubeFromMiddle;
+	public static PlaceCubeSameSide placeCubeLeftSide;
+	public static PlaceCubeFromSideOffset placeCubeLeftSideOffset;
+	public static PlaceCubeFromSideOffset placeCubeRightSideOffset;
+	public static PlaceCubeSameSide placeCubeRightSide;
+	
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -66,10 +72,17 @@ public class Robot extends IterativeRobot {
 		
 		//chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
 		//chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
+		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
+		placeCubeLeftSide = new PlaceCubeSameSide();
+		placeCubeRightSide = new PlaceCubeSameSide();
+		placeCubeLeftSideOffset = new PlaceCubeFromSideOffset(PlaceCubeFromSideOffset.DIRECTION_LEFT);
+		placeCubeRightSideOffset = new PlaceCubeFromSideOffset(PlaceCubeFromSideOffset.DIRECTION_RIGHT);
 		chooser.addDefault("Drive Past Baseline", new DrivePastBaseLine());
-		chooser.addObject("Place Cube: Robot is on the same side as switch", new PlaceCubeSameSide());
-		chooser.addObject("Place Cube: Robot is in the middle (alliance side left)", new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT));
-		chooser.addObject("Place Cube: Robot is in the middle (alliance side right)", new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_RIGHT));
+		chooser.addObject("Place Cube: Robot is on the left (Robot lines up with switch)", placeCubeLeftSide);
+		chooser.addObject("Place Cube: Robot is on the right (Robot lines up with switch)", placeCubeRightSide);
+		chooser.addObject("Place Cube: Robot is on the left (Robot is to the side of switch)", placeCubeLeftSideOffset);
+		chooser.addObject("Place Cube: Robot is on the right (Robot is to the side of switch)", placeCubeRightSideOffset);
+		chooser.addObject("Place Cube: Robot is in the middle", placeCubeFromMiddle);
 		SmartDashboard.putData("Auto mode", chooser);
 		
 		station = DriverStation.getInstance().getLocation();
@@ -133,18 +146,58 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		/*
-		gameData = DriverStation.getInstance().getGameSpecificMessage();//update wpilib
-		if(gameData.length() > 0){
-			if(gameData.charAt(0) == 'L'){
-				//Put left auto code here
-			} else {
-				//Put right auto code here
-			}
-		}*/
 		
 		//Retrieve the selected auto command
 		autonomousCommand = chooser.getSelected();
+			
+		
+		gameData = DriverStation.getInstance().getGameSpecificMessage();//update wpilib
+		if(gameData.length() > 0){
+			//Depending on which side the alliance switch is on, some commands need to change
+			if(gameData.charAt(0) == 'L'){
+				if(autonomousCommand.equals(placeCubeFromMiddle)) {
+					(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT)).start();
+				}
+				//Use == to check if they're the exact same object
+				else if(autonomousCommand == placeCubeLeftSide) {
+					autonomousCommand.start();
+				}
+				else if(autonomousCommand == placeCubeRightSide) {
+					(new DrivePastBaseLineOffset(DrivePastBaseLineOffset.DIRECTION_LEFT)).start();
+				}
+				else if(autonomousCommand == placeCubeLeftSideOffset) {
+					autonomousCommand.start();
+				}
+				else if(autonomousCommand == placeCubeRightSideOffset) {
+					(new DrivePastBaseLine()).start();
+				}
+				else {
+					autonomousCommand.start();
+				}
+			} 
+			else {
+				if(autonomousCommand.equals(placeCubeFromMiddle)) {
+					(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_RIGHT)).start();
+				}
+				else if(autonomousCommand == placeCubeRightSide) {
+					autonomousCommand.start();
+				}
+				else if(autonomousCommand == placeCubeLeftSide) {
+					(new DrivePastBaseLineOffset(DrivePastBaseLineOffset.DIRECTION_RIGHT)).start();
+				}
+				else if(autonomousCommand == placeCubeRightSideOffset) {
+					autonomousCommand.start();
+				}
+				else if(autonomousCommand == placeCubeLeftSideOffset) {
+					(new DrivePastBaseLine()).start();
+				}
+				else {
+					autonomousCommand.start();
+				}
+			}
+		}
+		
+		
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -154,8 +207,8 @@ public class Robot extends IterativeRobot {
 		 */
 
 		//Run the selected auto command
-		if (autonomousCommand != null)
-			autonomousCommand.start();
+		//if (autonomousCommand != null)
+			//autonomousCommand.start();
 	}
 
 	/**

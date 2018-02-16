@@ -59,11 +59,17 @@ public class RobotMap {
 		//12.0 feet
 		//Actual auto line is 10 feet from the alliance wall, but an extra 2ft is added just in case
 		public static final double BASELINE_DISTANCE = 12.0 * 12;
-		public static final double SWITCH_DISTANCE = 14.0 * 12;
-		public static final double SWITCH_SIZE = 12.0 * 12;
+		//Minus 28 inches since 14ft is to the middle of the switch
+		public static final double SWITCH_DISTANCE = 14.0 * 12 - 28;
+		public static final double SWITCH_CENTRE_DISTANCE = 14.0 * 12;
+		public static final double SWITCH_EDGE_OFFSET = 3.5 * 12.0 - ROBOT_LENGTH / 2;
+		//Minus 3ft since we want to target the middle
+		public static final double SWITCH_SIZE = 12.0 * 12 - 3.0 * 12;
+		public static final double BASELINE_OFFSET = 3.0 * 12;
 	}
 	
-	public static final double ROBOT_LENGTH = 32.0;
+	//+7in for the bumpers
+	public static final double ROBOT_LENGTH = 32.0 + 7.0;
 	/*
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */
