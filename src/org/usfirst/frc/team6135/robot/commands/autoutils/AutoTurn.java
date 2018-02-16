@@ -19,6 +19,8 @@ public class AutoTurn extends Command {
 	public double rightDistance;
 	public double speed;
 	
+	//Degrees follow the unit circle
+	//i.e. Positive means counter-clockwise and negative means clockwise
     public AutoTurn(int degrees, double speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

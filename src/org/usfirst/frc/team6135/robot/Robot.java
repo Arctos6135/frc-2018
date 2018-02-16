@@ -58,7 +58,9 @@ public class Robot extends IterativeRobot {
 		//chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
 		//chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
 		chooser.addDefault("Drive Past Baseline", new DrivePastBaseLine());
-		chooser.addObject("Robot on same side as switch", new PlaceCubeSameSide());
+		chooser.addObject("Place Cube: Robot is on the same side as switch", new PlaceCubeSameSide());
+		chooser.addObject("Place Cube: Robot is in the middle (alliance side left)", new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT));
+		chooser.addObject("Place Cube: Robot is in the middle (alliance side right)", new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_RIGHT));
 		SmartDashboard.putData("Auto mode", chooser);
 		
 		//Camera feed initialization
