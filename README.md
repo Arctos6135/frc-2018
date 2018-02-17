@@ -1,2 +1,2 @@
 # frc-2018
-Arctos6135 POWERUP 2018 programming repository
+Programming repository of team Arctos 6135 in FIRST POWERUP 2018
