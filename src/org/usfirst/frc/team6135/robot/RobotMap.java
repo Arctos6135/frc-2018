@@ -3,6 +3,7 @@ package org.usfirst.frc.team6135.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
@@ -105,6 +106,11 @@ public class RobotMap {
     
     public static Encoder rightEncoder = new Encoder(2, 3, false, EncodingType.k4X);
     public static Encoder leftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
+    
+    //This is the gyroscope that is mounted in the SPI port of the roboRIO
+    //Use the ADXRS450_Gyro class instead of AnalogGyroS
+    //Gyro object is defined but is currently unused
+    public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 	
 	public static void init() {
 		//Set back motors to follow the front motors

@@ -97,6 +97,8 @@ public class Robot extends IterativeRobot {
 		tiltSubsystem = new TiltSubsystem();
 		oi = new OI();
 		
+		RobotMap.gyro.calibrate();
+		
 		//chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
 		//chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
