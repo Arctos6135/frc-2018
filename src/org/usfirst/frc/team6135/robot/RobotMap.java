@@ -62,6 +62,7 @@ public class RobotMap {
 		public static final double BASELINE_DISTANCE = 12.0 * 12;
 		//Minus 28 inches since 14ft is to the middle of the switch
 		public static final double SWITCH_DISTANCE = 14.0 * 12 - 28;
+		public static final double VISION_SAMPLING_DISTANCE = SWITCH_DISTANCE / 4;
 		public static final double SWITCH_CENTRE_DISTANCE = 14.0 * 12;
 		public static final double SWITCH_EDGE_OFFSET = 3.5 * 12.0 - ROBOT_LENGTH / 2;
 		//Minus 3ft since we want to target the middle
