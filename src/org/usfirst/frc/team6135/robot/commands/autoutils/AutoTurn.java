@@ -1,59 +1,50 @@
 package org.usfirst.frc.team6135.robot.commands.autoutils;
 
 import org.usfirst.frc.team6135.robot.Robot;
-import static org.usfirst.frc.team6135.robot.RobotMap.*;
+import org.usfirst.frc.team6135.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ *	Turns the robot a certain amount with a certain speed
+ *	A positive value means counter-clockwise (left) turning. This is done to keep consistency with AutoTurnWithEncoders.
+ *	Note that the brake/coast mechanics of the motor controllers may reduce precision.
  */
 public class AutoTurn extends Command {
+
+	final int degrees;
+	final double speed;
+	final int multiplier;
 	
-	public static final double ROBOT_DIAM = 23.75; //For turning, INCHES
-	public static final double ROBOT_RADIUS = ROBOT_DIAM/2;
-	public static final double DISTANCE_PER_DEGREE = (ROBOT_DIAM*Math.PI)/360;
+	//How close our gyro reading must get to our desired value before stopping
+	//Note since that because the motors don't stop immediately on coast, even after this command ends,
+	//the robot would still turn a few more degrees. Adjust this value if necessary for brake/coast modes.
+	static final double THRESHOLD = 2.5;
 	
-	public int degrees;
-	public double leftDistance;
-	public double rightDistance;
-	public double speed;
-	
-	//Degrees follow the unit circle
-	//i.e. Positive means counter-clockwise and negative means clockwise
-    public AutoTurn(int degrees, double speed) {
+    public AutoTurn(final int degrees, final double speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
-    	this.degrees = degrees;
+    	//Reverse the input to make positive mean counter-clockwise
+    	//Maintains consistency with AutoTurnWithEncoders command
+    	this.degrees = -degrees;
     	this.speed = speed;
-    	leftDistance = -DISTANCE_PER_DEGREE*degrees;
-    	rightDistance = DISTANCE_PER_DEGREE*degrees;
+    	this.multiplier = degrees > 0 ? -1 : 1;
     }
-    
-    public AutoTurn(double leftDistance, double rightDistance, double speed){
-    	//Assume that leftDistance is negative
-    	requires(Robot.drive);
-    	this.leftDistance = leftDistance;
-    	this.rightDistance = rightDistance;
-    	this.speed = speed;
-    }
-    
+
     // Called just before this Command runs the first time
     protected void initialize() {
-    	leftEncoder.reset();
-    	rightEncoder.reset();
+    	RobotMap.gyro.reset();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drive.setMotorsVBus(speed, speed);
+    	Robot.drive.setMotorsVBus(multiplier * speed, -multiplier * speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (Math.abs(leftEncoder.getDistance()) >= Math.abs(leftDistance) 
-        		|| Math.abs(rightEncoder.getDistance()) >= Math.abs(rightDistance));
+        return Math.abs(Math.abs(degrees) - Math.abs(RobotMap.gyro.getAngle())) <= THRESHOLD;
     }
 
     // Called once after isFinished returns true

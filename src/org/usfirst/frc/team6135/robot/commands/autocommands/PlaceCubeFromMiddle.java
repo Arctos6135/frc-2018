@@ -8,7 +8,19 @@ import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
+ *	Hard-Coded Command Group that places a cube on the switch when the robot is in the middle.
+ *	Direction indicates the side of the field the alliance's switch colour is on.
  *
+ *	   ------------------------------------------
+ *	   |		|						|		|
+ *	   |		|		Switch			|		|
+ *	   |		|						|		|
+ *	   ------------------------------------------
+ *	 		^								^
+ *			|-------------------------------|
+ *		   				   |
+ *		   				   |
+ *		 				 Robot
  */
 public class PlaceCubeFromMiddle extends CommandGroup {
 	

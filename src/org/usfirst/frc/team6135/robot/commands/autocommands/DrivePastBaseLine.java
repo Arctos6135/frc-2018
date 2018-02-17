@@ -6,9 +6,10 @@ import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *	CommandGroup that drives past the base line. 
+ *	Hard-Coded Command Group that simply drives past the base line. 
  *	Note even though only 1 command is needed a CommandGroup is used 
  *	so that any extra steps can be implemented later.
+ *	The path of the robot has to be clear.
  */
 public class DrivePastBaseLine extends CommandGroup {
 

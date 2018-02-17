@@ -108,8 +108,7 @@ public class RobotMap {
     public static Encoder leftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
     
     //This is the gyroscope that is mounted in the SPI port of the roboRIO
-    //Use the ADXRS450_Gyro class instead of AnalogGyroS
-    //Gyro object is defined but is currently unused
+    //Use the ADXRS450_Gyro class instead of AnalogGyro
     public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 	
 	public static void init() {

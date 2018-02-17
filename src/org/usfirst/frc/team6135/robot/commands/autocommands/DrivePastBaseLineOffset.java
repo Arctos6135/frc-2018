@@ -7,7 +7,22 @@ import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *
+ *	Hard-Coded Command Group that drives past the baseline.
+ *	The difference between this and DrivePastBaseLine is that in this command, the robot's initial position
+ *	is lined up with the switch.
+ *	Direction indicates which side of the field the robot is on, left or right.
+ *	
+ *	^
+ *	|  ------------------------------------------
+ *	|  |		|						|		|
+ *	|  |		|		Switch			|		|
+ *	|  |		|						|		|
+ *	|  ------------------------------------------
+ *	|
+ *	--------
+ *		   |
+ *		   |
+ *		 Robot
  */
 public class DrivePastBaseLineOffset extends CommandGroup {
 	

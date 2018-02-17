@@ -8,7 +8,20 @@ import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *
+ * Hard-Coded Command Group that goes around the switch and places a cube on the side.
+ * The robot's initial position has to be lined up with one side of the switch
+ * Direction indicates what side of the field the robot is on.
+ * 
+ *	     ----------------------------------------
+ *	     |		|						|		|
+ *	--->>|		|		Switch			|		|
+ *	|    |		|						|		|
+ *	|    ----------------------------------------
+ *	|
+ *	--------
+ *		   |
+ *		   |
+ *		 Robot
  */
 public class PlaceCubeFromSideOffset extends CommandGroup {
 

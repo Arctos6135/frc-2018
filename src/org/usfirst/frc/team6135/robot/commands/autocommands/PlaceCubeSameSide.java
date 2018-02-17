@@ -7,7 +7,19 @@ import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *
+ * Hard-Coded Command Group that places a cube on the switch when the robot is aligned with 
+ * the alliance's side of the switch.
+ *  
+ *	   ------------------------------------------
+ *	   |		|						|		|
+ *	   |		|		Switch			|		|
+ *	   |		|						|		|
+ *	   ------------------------------------------
+ *	 	   ^
+ *		   |
+ *		   |
+ *		   |
+ *		 Robot
  */
 public class PlaceCubeSameSide extends CommandGroup {
 
