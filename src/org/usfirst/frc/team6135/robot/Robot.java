@@ -54,6 +54,8 @@ public class Robot extends IterativeRobot {
 	public static Scalar redUpperBound2 = new Scalar(255, 255, 255);
 	public static Scalar blueUpperBound = new Scalar(170, 255, 255);
 	public static Scalar blueLowerBound = new Scalar(145, 190, 75);
+	public static Scalar cubeUpperBound = new Scalar(49, 255, 255);
+	public static Scalar cubeLowerBound = new Scalar(32, 190, 10);
 	static final int[] expandLocationsX = new int[] {
 		-1, 0, 1,
 		-1, 0, 1,
@@ -299,6 +301,54 @@ public class Robot extends IterativeRobot {
         camera.setFPS(8);
         sink = CameraServer.getInstance().getVideo();
         
+        (new Thread(new Runnable() {
+        	@Override
+        	public void run() {
+        		Mat originalImg = new Mat();
+        		Mat hsvImg = new Mat();
+        		Mat filteredImg1 = new Mat();
+        		Mat filteredImg2 = new Mat();
+        		Mat filteredImg = new Mat();
+        		Mat buf = new Mat();
+        		CvSource output = CameraServer.getInstance().putVideo("Cube Filter", RobotMap.CAMERA_WIDTH, RobotMap.CAMERA_HEIGHT);
+        		while(!Thread.interrupted()) {
+	        		//Obtain the frame from the camera (1 second timeout)
+	        		sink.grabFrame(originalImg, 1);
+	        		Imgproc.medianBlur(originalImg, buf, 3);
+	        		//Convert the colour space from BGR to HSV
+	        		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
+	        		//Filter out the colours
+	        		Core.inRange(hsvImg, cubeLowerBound, cubeUpperBound, filteredImg);
+
+	        		
+	        		//Process the image
+	        		byte[] imgData = new byte[(int) (filteredImg.total() * filteredImg.channels())];
+	        		filteredImg.get(0, 0, imgData);
+	        		byte[] processed = new byte[imgData.length];
+	        		ByteArrayImg img = new ByteArrayImg(imgData, filteredImg.width(), filteredImg.height());
+	        		ByteArrayImg imgOut = new ByteArrayImg(processed, filteredImg.width(), filteredImg.height());
+	        		//Expand each pixel to fill in possible gaps in the shape
+	        		//boolean noDetection = true;
+	        		for(int y = 0; y < filteredImg.height(); y ++) {
+	        			for(int x = 0; x < filteredImg.width(); x ++) {
+	        				if(img.getPixelByte(x, y) != 0x00) {
+	        					//noDetection = false;
+	        					for(int i = 0; i < expandLocationsX.length; i ++) {
+	        						imgOut.setPixelByte(x + expandLocationsX[i], y + expandLocationsY[i], 0xFF);
+	        					}
+	        				}
+	        			}
+	        		}
+	        		
+	        		//Stop referencing the byte array to free up precious RAM
+	        		img = null;
+	        		imgData = null;
+	        		Mat outputMat = new Mat(filteredImg.height(), filteredImg.width(), filteredImg.type());
+	        		outputMat.put(0, 0, imgOut.getBytes());
+	        		output.putFrame(outputMat);
+        		}
+        	}
+        })).start();
 	}
 
 	/**
