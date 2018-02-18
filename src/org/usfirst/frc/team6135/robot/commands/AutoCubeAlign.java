@@ -5,6 +5,7 @@ import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -34,6 +35,10 @@ public class AutoCubeAlign extends InstantCommand {
     		angleRaw = Robot.visionSubsystem.getCubeAngle();
     	}
     	catch(VisionSubsystem.VisionException e) {
+    		return;
+    	}
+    	catch(Exception e) {
+    		SmartDashboard.putString("Error:", "Unexpected Exception in Vision: " + e.toString());
     		return;
     	}
     	int angle = (int) (-Math.round(Math.toDegrees(angleRaw)));

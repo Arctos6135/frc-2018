@@ -90,7 +90,7 @@ public class VisionSubsystem extends Subsystem {
 	public static final Scalar redUpperBound2 = new Scalar(255, 255, 255);
 	public static final Scalar blueUpperBound = new Scalar(170, 255, 255);
 	public static final Scalar blueLowerBound = new Scalar(145, 190, 75);
-	public static final Scalar cubeUpperBound = new Scalar(49, 255, 255);
+	public static final Scalar cubeUpperBound = new Scalar(49, 255, 230);
 	public static final Scalar cubeLowerBound = new Scalar(32, 190, 10);
 	static final int[] expandLocationsX = new int[] {
 		-1, 0, 1,
@@ -151,17 +151,13 @@ public class VisionSubsystem extends Subsystem {
 							&& img.getPixelByte(elem.x, elem.y) != 0x00) {
 						ImgPoint nextPoint = new ImgPoint(elem.x + fillLocationsX[i], elem.y + fillLocationsY[i]);
 						if(!set.contains(nextPoint)) {
-							/*maxX = Math.max(maxX, elem.x+fillLocationsX[i]);
-							maxY = Math.max(maxY, elem.y+fillLocationsY[i]);
-							minX = Math.min(minX, elem.x+fillLocationsX[i]);
-							minY = Math.min(minY, elem.y+fillLocationsY[i]);*/
 							stack.addFirst(nextPoint);
 							set.add(nextPoint);
 						}
 					}
 					
 				}
-				SmartDashboard.putNumber("Queue length", stack.size());
+				//SmartDashboard.putNumber("Queue length", stack.size());
 			}
 			centers.put(id, new ImgPoint((maxX+minX)/2, (maxY+minY)/2));
 		}
@@ -170,7 +166,10 @@ public class VisionSubsystem extends Subsystem {
 		}
 	}
 	//Return value is in RADIANS
-	public static double getKeyPointAngle(Mat processedImg) {
+	public static double getKeyPointAngle(Mat processedImg) throws VisionException {
+		return getKeyPointAngle(processedImg, 0);
+	}
+	public static double getKeyPointAngle(Mat processedImg, int minSize) throws VisionException {
 		//Do a flood fill
 		byte[] imgData = new byte[(int) (processedImg.total() * processedImg.channels())];
 		processedImg.get(0, 0, imgData);
@@ -195,6 +194,8 @@ public class VisionSubsystem extends Subsystem {
 				maxSectionId = i;
 			}
 		}
+		if(occurrences.get(maxSectionId) < minSize)
+			throw new VisionException("The largest section is smaller than the minimum limit");
 		ImgPoint center = centers.get(maxSectionId);
 		double angle = Math.atan((center.x - RobotMap.CAMERA_CENTER) / RobotMap.CAMERA_FOCAL_LEN);
 		
@@ -331,7 +332,7 @@ public class VisionSubsystem extends Subsystem {
 		imgData = null;
 		processed = null;
 		
-		return getKeyPointAngle(processedImg);
+		return getKeyPointAngle(processedImg, 100);
 	}
 	
 }
