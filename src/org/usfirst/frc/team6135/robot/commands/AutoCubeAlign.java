@@ -36,7 +36,7 @@ public class AutoCubeAlign extends InstantCommand {
     	catch(VisionSubsystem.VisionException e) {
     		return;
     	}
-    	int angle = (int) (-Math.round(angleRaw));
+    	int angle = (int) (-Math.round(Math.toDegrees(angleRaw)));
     	(new AutoTurn(angle, speed)).start();
     	
     	Robot.visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);

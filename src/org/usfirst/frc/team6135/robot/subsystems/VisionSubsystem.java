@@ -17,15 +17,70 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ *	Vision Subsystem
  */
 public class VisionSubsystem extends Subsystem {
-
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
 	
-	UsbCamera camera;
-	CvSink sink;
+	public static class VisionException extends Exception {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 4674148715358218109L;
+		public VisionException(String message) {
+			super(message);
+		}
+		public VisionException() {
+			super();
+		}
+	}
+	public static class ByteArrayImg {
+		byte[] data;
+		public final int width;
+		public final int height;
+		
+		public ByteArrayImg(byte[] data, final int width, final int height) {
+			this.data = data;
+			this.width = width;
+			this.height = height;
+		}
+		public byte getPixelByte(int x, int y) {
+			return data[y * width + x];
+		}
+		//Does nothing if x and y are out of range
+		public void setPixelByte(int x, int y, int colour) {
+			if(x < width && y < height && x >= 0 && y >= 0)
+				data[y * width + x] = (byte) colour;
+		}
+		public byte[] getBytes() {
+			return data;
+		}
+		public Mat toMat(int type) {
+			Mat output = new Mat(this.height, this.width, type);
+			output.put(0, 0, this.data);
+			return output;
+		}
+	}
+	public static class ImgPoint {
+		public int x, y;
+		public ImgPoint(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+		@Override
+		public boolean equals(Object anotherObj) {
+			if(!(anotherObj instanceof ImgPoint))
+				return false;
+			ImgPoint otherPoint = (ImgPoint) anotherObj;
+			boolean result = this.x == otherPoint.x && this.y == otherPoint.y;
+			return result;
+		}
+	}
+	
+	 public static enum Mode {
+    	VISION,
+    	VIDEO,
+    }
+	
 	public static int cameraInitBrightness;
 	public static final Scalar redUpperBound1 = new Scalar(10, 255, 255);
 	public static final Scalar redLowerBound1 = new Scalar(0, 210, 115);
@@ -56,59 +111,8 @@ public class VisionSubsystem extends Subsystem {
 			 1,  1,  1
 	};
 	
-	public static class VisionException extends Exception {
-		public VisionException(String message) {
-			super(message);
-		}
-		public VisionException() {
-			super();
-		}
-	}
-	
-	public static class ByteArrayImg {
-		byte[] data;
-		public final int width;
-		public final int height;
-		
-		public ByteArrayImg(byte[] data, final int width, final int height) {
-			this.data = data;
-			this.width = width;
-			this.height = height;
-		}
-		public byte getPixelByte(int x, int y) {
-			return data[y * width + x];
-		}
-		//Does nothing if x and y are out of range
-		public void setPixelByte(int x, int y, int colour) {
-			if(x < width && y < height && x >= 0 && y >= 0)
-				data[y * width + x] = (byte) colour;
-		}
-		public byte[] getBytes() {
-			return data;
-		}
-	}
-	
-	public static class ImgPoint {
-		public int x, y;
-		public ImgPoint(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-		@Override
-		public boolean equals(Object anotherObj) {
-			if(!(anotherObj instanceof ImgPoint))
-				return false;
-			ImgPoint otherPoint = (ImgPoint) anotherObj;
-			boolean result = this.x == otherPoint.x && this.y == otherPoint.y;
-			return result;
-		}
-	}
-	
-	
 	/*
 	 * Non-Recursive Flood Fill
-	 * Same signature as recursive version
-	 * Uses BFS
 	 */
 	static void visionFloodFill(int id, int x, int y, int[][] fillRef, ByteArrayImg img, HashMap<Integer, Integer> occurrences, HashMap<Integer, ImgPoint> centers) {
 		ArrayDeque<ImgPoint> queue = new ArrayDeque<ImgPoint>();
@@ -139,7 +143,7 @@ public class VisionSubsystem extends Subsystem {
 							queue.add(nextPoint);
 						}
 					}
-						
+					
 				}
 				SmartDashboard.putNumber("Queue length", queue.size());
 			}
@@ -147,6 +151,83 @@ public class VisionSubsystem extends Subsystem {
 		}
 		catch(Throwable t) {
 			SmartDashboard.putString("ERROR", t.toString());
+		}
+	}
+	//Return value is in RADIANS
+	public static double getKeyPointAngle(Mat processedImg) {
+		//Do a flood fill
+		byte[] imgData = new byte[(int) (processedImg.total() * processedImg.channels())];
+		processedImg.get(0, 0, imgData);
+		ByteArrayImg imgOut = new ByteArrayImg(imgData, processedImg.width(), processedImg.height());
+		int[][] fillRef = new int[processedImg.width()][processedImg.height()];
+		HashMap<Integer, Integer> occurrences = new HashMap<Integer, Integer>();
+		HashMap<Integer, ImgPoint> centers = new HashMap<Integer, ImgPoint>();
+		int sectionId = 1;
+		for(int y = 0; y < processedImg.height(); y ++) {
+			for(int x = 0; x < processedImg.width(); x ++) {
+				if(imgOut.getPixelByte(x, y) != 0x00 && fillRef[x][y] == 0) {
+					visionFloodFill(sectionId ++, x, y, fillRef, imgOut, occurrences, centers);
+				}
+			}
+		}
+		
+		//Find out what the largest section is
+		//Assuming that there is at least one section
+		int maxSectionId = 1;
+		for(int i = 1; i < sectionId; i ++) {
+			if(occurrences.get(i) > occurrences.get(maxSectionId)) {
+				maxSectionId = i;
+			}
+		}
+		ImgPoint center = centers.get(maxSectionId);
+		double angle = Math.atan((center.x - RobotMap.CAMERA_CENTER) / RobotMap.CAMERA_FOCAL_LEN);
+		
+		return angle;
+	}
+	public static boolean expandPixels(ByteArrayImg img, ByteArrayImg imgOut) {
+		boolean noDetection = true;
+		for(int y = 0; y < img.height; y ++) {
+			for(int x = 0; x < img.width; x ++) {
+				if(img.getPixelByte(x, y) != 0x00) {
+					noDetection = false;
+					for(int i = 0; i < expandLocationsX.length; i ++) {
+						imgOut.setPixelByte(x + expandLocationsX[i], y + expandLocationsY[i], 0xFF);
+					}
+				}
+			}
+		}
+		return noDetection;
+	}
+	
+	
+	UsbCamera camera;
+	CvSink sink;
+	
+	public VisionSubsystem(UsbCamera cam) {
+		camera = cam;
+		cameraInitBrightness = camera.getBrightness();
+		camera.setResolution(RobotMap.CAMERA_WIDTH, RobotMap.CAMERA_HEIGHT);
+		sink = CameraServer.getInstance().getVideo();
+	}
+	
+	public void initDefaultCommand() {
+		// Set the default command for a subsystem here.
+		//setDefaultCommand(new MySpecialCommand());
+	}
+	
+	public void setMode(Mode mode) {
+		if(mode == Mode.VISION) {
+			sink.setEnabled(true);
+			camera.setBrightness(100);
+			camera.setExposureManual(20);
+			camera.setFPS(8);
+		}
+		else {
+			sink.setEnabled(false);
+			sink.setEnabled(false);
+			camera.setBrightness(cameraInitBrightness);
+			camera.setExposureAuto();
+			camera.setFPS(24);
 		}
 	}
 	
@@ -172,6 +253,10 @@ public class VisionSubsystem extends Subsystem {
 		else {
 			Core.inRange(hsvImg, blueLowerBound, blueUpperBound, filteredImg);
 		}
+		//Free up RAM
+		filteredImg1 = null;
+		filteredImg2 = null;
+		originalImg = null;
 		
 		Imgproc.medianBlur(filteredImg, buf, 7);
 		filteredImg = buf;
@@ -181,51 +266,18 @@ public class VisionSubsystem extends Subsystem {
 		byte[] processed = new byte[imgData.length];
 		ByteArrayImg img = new ByteArrayImg(imgData, filteredImg.width(), filteredImg.height());
 		ByteArrayImg imgOut = new ByteArrayImg(processed, filteredImg.width(), filteredImg.height());
-		//Expand each pixel to fill in possible gaps in the shape
-		boolean noDetection = true;
-		for(int y = 0; y < filteredImg.height(); y ++) {
-			for(int x = 0; x < filteredImg.width(); x ++) {
-				if(img.getPixelByte(x, y) != 0x00) {
-					noDetection = false;
-					for(int i = 0; i < expandLocationsX.length; i ++) {
-						imgOut.setPixelByte(x + expandLocationsX[i], y + expandLocationsY[i], 0xFF);
-					}
-				}
-			}
-		}
-		
-		//Stop referencing the byte array to free up precious RAM
-		img = null;
-		imgData = null;
 		
 		//If the filter did not detect any pixels skip the next part
-		if(noDetection)
+		if(!expandPixels(img, imgOut))
 			throw new VisionException("Alliance colour not detected");
-		//Do a flood fill
-		int[][] fillRef = new int[filteredImg.width()][filteredImg.height()];
-		HashMap<Integer, Integer> occurrences = new HashMap<Integer, Integer>();
-		HashMap<Integer, ImgPoint> centers = new HashMap<Integer, ImgPoint>();
-		int sectionId = 1;
-		for(int y = 0; y < filteredImg.height(); y ++) {
-			for(int x = 0; x < filteredImg.width(); x ++) {
-				if(imgOut.getPixelByte(x, y) != 0x00 && fillRef[x][y] == 0) {
-					visionFloodFill(sectionId ++, x, y, fillRef, imgOut, occurrences, centers);
-				}
-			}
-		}
+		//Free up some ram
+		Mat processedImg = imgOut.toMat(filteredImg.type());
+		imgOut = null;
+		img = null;
+		imgData = null;
+		processed = null;
 		
-		//Find out what the largest section is
-		//It is safe to assume that at least one section exists since this code won't run if there are no white pixels
-		int maxSectionId = 1;
-		for(int i = 1; i < sectionId; i ++) {
-			if(occurrences.get(i) > occurrences.get(maxSectionId)) {
-				maxSectionId = i;
-			}
-		}
-		ImgPoint center = centers.get(maxSectionId);
-		double angle = Math.atan((center.x - RobotMap.CAMERA_CENTER) / RobotMap.CAMERA_FOCAL_LEN);
-		
-		return angle;
+		return getKeyPointAngle(processedImg);
 	}
 	public double getCubeAngle() throws VisionException {
 		Mat originalImg = new Mat();
@@ -248,82 +300,19 @@ public class VisionSubsystem extends Subsystem {
 		byte[] processed = new byte[imgData.length];
 		ByteArrayImg img = new ByteArrayImg(imgData, filteredImg.width(), filteredImg.height());
 		ByteArrayImg imgOut = new ByteArrayImg(processed, filteredImg.width(), filteredImg.height());
-		//Expand each pixel to fill in possible gaps in the shape
-		boolean noDetection = true;
-		for(int y = 0; y < filteredImg.height(); y ++) {
-			for(int x = 0; x < filteredImg.width(); x ++) {
-				if(img.getPixelByte(x, y) != 0x00) {
-					noDetection = false;
-					for(int i = 0; i < expandLocationsX.length; i ++) {
-						imgOut.setPixelByte(x + expandLocationsX[i], y + expandLocationsY[i], 0xFF);
-					}
-				}
-			}
-		}
 		
-		//Stop referencing the byte array to free up precious RAM
+		//If the filter did not detect any pixels skip the next part
+		if(!expandPixels(img, imgOut))
+			throw new VisionException("Cube not detected");
+		//Free up some ram
+		Mat processedImg = imgOut.toMat(filteredImg.type());
+		imgOut = null;
 		img = null;
 		imgData = null;
-		if(noDetection) {
-			throw new VisionException("Cube not detected");
-		}
+		processed = null;
 		
-		int[][] fillRef = new int[filteredImg.width()][filteredImg.height()];
-		HashMap<Integer, Integer> occurrences = new HashMap<Integer, Integer>();
-		HashMap<Integer, ImgPoint> centers = new HashMap<Integer, ImgPoint>();
-		int sectionId = 1;
-		for(int y = 0; y < filteredImg.height(); y ++) {
-			for(int x = 0; x < filteredImg.width(); x ++) {
-				if(imgOut.getPixelByte(x, y) != 0x00 && fillRef[x][y] == 0) {
-					visionFloodFill(sectionId ++, x, y, fillRef, imgOut, occurrences, centers);
-				}
-			}
-		}
-		
-		//Find out what the largest section is
-		//It is safe to assume that at least one section exists since this code won't run if there are no white pixels
-		int maxSectionId = 1;
-		for(int i = 1; i < sectionId; i ++) {
-			if(occurrences.get(i) > occurrences.get(maxSectionId)) {
-				maxSectionId = i;
-			}
-		}
-		ImgPoint center = centers.get(maxSectionId);
-		double angle = Math.atan((center.x - RobotMap.CAMERA_CENTER) / RobotMap.CAMERA_FOCAL_LEN);
-		return Math.toDegrees(angle);
+		return getKeyPointAngle(processedImg);
 	}
 	
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    }
-    
-    public VisionSubsystem(UsbCamera cam) {
-    	camera = cam;
-    	cameraInitBrightness = camera.getBrightness();
-    	camera.setResolution(RobotMap.CAMERA_WIDTH, RobotMap.CAMERA_HEIGHT);
-    	sink = CameraServer.getInstance().getVideo();
-    }
-    
-    public static enum Mode {
-    	VISION,
-    	VIDEO,
-    }
-    
-    public void setMode(Mode mode) {
-    	if(mode == Mode.VISION) {
-    		sink.setEnabled(true);
-    		camera.setBrightness(100);
-            camera.setExposureManual(20);
-            camera.setFPS(8);
-    	}
-    	else {
-    		sink.setEnabled(false);
-    		sink.setEnabled(false);
-    		camera.setBrightness(cameraInitBrightness);
-    		camera.setExposureAuto();
-    		camera.setFPS(24);
-    	}
-    }
 }
 
