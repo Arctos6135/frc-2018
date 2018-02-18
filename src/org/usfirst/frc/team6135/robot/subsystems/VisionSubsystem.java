@@ -2,6 +2,7 @@ package org.usfirst.frc.team6135.robot.subsystems;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -10,6 +11,7 @@ import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -115,18 +117,31 @@ public class VisionSubsystem extends Subsystem {
 	 * Non-Recursive Flood Fill
 	 */
 	static void visionFloodFill(int id, int x, int y, int[][] fillRef, ByteArrayImg img, HashMap<Integer, Integer> occurrences, HashMap<Integer, ImgPoint> centers) {
-		ArrayDeque<ImgPoint> queue = new ArrayDeque<ImgPoint>();
+		//ArrayDeque<ImgPoint> queue = new ArrayDeque<ImgPoint>();
+		ArrayDeque<ImgPoint> stack = new ArrayDeque<ImgPoint>();
+		HashSet<ImgPoint> set = new HashSet<ImgPoint>();
 		if(!occurrences.containsKey(id))
 			occurrences.put(id, 0);
 		int maxX = x; int minX = x;
 		int maxY = y; int minY = y;
-		queue.add(new ImgPoint(x, y));
+		ImgPoint firstPoint = new ImgPoint(x, y);
+		stack.addFirst(firstPoint);
+		set.add(firstPoint);
 		try {
 			if(id == 0)
 				throw new IllegalArgumentException("ID is 0");
-			while(!queue.isEmpty()) {
-				ImgPoint elem = queue.poll();
+			while(!stack.isEmpty()) {
+				ImgPoint elem = stack.poll();
+				set.remove(elem);
 				fillRef[elem.x][elem.y] = id;
+				if(elem.x > maxX)
+					maxX = elem.x;
+				else if(elem.x < minX)
+					minX = elem.x;
+				if(elem.y > maxY)
+					maxY = elem.y;
+				else if(elem.y < minY)
+					minY = elem.y;
 				occurrences.put(id, occurrences.get(id) + 1);
 				
 				for(int i = 0; i < fillLocationsX.length; i ++) {
@@ -135,17 +150,18 @@ public class VisionSubsystem extends Subsystem {
 							&& fillRef[elem.x + fillLocationsX[i]][elem.y + fillLocationsY[i]] == 0
 							&& img.getPixelByte(elem.x, elem.y) != 0x00) {
 						ImgPoint nextPoint = new ImgPoint(elem.x + fillLocationsX[i], elem.y + fillLocationsY[i]);
-						if(!queue.contains(nextPoint)) {
-							maxX = Math.max(maxX, elem.x+fillLocationsX[i]);
+						if(!set.contains(nextPoint)) {
+							/*maxX = Math.max(maxX, elem.x+fillLocationsX[i]);
 							maxY = Math.max(maxY, elem.y+fillLocationsY[i]);
 							minX = Math.min(minX, elem.x+fillLocationsX[i]);
-							minY = Math.min(minY, elem.y+fillLocationsY[i]);
-							queue.add(nextPoint);
+							minY = Math.min(minY, elem.y+fillLocationsY[i]);*/
+							stack.addFirst(nextPoint);
+							set.add(nextPoint);
 						}
 					}
 					
 				}
-				SmartDashboard.putNumber("Queue length", queue.size());
+				SmartDashboard.putNumber("Queue length", stack.size());
 			}
 			centers.put(id, new ImgPoint((maxX+minX)/2, (maxY+minY)/2));
 		}
@@ -185,29 +201,31 @@ public class VisionSubsystem extends Subsystem {
 		return angle;
 	}
 	public static boolean expandPixels(ByteArrayImg img, ByteArrayImg imgOut) {
-		boolean noDetection = true;
+		boolean detected = false;
 		for(int y = 0; y < img.height; y ++) {
 			for(int x = 0; x < img.width; x ++) {
 				if(img.getPixelByte(x, y) != 0x00) {
-					noDetection = false;
+					detected = true;
 					for(int i = 0; i < expandLocationsX.length; i ++) {
 						imgOut.setPixelByte(x + expandLocationsX[i], y + expandLocationsY[i], 0xFF);
 					}
 				}
 			}
 		}
-		return noDetection;
+		return detected;
 	}
 	
 	
 	UsbCamera camera;
 	CvSink sink;
+	CvSource source;
 	
 	public VisionSubsystem(UsbCamera cam) {
 		camera = cam;
 		cameraInitBrightness = camera.getBrightness();
 		camera.setResolution(RobotMap.CAMERA_WIDTH, RobotMap.CAMERA_HEIGHT);
 		sink = CameraServer.getInstance().getVideo();
+		source = CameraServer.getInstance().putVideo("Vision Subsystem", RobotMap.CAMERA_WIDTH, RobotMap.CAMERA_HEIGHT);
 	}
 	
 	public void initDefaultCommand() {
@@ -302,10 +320,12 @@ public class VisionSubsystem extends Subsystem {
 		ByteArrayImg imgOut = new ByteArrayImg(processed, filteredImg.width(), filteredImg.height());
 		
 		//If the filter did not detect any pixels skip the next part
-		if(!expandPixels(img, imgOut))
+		if(!expandPixels(img, imgOut)) {
 			throw new VisionException("Cube not detected");
+		}
 		//Free up some ram
 		Mat processedImg = imgOut.toMat(filteredImg.type());
+		source.putFrame(processedImg);
 		imgOut = null;
 		img = null;
 		imgData = null;

@@ -2,7 +2,7 @@
 package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.subsystems.*;
-
+import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem.VisionException;
 import org.usfirst.frc.team6135.robot.commands.autocommands.*;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -65,7 +65,36 @@ public class Robot extends IterativeRobot {
 		
 		RobotMap.gyro.calibrate();
 		
-		//chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
+		station = DriverStation.getInstance().getLocation();
+		color = DriverStation.getInstance().getAlliance();
+		
+		//Initialize camera stream and vision subsystem
+        visionSubsystem = new VisionSubsystem(CameraServer.getInstance().startAutomaticCapture());
+        visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
+        
+        (new Thread(new Runnable() {
+        	@Override
+        	public void run() {
+        		while(!Thread.interrupted()) {
+        			SmartDashboard.putString("Vision Test Status", "RUNNING");
+	        		try {
+						SmartDashboard.putNumber("Cube angle", Math.toDegrees(visionSubsystem.getCubeAngle()));
+						SmartDashboard.putString("Error:", "");
+					} catch (VisionException e) {
+						SmartDashboard.putString("Error:", "Vision Exception");
+					} catch(Throwable e) {
+						SmartDashboard.putString("Error:", e.toString());
+					}
+	        		try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+        		}
+        	}
+        })).start();
+        
+        //chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
 		//chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
 		placeCubeLeftSide = new PlaceCubeSameSide();
@@ -81,13 +110,6 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Place Cube: Robot is in the middle", placeCubeFromMiddle);
 		chooser.addObject("Place Cube With Vision: Robot is in the middle", visionAuto);
 		SmartDashboard.putData("Auto mode", chooser);
-		
-		station = DriverStation.getInstance().getLocation();
-		color = DriverStation.getInstance().getAlliance();
-		
-		//Initialize camera stream and vision subsystem
-        visionSubsystem = new VisionSubsystem(CameraServer.getInstance().startAutomaticCapture());
-        visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
 	}
 
 	/**
