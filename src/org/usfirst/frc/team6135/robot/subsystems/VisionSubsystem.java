@@ -117,22 +117,21 @@ public class VisionSubsystem extends Subsystem {
 	 * Non-Recursive Flood Fill
 	 */
 	static void visionFloodFill(int id, int x, int y, int[][] fillRef, ByteArrayImg img, HashMap<Integer, Integer> occurrences, HashMap<Integer, ImgPoint> centers) {
-		//ArrayDeque<ImgPoint> queue = new ArrayDeque<ImgPoint>();
-		ArrayDeque<ImgPoint> stack = new ArrayDeque<ImgPoint>();
+		ArrayDeque<ImgPoint> queue = new ArrayDeque<ImgPoint>();
 		HashSet<ImgPoint> set = new HashSet<ImgPoint>();
 		if(!occurrences.containsKey(id))
 			occurrences.put(id, 0);
 		int maxX = x; int minX = x;
 		int maxY = y; int minY = y;
 		ImgPoint firstPoint = new ImgPoint(x, y);
-		stack.addFirst(firstPoint);
+		queue.add(firstPoint);
 		set.add(firstPoint);
 		try {
 			if(id == 0)
 				throw new IllegalArgumentException("ID is 0");
 			int pixels = occurrences.get(id);
-			while(!stack.isEmpty()) {
-				ImgPoint elem = stack.poll();
+			while(!queue.isEmpty()) {
+				ImgPoint elem = queue.poll();
 				set.remove(elem);
 				fillRef[elem.x][elem.y] = id;
 				if(elem.x > maxX)
@@ -153,13 +152,13 @@ public class VisionSubsystem extends Subsystem {
 							&& img.getPixelByte(newX, newY) != 0x00) {
 						ImgPoint nextPoint = new ImgPoint(newX, newY);
 						if(!set.contains(nextPoint)) {
-							stack.addFirst(nextPoint);
+							queue.add(nextPoint);
 							set.add(nextPoint);
 						}
 					}
 					
 				}
-				//SmartDashboard.putNumber("Queue length", stack.size());
+				SmartDashboard.putNumber("Queue length", queue.size());
 			}
 			occurrences.put(id, pixels);
 			centers.put(id, new ImgPoint((maxX+minX)/2, (maxY+minY)/2));
@@ -242,14 +241,16 @@ public class VisionSubsystem extends Subsystem {
 			sink.setEnabled(true);
 			camera.setBrightness(100);
 			camera.setExposureManual(20);
+			camera.setExposureHoldCurrent();
 			camera.setFPS(8);
 		}
 		else {
 			sink.setEnabled(false);
-			sink.setEnabled(false);
 			camera.setBrightness(cameraInitBrightness);
 			camera.setExposureAuto();
-			camera.setFPS(24);
+			if(!camera.setFPS(24)) {
+				SmartDashboard.putString("VisionError", "Failed to set FPS");
+			}
 		}
 	}
 	

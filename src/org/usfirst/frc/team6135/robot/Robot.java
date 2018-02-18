@@ -79,16 +79,22 @@ public class Robot extends IterativeRobot {
         		while(!Thread.interrupted()) {
         			SmartDashboard.putString("Vision Test Status", "RUNNING");
 	        		try {
+	        			long start = System.currentTimeMillis();
 						SmartDashboard.putNumber("Cube angle", Math.toDegrees(visionSubsystem.getCubeAngle()));
+						long elapsed = System.currentTimeMillis() - start;
+						SmartDashboard.putNumber("Processing time (ms)", elapsed);
 						SmartDashboard.putString("Error:", "");
-					} catch (VisionException e) {
+					} 
+	        		catch (VisionException e) {
 						SmartDashboard.putString("Error:", "Vision Exception");
-					} catch(Throwable e) {
+					} 
+	        		catch(Throwable e) {
 						SmartDashboard.putString("Error:", e.toString());
 					}
 	        		try {
 						Thread.sleep(2000);
-					} catch (InterruptedException e) {
+					} 
+	        		catch (InterruptedException e) {
 						e.printStackTrace();
 					}
         		}
@@ -209,6 +215,7 @@ public class Robot extends IterativeRobot {
 		//Run the selected auto command
 		//if (autonomousCommand != null)
 			//autonomousCommand.start();
+		visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
 	}
 
 	/**
