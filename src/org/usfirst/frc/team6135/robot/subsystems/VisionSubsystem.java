@@ -90,8 +90,8 @@ public class VisionSubsystem extends Subsystem {
 	public static final Scalar redUpperBound2 = new Scalar(255, 255, 255);
 	public static final Scalar blueUpperBound = new Scalar(170, 255, 255);
 	public static final Scalar blueLowerBound = new Scalar(145, 190, 75);
-	public static final Scalar cubeUpperBound = new Scalar(49, 255, 230);
-	public static final Scalar cubeLowerBound = new Scalar(32, 190, 10);
+	public static final Scalar cubeUpperBound = new Scalar(49, 255, 255);
+	public static final Scalar cubeLowerBound = new Scalar(32, 170, 10);
 	static final int[] expandLocationsX = new int[] {
 		-1, 0, 1,
 		-1, 0, 1,
@@ -335,7 +335,7 @@ public class VisionSubsystem extends Subsystem {
 		imgData = null;
 		processed = null;
 		
-		return getKeyPointAngle(processedImg, 100);
+		return getKeyPointAngle(processedImg, 300);
 	}
 	
 }
