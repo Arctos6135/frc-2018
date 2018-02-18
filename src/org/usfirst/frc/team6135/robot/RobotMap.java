@@ -2,6 +2,7 @@ package org.usfirst.frc.team6135.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -95,11 +96,12 @@ public class RobotMap {
 	public static final int CAMERA_CENTER = CAMERA_WIDTH / 2;
 	public static final double CAMERA_FOCAL_LEN = CAMERA_WIDTH / (2 * Math.tan(Math.toRadians(CAMERA_FOV / 2)));
 	
-	//NOTE: 2018 Robot has 6 minicims instead of 4!
-	public static TalonSRX leftFrontDriveMotor = new TalonSRX(3);
-    public static TalonSRX leftBackDriveMotor = new TalonSRX(2);	
-    public static TalonSRX rightFrontDriveMotor = new TalonSRX(1);
-    public static TalonSRX rightBackDriveMotor = new TalonSRX(4);
+	public static TalonSRX leftDriveTalon1 = new TalonSRX(3);
+    public static TalonSRX leftDriveTalon2 = new TalonSRX(2);	
+    public static TalonSRX rightDriveTalon1 = new TalonSRX(1);
+    public static TalonSRX rightDriveTalon2 = new TalonSRX(4);
+    public static VictorSPX leftDriveVictor = new VictorSPX(5);
+    public static VictorSPX rightDriveVictor = new VictorSPX(6);
     
     public static DoubleSolenoid gearshiftSolenoid = new DoubleSolenoid(0, 1);
     
@@ -117,11 +119,13 @@ public class RobotMap {
 	
 	public static void init() {
 		//Set back motors to follow the front motors
-		leftBackDriveMotor.set(ControlMode.Follower, leftFrontDriveMotor.getDeviceID());
-		rightBackDriveMotor.set(ControlMode.Follower, rightFrontDriveMotor.getDeviceID());
+		leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
+		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
+		leftDriveVictor.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
+		rightDriveVictor.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
 		
-		leftFrontDriveMotor.set(ControlMode.PercentOutput, 0);
-		rightFrontDriveMotor.set(ControlMode.PercentOutput, 0);
+		leftDriveTalon1.set(ControlMode.PercentOutput, 0);
+		rightDriveTalon1.set(ControlMode.PercentOutput, 0);
 		leftEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 		rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 		intakeRight.setInverted(false);
