@@ -7,6 +7,7 @@ import java.util.HashSet;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
@@ -199,7 +200,7 @@ public class VisionSubsystem extends Subsystem {
 		if(occurrences.get(maxSectionId) < minSize)
 			throw new VisionException("The largest section is smaller than the minimum limit");
 		ImgPoint center = centers.get(maxSectionId);
-		double angle = Math.atan((center.x - RobotMap.CAMERA_CENTER) / RobotMap.CAMERA_FOCAL_LEN);
+		double angle = Math.atan((center.x - RobotMap.VISION_CENTER) / RobotMap.VISION_FOCAL_LEN);
 		
 		return angle;
 	}
@@ -228,7 +229,7 @@ public class VisionSubsystem extends Subsystem {
 		cameraInitBrightness = camera.getBrightness();
 		camera.setResolution(RobotMap.CAMERA_WIDTH, RobotMap.CAMERA_HEIGHT);
 		sink = CameraServer.getInstance().getVideo();
-		source = CameraServer.getInstance().putVideo("Vision Subsystem", RobotMap.CAMERA_WIDTH, RobotMap.CAMERA_HEIGHT);
+		source = CameraServer.getInstance().putVideo("Vision Subsystem", RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT);
 	}
 	
 	public void initDefaultCommand() {
@@ -247,7 +248,7 @@ public class VisionSubsystem extends Subsystem {
 		else {
 			sink.setEnabled(false);
 			camera.setBrightness(cameraInitBrightness);
-			camera.setExposureManual(50);
+			camera.setExposureManual(35);
 			if(!camera.setFPS(24)) {
 				SmartDashboard.putString("VisionError", "Failed to set FPS");
 			}
@@ -264,6 +265,8 @@ public class VisionSubsystem extends Subsystem {
 		
 		//Obtain the frame from the camera (1 second timeout)
 		sink.grabFrame(originalImg, 1);
+		Imgproc.resize(originalImg, buf, new Size(RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT));
+		originalImg = buf;
 		Imgproc.medianBlur(originalImg, buf, 3);
 		//Convert the colour space from BGR to HSV
 		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
@@ -310,6 +313,8 @@ public class VisionSubsystem extends Subsystem {
 		
 		//Obtain the frame from the camera (1 second timeout)
 		sink.grabFrame(originalImg, 1);
+		Imgproc.resize(originalImg, buf, new Size(RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT));
+		originalImg = buf;
 		Imgproc.medianBlur(originalImg, buf, 3);
 		//Convert the colour space from BGR to HSV
 		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);

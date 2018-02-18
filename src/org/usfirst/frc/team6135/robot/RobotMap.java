@@ -95,6 +95,10 @@ public class RobotMap {
 	public static final double CAMERA_FOV = 61.0;
 	public static final int CAMERA_CENTER = CAMERA_WIDTH / 2;
 	public static final double CAMERA_FOCAL_LEN = CAMERA_WIDTH / (2 * Math.tan(Math.toRadians(CAMERA_FOV / 2)));
+	public static final int VISION_WIDTH = 320;
+	public static final int VISION_HEIGHT = 180;
+	public static final int VISION_CENTER = VISION_WIDTH / 2;
+	public static final double VISION_FOCAL_LEN = VISION_WIDTH / (2 * Math.tan(Math.toRadians(CAMERA_FOV / 2)));
 	
 	public static TalonSRX leftDriveTalon1 = new TalonSRX(3);
     public static TalonSRX leftDriveTalon2 = new TalonSRX(2);	
