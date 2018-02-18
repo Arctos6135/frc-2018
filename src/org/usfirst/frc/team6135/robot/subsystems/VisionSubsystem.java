@@ -117,21 +117,21 @@ public class VisionSubsystem extends Subsystem {
 	 * Non-Recursive Flood Fill
 	 */
 	static void visionFloodFill(int id, int x, int y, int[][] fillRef, ByteArrayImg img, HashMap<Integer, Integer> occurrences, HashMap<Integer, ImgPoint> centers) {
-		ArrayDeque<ImgPoint> queue = new ArrayDeque<ImgPoint>();
+		ArrayDeque<ImgPoint> stack = new ArrayDeque<ImgPoint>();
 		HashSet<ImgPoint> set = new HashSet<ImgPoint>();
 		if(!occurrences.containsKey(id))
 			occurrences.put(id, 0);
 		int maxX = x; int minX = x;
 		int maxY = y; int minY = y;
 		ImgPoint firstPoint = new ImgPoint(x, y);
-		queue.add(firstPoint);
+		stack.push(firstPoint);
 		set.add(firstPoint);
 		try {
 			if(id == 0)
 				throw new IllegalArgumentException("ID is 0");
 			int pixels = occurrences.get(id);
-			while(!queue.isEmpty()) {
-				ImgPoint elem = queue.poll();
+			while(!stack.isEmpty()) {
+				ImgPoint elem = stack.pop();
 				set.remove(elem);
 				fillRef[elem.x][elem.y] = id;
 				if(elem.x > maxX)
@@ -152,13 +152,13 @@ public class VisionSubsystem extends Subsystem {
 							&& img.getPixelByte(newX, newY) != 0x00) {
 						ImgPoint nextPoint = new ImgPoint(newX, newY);
 						if(!set.contains(nextPoint)) {
-							queue.add(nextPoint);
+							stack.push(nextPoint);
 							set.add(nextPoint);
 						}
 					}
 					
 				}
-				SmartDashboard.putNumber("Queue length", queue.size());
+				SmartDashboard.putNumber("Queue length", stack.size());
 			}
 			occurrences.put(id, pixels);
 			centers.put(id, new ImgPoint((maxX+minX)/2, (maxY+minY)/2));
@@ -247,7 +247,7 @@ public class VisionSubsystem extends Subsystem {
 		else {
 			sink.setEnabled(false);
 			camera.setBrightness(cameraInitBrightness);
-			camera.setExposureAuto();
+			camera.setExposureManual(50);
 			if(!camera.setFPS(24)) {
 				SmartDashboard.putString("VisionError", "Failed to set FPS");
 			}
