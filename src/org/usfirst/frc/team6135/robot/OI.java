@@ -1,11 +1,13 @@
 package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.commands.AutoCubeAlign;
+import org.usfirst.frc.team6135.robot.commands.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoputils.GearShift;
 
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -48,6 +50,7 @@ public class OI {
 	 * 	Left Bumper: Shift gear to slower configuration
 	 * 	Right Bumper: Shift gear to faster configuration
 	 * 	Y Button: Auto Power Cube align
+	 * 	B Button: Cancel auto align (when processing takes too long)
 	 * Attachments:
 	 * 	Left Analog Stick: Elevator (Max. speed = 50%)
 	 * 	Right Analog Stick: Tilt (Max. speed = 30%, up/down)
@@ -62,6 +65,7 @@ public class OI {
 	public static JoystickButton gearShiftSlow;
 	
 	public static JoystickButton autoCubeAlign;
+	public static JoystickButton cancelAlign;
 	
 	public OI() {
 		//Port 0 is on the right of the programming laptop and port 1 is on the left.
@@ -77,6 +81,9 @@ public class OI {
 		gearShiftSlow.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));
 		
 		autoCubeAlign = new JoystickButton(driveController, RobotMap.ControllerMap.BUTTON_Y);
-		autoCubeAlign.whenPressed(new AutoCubeAlign(RobotMap.Speeds.AUTO_SPEED));
+		Command autoAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_SPEED); 
+		autoCubeAlign.whenPressed(autoAlignCmd);
+		cancelAlign = new JoystickButton(driveController, RobotMap.ControllerMap.BUTTON_B);
+		cancelAlign.whenPressed(new CancelOperation(autoAlignCmd));
 	}
 }
