@@ -130,6 +130,7 @@ public class VisionSubsystem extends Subsystem {
 		try {
 			if(id == 0)
 				throw new IllegalArgumentException("ID is 0");
+			int pixels = occurrences.get(id);
 			while(!stack.isEmpty()) {
 				ImgPoint elem = stack.poll();
 				set.remove(elem);
@@ -142,14 +143,15 @@ public class VisionSubsystem extends Subsystem {
 					maxY = elem.y;
 				else if(elem.y < minY)
 					minY = elem.y;
-				occurrences.put(id, occurrences.get(id) + 1);
+				pixels ++;
 				
 				for(int i = 0; i < fillLocationsX.length; i ++) {
-					if(elem.x + fillLocationsX[i] >= 0 && elem.x + fillLocationsX[i] < img.width
-							&& elem.y + fillLocationsY[i] >= 0 && elem.y + fillLocationsY[i] < img.height
-							&& fillRef[elem.x + fillLocationsX[i]][elem.y + fillLocationsY[i]] == 0
-							&& img.getPixelByte(elem.x, elem.y) != 0x00) {
-						ImgPoint nextPoint = new ImgPoint(elem.x + fillLocationsX[i], elem.y + fillLocationsY[i]);
+					int newX = elem.x + fillLocationsX[i];
+					int newY = elem.y + fillLocationsY[i];
+					if(newX >= 0 && newX < img.width && newY >= 0 && newY < img.height
+							&& fillRef[newX][newY] == 0
+							&& img.getPixelByte(newX, newY) != 0x00) {
+						ImgPoint nextPoint = new ImgPoint(newX, newY);
 						if(!set.contains(nextPoint)) {
 							stack.addFirst(nextPoint);
 							set.add(nextPoint);
@@ -159,6 +161,7 @@ public class VisionSubsystem extends Subsystem {
 				}
 				//SmartDashboard.putNumber("Queue length", stack.size());
 			}
+			occurrences.put(id, pixels);
 			centers.put(id, new ImgPoint((maxX+minX)/2, (maxY+minY)/2));
 		}
 		catch(Throwable t) {
