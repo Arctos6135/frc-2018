@@ -16,7 +16,7 @@ public class AutoIntake extends TimedCommand {
         super(timeout);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.intake);
+        requires(Robot.intakeSubsystem);
         this.speed = speed;
     }
 
@@ -26,17 +26,17 @@ public class AutoIntake extends TimedCommand {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intake.setSpeed(speed);
+    	Robot.intakeSubsystem.setSpeed(speed);
     }
 
     // Called once after timeout
     protected void end() {
-    	Robot.intake.setSpeed(0);
+    	Robot.intakeSubsystem.setSpeed(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.intake.setSpeed(0);
+    	Robot.intakeSubsystem.setSpeed(0);
     }
 }

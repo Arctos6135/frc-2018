@@ -5,6 +5,7 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
+import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
@@ -35,6 +36,8 @@ public class VisionAuto extends InstantCommand {
         super();
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+        requires(Robot.visionSubsystem);
+        requires(Robot.drive);
         direction = switchDirection;
     }
 
@@ -42,8 +45,8 @@ public class VisionAuto extends InstantCommand {
     protected void initialize() {
     	double theta1, theta2, d;
     	try {
-			theta1 = Robot.getSwitchAngle();
-		} catch (Robot.VisionException e) {
+			theta1 = Robot.visionSubsystem.getSwitchAngle();
+		} catch (VisionSubsystem.VisionException e) {
 			(new PlaceCubeFromMiddle(direction)).start();
 			return;
 		}
@@ -52,8 +55,8 @@ public class VisionAuto extends InstantCommand {
     	moveForwardCommand.start();
     	while(!moveForwardCommand.isCompleted());
     	try {
-			theta2 = Robot.getSwitchAngle();
-		} catch (Robot.VisionException e) {
+			theta2 = Robot.visionSubsystem.getSwitchAngle();
+		} catch (VisionSubsystem.VisionException e) {
 			(new PlaceCubeFromMiddleBackup(direction, d)).start();
 			return;
 		}

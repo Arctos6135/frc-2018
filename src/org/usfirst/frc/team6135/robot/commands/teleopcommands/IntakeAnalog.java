@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * Handles the controlling of the clamp motors (controlled by LT and RT on the attachments
- * controller). The speed is based on the analog reading of the triggers; RT is intake,
- * LT is to reverse the intake. If both LT and RT are pressed, the intake will stop.
+ * controller). The speed is based on the analog reading of the triggers; RT is intakeSubsystem,
+ * LT is to reverse the intakeSubsystem. If both LT and RT are pressed, the intakeSubsystem will stop.
  * 
  * Called as a default command by ClampSubsystem.
  */
@@ -29,7 +29,7 @@ public class IntakeAnalog extends Command {
 		}
 	}
     public IntakeAnalog() {
-        requires(Robot.intake);
+        requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -41,15 +41,15 @@ public class IntakeAnalog extends Command {
     	final double ltVal = Math.abs(OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.LTRIGGER));
     	final double rtVal = Math.abs(OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.RTRIGGER));
     	if(ltVal <= DEADZONE && rtVal > DEADZONE) {
-    		Robot.intake.setSpeed(constrain(rtVal));
+    		Robot.intakeSubsystem.setSpeed(constrain(rtVal));
     	}
     	else if(ltVal > DEADZONE && rtVal <= DEADZONE) {
-    		//Set to negative of LT since here we want to reverse the intake
-    		Robot.intake.setSpeed(-constrain(ltVal));
+    		//Set to negative of LT since here we want to reverse the intakeSubsystem
+    		Robot.intakeSubsystem.setSpeed(-constrain(ltVal));
     	}
     	else {
     		//Driver messed up - Both LT and RT are pressed
-    		Robot.intake.setSpeed(0);
+    		Robot.intakeSubsystem.setSpeed(0);
     	}
     }
 
@@ -60,12 +60,12 @@ public class IntakeAnalog extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.intake.setSpeed(0);
+    	Robot.intakeSubsystem.setSpeed(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.intake.setSpeed(0);
+    	Robot.intakeSubsystem.setSpeed(0);
     }
 }

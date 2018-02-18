@@ -14,7 +14,7 @@ public class OperateIntake extends Command {
     public OperateIntake(double speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.intake);
+    	requires(Robot.intakeSubsystem);
     	this.speed = speed;
     	
     }
@@ -26,7 +26,7 @@ public class OperateIntake extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intake.setSpeed(this.speed);
+    	Robot.intakeSubsystem.setSpeed(this.speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -36,7 +36,7 @@ public class OperateIntake extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.intake.setSpeed(0);
+    	Robot.intakeSubsystem.setSpeed(0);
     }
 
     // Called when another command which requires one or more of the same

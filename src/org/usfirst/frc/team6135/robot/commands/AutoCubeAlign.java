@@ -2,6 +2,7 @@ package org.usfirst.frc.team6135.robot.commands;
 
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
+import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
@@ -21,8 +22,7 @@ public class AutoCubeAlign extends InstantCommand {
 
     // Called once when the command executes
     protected void initialize() {
-    	Robot.camera.setBrightness(100);
-    	Robot.camera.setExposureManual(20);
+    	Robot.visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
     	try {
 			Thread.sleep(500);
 		} catch (InterruptedException e1) {
@@ -31,16 +31,15 @@ public class AutoCubeAlign extends InstantCommand {
     	
     	double angleRaw;
     	try {
-    		angleRaw = Robot.getCubeAngle();
+    		angleRaw = Robot.visionSubsystem.getCubeAngle();
     	}
-    	catch(Robot.VisionException e) {
+    	catch(VisionSubsystem.VisionException e) {
     		return;
     	}
     	int angle = (int) (-Math.round(angleRaw));
     	(new AutoTurn(angle, speed)).start();
     	
-    	Robot.camera.setBrightness(Robot.cameraInitBrightness);
-		Robot.camera.setExposureAuto();
+    	Robot.visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
     }
 
 }
