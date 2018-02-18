@@ -82,6 +82,7 @@ public class Robot extends IterativeRobot {
 	public static PlaceCubeFromSideOffset placeCubeLeftSideOffset;
 	public static PlaceCubeFromSideOffset placeCubeRightSideOffset;
 	public static PlaceCubeSameSide placeCubeRightSide;
+	public static VisionAuto visionAuto;
 	
 
 	Command autonomousCommand;
@@ -171,16 +172,16 @@ public class Robot extends IterativeRobot {
 		}
 	}
 	
-	public static class ImageException extends Exception {
-		public ImageException(String message) {
+	public static class VisionException extends Exception {
+		public VisionException(String message) {
 			super(message);
 		}
-		public ImageException() {
+		public VisionException() {
 			super();
 		}
 	}
 	
-	public static double getSwitchAngle() throws ImageException {
+	public static double getSwitchAngle() throws VisionException {
 		Mat originalImg = new Mat();
 		Mat hsvImg = new Mat();
 		Mat filteredImg1 = new Mat();
@@ -230,7 +231,7 @@ public class Robot extends IterativeRobot {
 		
 		//If the filter did not detect any pixels skip the next part
 		if(noDetection)
-			throw new ImageException("Alliance colour not detected");
+			throw new VisionException("Alliance colour not detected");
 		//Do a flood fill
 		int[][] fillRef = new int[filteredImg.width()][filteredImg.height()];
 		HashMap<Integer, Integer> occurrences = new HashMap<Integer, Integer>();
@@ -257,6 +258,71 @@ public class Robot extends IterativeRobot {
 		
 		return angle;
 	}
+	public static double getCubeAngle() throws VisionException {
+		Mat originalImg = new Mat();
+		Mat hsvImg = new Mat();
+		Mat filteredImg = new Mat();
+		Mat buf = new Mat();
+		
+		//Obtain the frame from the camera (1 second timeout)
+		sink.grabFrame(originalImg, 1);
+		Imgproc.medianBlur(originalImg, buf, 3);
+		//Convert the colour space from BGR to HSV
+		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
+		//Filter out the colours
+		Core.inRange(hsvImg, cubeLowerBound, cubeUpperBound, filteredImg);
+
+		
+		//Process the image
+		byte[] imgData = new byte[(int) (filteredImg.total() * filteredImg.channels())];
+		filteredImg.get(0, 0, imgData);
+		byte[] processed = new byte[imgData.length];
+		ByteArrayImg img = new ByteArrayImg(imgData, filteredImg.width(), filteredImg.height());
+		ByteArrayImg imgOut = new ByteArrayImg(processed, filteredImg.width(), filteredImg.height());
+		//Expand each pixel to fill in possible gaps in the shape
+		boolean noDetection = true;
+		for(int y = 0; y < filteredImg.height(); y ++) {
+			for(int x = 0; x < filteredImg.width(); x ++) {
+				if(img.getPixelByte(x, y) != 0x00) {
+					noDetection = false;
+					for(int i = 0; i < expandLocationsX.length; i ++) {
+						imgOut.setPixelByte(x + expandLocationsX[i], y + expandLocationsY[i], 0xFF);
+					}
+				}
+			}
+		}
+		
+		//Stop referencing the byte array to free up precious RAM
+		img = null;
+		imgData = null;
+		if(noDetection) {
+			throw new VisionException("Cube not detected");
+		}
+		
+		int[][] fillRef = new int[filteredImg.width()][filteredImg.height()];
+		HashMap<Integer, Integer> occurrences = new HashMap<Integer, Integer>();
+		HashMap<Integer, ImgPoint> centers = new HashMap<Integer, ImgPoint>();
+		int sectionId = 1;
+		for(int y = 0; y < filteredImg.height(); y ++) {
+			for(int x = 0; x < filteredImg.width(); x ++) {
+				if(imgOut.getPixelByte(x, y) != 0x00 && fillRef[x][y] == 0) {
+					visionFloodFill(sectionId ++, x, y, fillRef, imgOut, occurrences, centers);
+				}
+			}
+		}
+		
+		//Find out what the largest section is
+		//It is safe to assume that at least one section exists since this code won't run if there are no white pixels
+		int maxSectionId = 1;
+		for(int i = 1; i < sectionId; i ++) {
+			if(occurrences.get(i) > occurrences.get(maxSectionId)) {
+				maxSectionId = i;
+			}
+		}
+		ImgPoint center = centers.get(maxSectionId);
+		double angle = Math.atan((center.x - RobotMap.CAMERA_CENTER) / RobotMap.CAMERA_FOCAL_LEN);
+		return Math.toDegrees(angle);
+	}
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -281,12 +347,14 @@ public class Robot extends IterativeRobot {
 		placeCubeRightSide = new PlaceCubeSameSide();
 		placeCubeLeftSideOffset = new PlaceCubeFromSideOffset(PlaceCubeFromSideOffset.DIRECTION_LEFT);
 		placeCubeRightSideOffset = new PlaceCubeFromSideOffset(PlaceCubeFromSideOffset.DIRECTION_RIGHT);
+		visionAuto = new VisionAuto(VisionAuto.DIRECTION_LEFT);
 		chooser.addDefault("Drive Past Baseline", new DrivePastBaseLine());
 		chooser.addObject("Place Cube: Robot is on the left (Robot lines up with switch)", placeCubeLeftSide);
 		chooser.addObject("Place Cube: Robot is on the right (Robot lines up with switch)", placeCubeRightSide);
 		chooser.addObject("Place Cube: Robot is on the left (Robot is to the side of switch)", placeCubeLeftSideOffset);
 		chooser.addObject("Place Cube: Robot is on the right (Robot is to the side of switch)", placeCubeRightSideOffset);
 		chooser.addObject("Place Cube: Robot is in the middle", placeCubeFromMiddle);
+		chooser.addObject("Place Cube With Vision: Robot is in the middle", visionAuto);
 		SmartDashboard.putData("Auto mode", chooser);
 		
 		station = DriverStation.getInstance().getLocation();
@@ -300,55 +368,6 @@ public class Robot extends IterativeRobot {
         camera.setExposureManual(20);
         camera.setFPS(8);
         sink = CameraServer.getInstance().getVideo();
-        
-        (new Thread(new Runnable() {
-        	@Override
-        	public void run() {
-        		Mat originalImg = new Mat();
-        		Mat hsvImg = new Mat();
-        		Mat filteredImg1 = new Mat();
-        		Mat filteredImg2 = new Mat();
-        		Mat filteredImg = new Mat();
-        		Mat buf = new Mat();
-        		CvSource output = CameraServer.getInstance().putVideo("Cube Filter", RobotMap.CAMERA_WIDTH, RobotMap.CAMERA_HEIGHT);
-        		while(!Thread.interrupted()) {
-	        		//Obtain the frame from the camera (1 second timeout)
-	        		sink.grabFrame(originalImg, 1);
-	        		Imgproc.medianBlur(originalImg, buf, 3);
-	        		//Convert the colour space from BGR to HSV
-	        		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
-	        		//Filter out the colours
-	        		Core.inRange(hsvImg, cubeLowerBound, cubeUpperBound, filteredImg);
-
-	        		
-	        		//Process the image
-	        		byte[] imgData = new byte[(int) (filteredImg.total() * filteredImg.channels())];
-	        		filteredImg.get(0, 0, imgData);
-	        		byte[] processed = new byte[imgData.length];
-	        		ByteArrayImg img = new ByteArrayImg(imgData, filteredImg.width(), filteredImg.height());
-	        		ByteArrayImg imgOut = new ByteArrayImg(processed, filteredImg.width(), filteredImg.height());
-	        		//Expand each pixel to fill in possible gaps in the shape
-	        		//boolean noDetection = true;
-	        		for(int y = 0; y < filteredImg.height(); y ++) {
-	        			for(int x = 0; x < filteredImg.width(); x ++) {
-	        				if(img.getPixelByte(x, y) != 0x00) {
-	        					//noDetection = false;
-	        					for(int i = 0; i < expandLocationsX.length; i ++) {
-	        						imgOut.setPixelByte(x + expandLocationsX[i], y + expandLocationsY[i], 0xFF);
-	        					}
-	        				}
-	        			}
-	        		}
-	        		
-	        		//Stop referencing the byte array to free up precious RAM
-	        		img = null;
-	        		imgData = null;
-	        		Mat outputMat = new Mat(filteredImg.height(), filteredImg.width(), filteredImg.type());
-	        		outputMat.put(0, 0, imgOut.getBytes());
-	        		output.putFrame(outputMat);
-        		}
-        	}
-        })).start();
 	}
 
 	/**
@@ -403,6 +422,9 @@ public class Robot extends IterativeRobot {
 				else if(autonomousCommand == placeCubeRightSideOffset) {
 					(new DrivePastBaseLine()).start();
 				}
+				else if(autonomousCommand == visionAuto) {
+					(new VisionAuto(VisionAuto.DIRECTION_LEFT)).start();
+				}
 				else {
 					autonomousCommand.start();
 				}
@@ -422,6 +444,9 @@ public class Robot extends IterativeRobot {
 				}
 				else if(autonomousCommand == placeCubeLeftSideOffset) {
 					(new DrivePastBaseLine()).start();
+				}
+				else if(autonomousCommand == visionAuto) {
+					(new VisionAuto(VisionAuto.DIRECTION_RIGHT)).start();
 				}
 				else {
 					autonomousCommand.start();

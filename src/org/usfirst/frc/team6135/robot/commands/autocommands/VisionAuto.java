@@ -43,7 +43,7 @@ public class VisionAuto extends InstantCommand {
     	double theta1, theta2, d;
     	try {
 			theta1 = Robot.getSwitchAngle();
-		} catch (Robot.ImageException e) {
+		} catch (Robot.VisionException e) {
 			(new PlaceCubeFromMiddle(direction)).start();
 			return;
 		}
@@ -53,7 +53,7 @@ public class VisionAuto extends InstantCommand {
     	while(!moveForwardCommand.isCompleted());
     	try {
 			theta2 = Robot.getSwitchAngle();
-		} catch (Robot.ImageException e) {
+		} catch (Robot.VisionException e) {
 			(new PlaceCubeFromMiddleBackup(direction, d)).start();
 			return;
 		}

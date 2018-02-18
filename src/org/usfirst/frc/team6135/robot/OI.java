@@ -1,5 +1,6 @@
 package org.usfirst.frc.team6135.robot;
 
+import org.usfirst.frc.team6135.robot.commands.AutoCubeAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoputils.GearShift;
 
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
-	//// joystick.
+	// joystick.
 	// You create one by telling it which joystick it's on and which button
 	// number it is.
 	// Joystick stick = new Joystick(port);
@@ -40,12 +41,13 @@ public class OI {
 	// button.whenReleased(new ExampleCommand());
 	
 	/*
-	 * CONTROLS - Implemented and planned:
+	 * CONTROLS
 	 * Drive:
 	 * 	Left Analog Stick: Forwards/Backwards
 	 * 	Right Analog Stick: Left/Right
 	 * 	Left Bumper: Shift gear to slower configuration
 	 * 	Right Bumper: Shift gear to faster configuration
+	 * 	Y Button: Auto Power Cube align
 	 * Attachments:
 	 * 	Left Analog Stick: Elevator (Max. speed = 50%)
 	 * 	Right Analog Stick: Tilt (Max. speed = 30%, up/down)
@@ -59,17 +61,22 @@ public class OI {
 	public static JoystickButton gearShiftFast;
 	public static JoystickButton gearShiftSlow;
 	
+	public static JoystickButton autoCubeAlign;
+	
 	public OI() {
 		//Port 0 is on the right of the programming laptop and port 1 is on the left.
 		driveController = new Joystick(0);
 		attachmentsController = new Joystick(1);
 		
 		//Fast gear = right bumper
-		gearShiftFast = new JoystickButton(attachmentsController, RobotMap.ControllerMap.RBUMPER);
-		gearShiftSlow = new JoystickButton(attachmentsController, RobotMap.ControllerMap.LBUMPER);
+		gearShiftFast = new JoystickButton(driveController, RobotMap.ControllerMap.RBUMPER);
+		gearShiftSlow = new JoystickButton(driveController, RobotMap.ControllerMap.LBUMPER);
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
 		gearShiftFast.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));
 		gearShiftSlow.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));
+		
+		autoCubeAlign = new JoystickButton(driveController, RobotMap.ControllerMap.BUTTON_Y);
+		autoCubeAlign.whenPressed(new AutoCubeAlign(RobotMap.Speeds.AUTO_SPEED));
 	}
 }
