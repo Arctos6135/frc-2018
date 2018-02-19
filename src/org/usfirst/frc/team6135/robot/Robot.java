@@ -73,7 +73,7 @@ public class Robot extends IterativeRobot {
         visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
         
         //Vision test code
-        (new Thread(new Runnable() {
+        /*(new Thread(new Runnable() {
         	@Override
         	public void run() {
         		while(!Thread.interrupted()) {
@@ -99,7 +99,7 @@ public class Robot extends IterativeRobot {
 					}
         		}
         	}
-        })).start();
+        })).start();*/
         
         //chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
 		//chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));

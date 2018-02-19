@@ -65,9 +65,11 @@ public class VisionSubsystem extends Subsystem {
 	}
 	public static class ImgPoint {
 		public int x, y;
+		int hash;
 		public ImgPoint(int x, int y) {
 			this.x = x;
 			this.y = y;
+			hash = (new Integer(this.x)).hashCode() * (new Integer(this.y)).hashCode();
 		}
 		@Override
 		public boolean equals(Object anotherObj) {
@@ -76,6 +78,10 @@ public class VisionSubsystem extends Subsystem {
 			ImgPoint otherPoint = (ImgPoint) anotherObj;
 			boolean result = this.x == otherPoint.x && this.y == otherPoint.y;
 			return result;
+		}
+		@Override
+		public int hashCode() {
+			return hash;
 		}
 	}
 	
@@ -159,7 +165,7 @@ public class VisionSubsystem extends Subsystem {
 					}
 					
 				}
-				SmartDashboard.putNumber("Queue length", stack.size());
+				//SmartDashboard.putNumber("Queue length", stack.size());
 			}
 			occurrences.put(id, pixels);
 			centers.put(id, new ImgPoint((maxX+minX)/2, (maxY+minY)/2));
@@ -335,7 +341,7 @@ public class VisionSubsystem extends Subsystem {
 		}
 		//Free up some ram
 		Mat processedImg = imgOut.toMat(filteredImg.type());
-		source.putFrame(processedImg);
+		//source.putFrame(processedImg);
 		imgOut = null;
 		img = null;
 		imgData = null;
