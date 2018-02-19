@@ -51,6 +51,7 @@ public class OI {
 	 * 	Right Bumper: Shift gear to faster configuration
 	 * 	Y Button: Auto Power Cube align
 	 * 	B Button: Cancel auto align (when processing takes too long)
+	 * 	XBOX Button: Enable rocket booster
 	 * Attachments:
 	 * 	Left Analog Stick: Elevator (Max. speed = 50%)
 	 * 	Right Analog Stick: Tilt Wrist (Max. speed = 30%, up/down)

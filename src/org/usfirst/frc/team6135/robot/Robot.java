@@ -101,6 +101,20 @@ public class Robot extends IterativeRobot {
         	}
         })).start();*/
         
+        (new Thread(new Runnable() {
+        	@Override
+        	public void run() {
+        		SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
+        		SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
+        		try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
+        })).start();
+        
         //chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
 		//chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
@@ -109,7 +123,8 @@ public class Robot extends IterativeRobot {
 		placeCubeLeftSideOffset = new PlaceCubeFromSideOffset(PlaceCubeFromSideOffset.DIRECTION_LEFT);
 		placeCubeRightSideOffset = new PlaceCubeFromSideOffset(PlaceCubeFromSideOffset.DIRECTION_RIGHT);
 		visionAuto = new VisionAuto(VisionAuto.DIRECTION_LEFT);
-		chooser.addDefault("Drive Past Baseline", new DrivePastBaseLine());
+		chooser.addDefault("No Auto", null);
+		chooser.addObject("Drive Past Baseline", new DrivePastBaseLine());
 		chooser.addObject("Place Cube: Robot is on the left (Robot lines up with switch)", placeCubeLeftSide);
 		chooser.addObject("Place Cube: Robot is on the right (Robot lines up with switch)", placeCubeRightSide);
 		chooser.addObject("Place Cube: Robot is on the left (Robot is to the side of switch)", placeCubeLeftSideOffset);
@@ -151,58 +166,59 @@ public class Robot extends IterativeRobot {
 		//Retrieve the selected auto command
 		autonomousCommand = chooser.getSelected();
 		
-		gameData = DriverStation.getInstance().getGameSpecificMessage();//update wpilib
-		if(gameData.length() > 0){
-			//Depending on which side the alliance switch is on, some commands need to change
-			if(gameData.charAt(0) == 'L'){
-				if(autonomousCommand.equals(placeCubeFromMiddle)) {
-					(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT)).start();
-				}
-				//Use == to check if they're the exact same object
-				else if(autonomousCommand == placeCubeLeftSide) {
-					autonomousCommand.start();
-				}
-				else if(autonomousCommand == placeCubeRightSide) {
-					(new DrivePastBaseLineOffset(DrivePastBaseLineOffset.DIRECTION_LEFT)).start();
-				}
-				else if(autonomousCommand == placeCubeLeftSideOffset) {
-					autonomousCommand.start();
-				}
-				else if(autonomousCommand == placeCubeRightSideOffset) {
-					(new DrivePastBaseLine()).start();
-				}
-				else if(autonomousCommand == visionAuto) {
-					(new VisionAuto(VisionAuto.DIRECTION_LEFT)).start();
-				}
+		if(autonomousCommand != null) {
+			gameData = DriverStation.getInstance().getGameSpecificMessage().toUpperCase();
+			if(gameData.length() > 0){
+				//Depending on which side the alliance switch is on, some commands need to change
+				if(gameData.charAt(0) == 'L'){
+					if(autonomousCommand.equals(placeCubeFromMiddle)) {
+						(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT)).start();
+					}
+					//Use == to check if they're the exact same object
+					else if(autonomousCommand == placeCubeLeftSide) {
+						autonomousCommand.start();
+					}
+					else if(autonomousCommand == placeCubeRightSide) {
+						(new DrivePastBaseLineOffset(DrivePastBaseLineOffset.DIRECTION_LEFT)).start();
+					}
+					else if(autonomousCommand == placeCubeLeftSideOffset) {
+						autonomousCommand.start();
+					}
+					else if(autonomousCommand == placeCubeRightSideOffset) {
+						(new DrivePastBaseLine()).start();
+					}
+					else if(autonomousCommand == visionAuto) {
+						(new VisionAuto(VisionAuto.DIRECTION_LEFT)).start();
+					}
+					else {
+						autonomousCommand.start();
+					}
+				} 
 				else {
-					autonomousCommand.start();
-				}
-			} 
-			else {
-				if(autonomousCommand.equals(placeCubeFromMiddle)) {
-					(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_RIGHT)).start();
-				}
-				else if(autonomousCommand == placeCubeRightSide) {
-					autonomousCommand.start();
-				}
-				else if(autonomousCommand == placeCubeLeftSide) {
-					(new DrivePastBaseLineOffset(DrivePastBaseLineOffset.DIRECTION_RIGHT)).start();
-				}
-				else if(autonomousCommand == placeCubeRightSideOffset) {
-					autonomousCommand.start();
-				}
-				else if(autonomousCommand == placeCubeLeftSideOffset) {
-					(new DrivePastBaseLine()).start();
-				}
-				else if(autonomousCommand == visionAuto) {
-					(new VisionAuto(VisionAuto.DIRECTION_RIGHT)).start();
-				}
-				else {
-					autonomousCommand.start();
+					if(autonomousCommand.equals(placeCubeFromMiddle)) {
+						(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_RIGHT)).start();
+					}
+					else if(autonomousCommand == placeCubeRightSide) {
+						autonomousCommand.start();
+					}
+					else if(autonomousCommand == placeCubeLeftSide) {
+						(new DrivePastBaseLineOffset(DrivePastBaseLineOffset.DIRECTION_RIGHT)).start();
+					}
+					else if(autonomousCommand == placeCubeRightSideOffset) {
+						autonomousCommand.start();
+					}
+					else if(autonomousCommand == placeCubeLeftSideOffset) {
+						(new DrivePastBaseLine()).start();
+					}
+					else if(autonomousCommand == visionAuto) {
+						(new VisionAuto(VisionAuto.DIRECTION_RIGHT)).start();
+					}
+					else {
+						autonomousCommand.start();
+					}
 				}
 			}
 		}
-		
 		
 
 		/*

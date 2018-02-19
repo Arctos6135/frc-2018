@@ -104,8 +104,8 @@ public class RobotMap {
     
     public static DoubleSolenoid gearshiftSolenoid = new DoubleSolenoid(0, 1);
     
-    public static VictorSP elevatorVictor = new VictorSP(3);
-    public static VictorSP tiltVictor = new VictorSP(4);
+    public static VictorSP elevatorVictor = new VictorSP(7);
+    public static VictorSP tiltVictor = new VictorSP(8);
     public static VictorSP intakeLeft = new VictorSP(5);
     public static VictorSP intakeRight = new VictorSP(6);
     
