@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *	AutoTurn is the recommended version. All constructors are compatible.
  *	For more information see the AutoTurn command
  */
+@Deprecated
 public class AutoTurnWithEncoders extends Command {
 	
 	public static final double ROBOT_DIAM = 23.25; //For turning, INCHES

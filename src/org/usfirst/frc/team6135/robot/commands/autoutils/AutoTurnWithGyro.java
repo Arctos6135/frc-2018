@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *	A positive value means counter-clockwise (left) turning. This is done to keep consistency with AutoTurnWithEncoders.
  *	Note that the brake/coast mechanics of the motor controllers may reduce precision.
  */
+@Deprecated
 public class AutoTurnWithGyro extends Command {
 
 	final int degrees;

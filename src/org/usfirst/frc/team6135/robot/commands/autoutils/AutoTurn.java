@@ -17,7 +17,8 @@ public class AutoTurn extends Command {
 	public int degrees;
 	public double leftDistance;
 	public double rightDistance;
-	public double speed;
+	public double leftSpeed;
+	public double rightSpeed;
 	
 	//Degrees follow the unit circle
 	//i.e. Positive means counter-clockwise and negative means clockwise
@@ -26,17 +27,19 @@ public class AutoTurn extends Command {
         // eg. requires(chassis);
     	requires(Robot.drive);
     	this.degrees = degrees;
-    	this.speed = speed;
+    	leftSpeed = degrees > 0 ? -speed : speed;
+    	rightSpeed = degrees > 0 ? speed : -speed;
     	leftDistance = -DISTANCE_PER_DEGREE*degrees;
     	rightDistance = DISTANCE_PER_DEGREE*degrees;
     }
-    
+    @Deprecated
     public AutoTurn(double leftDistance, double rightDistance, double speed){
     	//Assume that leftDistance is negative
     	requires(Robot.drive);
     	this.leftDistance = leftDistance;
     	this.rightDistance = rightDistance;
-    	this.speed = speed;
+    	this.leftSpeed = leftDistance > 0 ? speed : -speed;
+    	this.rightSpeed = rightDistance > 0 ? speed : -speed;
     }
     
     // Called just before this Command runs the first time
@@ -47,7 +50,7 @@ public class AutoTurn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drive.setMotorsVBus(-speed, speed);
+    	Robot.drive.setMotorsVBus(leftSpeed, rightSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
