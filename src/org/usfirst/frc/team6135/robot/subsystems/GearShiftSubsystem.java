@@ -7,7 +7,7 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
- *
+ *	Drive gear shifting subsystem
  */
 public class GearShiftSubsystem extends Subsystem {
 

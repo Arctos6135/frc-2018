@@ -7,16 +7,16 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ *	Handles the teleop control of the wrist
  */
-public class TiltAnalog extends Command {
+public class WristAnalog extends Command {
 	
 	static final double DEADZONE = 0.15;
 
-    public TiltAnalog() {
+    public WristAnalog() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.tiltSubsystem);
+    	requires(Robot.wristSubsystem);
     }
 
     // Called just before this Command runs the first time

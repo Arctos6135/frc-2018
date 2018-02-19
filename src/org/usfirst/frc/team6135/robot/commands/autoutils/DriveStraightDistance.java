@@ -8,7 +8,7 @@ import static org.usfirst.frc.team6135.robot.RobotMap.*;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ *	Drives a straight distance forward. The speed of the motors are constantly adjusted to ensure precision.
  */
 public class DriveStraightDistance extends Command {
 

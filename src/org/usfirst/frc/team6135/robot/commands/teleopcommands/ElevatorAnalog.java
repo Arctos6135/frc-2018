@@ -7,7 +7,7 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ *	Handles the teleop control of the elevator
  */
 public class ElevatorAnalog extends Command {
 	

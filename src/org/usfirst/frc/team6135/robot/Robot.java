@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
 	public static IntakeSubsystem intakeSubsystem;
 	public static GearShiftSubsystem gearShiftSubsystem;
 	public static ElevatorSubsystem elevatorSubsystem;
-	public static TiltSubsystem tiltSubsystem;
+	public static WristSubsystem wristSubsystem;
 	public static VisionSubsystem visionSubsystem;
 	
 	public static Alliance color;
@@ -60,7 +60,7 @@ public class Robot extends IterativeRobot {
 		intakeSubsystem = new IntakeSubsystem();
 		gearShiftSubsystem = new GearShiftSubsystem();
 		elevatorSubsystem = new ElevatorSubsystem();
-		tiltSubsystem = new TiltSubsystem();
+		wristSubsystem = new WristSubsystem();
 		oi = new OI();
 		
 		RobotMap.gyro.calibrate();

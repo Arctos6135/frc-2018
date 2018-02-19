@@ -6,7 +6,7 @@ import org.usfirst.frc.team6135.robot.commands.teleopcommands.IntakeAnalog;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ *	Power Cube Intake subsystem
  */
 public class IntakeSubsystem extends Subsystem {
 

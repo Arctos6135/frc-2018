@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
- *
+ *	Cancels a command.
  */
 public class CancelOperation extends InstantCommand {
 
