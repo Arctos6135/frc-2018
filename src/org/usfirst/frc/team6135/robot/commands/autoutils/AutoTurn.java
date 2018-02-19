@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutoTurn extends Command {
 	
-	public static final double ROBOT_DIAM = 23.75; //For turning, INCHES
+	public static final double ROBOT_DIAM = 23.25; //For turning, INCHES
 	public static final double ROBOT_RADIUS = ROBOT_DIAM/2;
 	public static final double DISTANCE_PER_DEGREE = (ROBOT_DIAM*Math.PI)/360;
 	

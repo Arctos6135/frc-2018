@@ -53,7 +53,7 @@ public class OI {
 	 * 	B Button: Cancel auto align (when processing takes too long)
 	 * Attachments:
 	 * 	Left Analog Stick: Elevator (Max. speed = 50%)
-	 * 	Right Analog Stick: Tilt (Max. speed = 30%, up/down)
+	 * 	Right Analog Stick: Tilt Wrist (Max. speed = 30%, up/down)
 	 * 	Left Trigger: Intake Out (Analog)
 	 * 	Right Trigger: Intake In (Analog)
 	 */
