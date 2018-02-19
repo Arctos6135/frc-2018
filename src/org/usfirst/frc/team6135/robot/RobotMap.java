@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -71,7 +72,7 @@ public class RobotMap {
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */
 	public static class Speeds {
-		public static final double ELEVATOR_SPEED = 0.5;
+		public static final double ELEVATOR_SPEED = 0.75;
 		public static final double TILT_SPEED = 0.3;
 		public static final double AUTO_SPEED = 0.6;
 		public static final double AUTO_INTAKE_SPEED = 0.3;
@@ -112,8 +113,12 @@ public class RobotMap {
     public static Encoder rightEncoder = new Encoder(2, 3, false, EncodingType.k4X);
     public static Encoder leftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
     
+    public static DigitalInput elevatorTopSwitch = new DigitalInput(4);
+    public static DigitalInput elevatorBottomSwitch = new DigitalInput(5);
+    
     //This is the gyroscope that is mounted in the SPI port of the roboRIO
     //Use the ADXRS450_Gyro class instead of AnalogGyro
+    //NOT USED - The gyro is not positioned correctly on the robot and thus cannot be used
     public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 	
 	public static void init() {

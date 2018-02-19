@@ -22,8 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
-	//TODO Add switch limiter to elevator
 	
 	//public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
@@ -111,7 +109,6 @@ public class Robot extends IterativeRobot {
         		try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
         	}

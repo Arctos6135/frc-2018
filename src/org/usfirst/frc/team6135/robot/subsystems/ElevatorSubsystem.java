@@ -16,6 +16,12 @@ public class ElevatorSubsystem extends Subsystem {
 	public void setSpeed(double speed) {
 		RobotMap.elevatorVictor.set(speed);
 	}
+	public boolean topReached() {
+		return RobotMap.elevatorTopSwitch.get();
+	}
+	public boolean bottomReached() {
+		return RobotMap.elevatorBottomSwitch.get();
+	}
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.

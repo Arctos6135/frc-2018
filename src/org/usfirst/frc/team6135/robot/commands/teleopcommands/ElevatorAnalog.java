@@ -27,7 +27,14 @@ public class ElevatorAnalog extends Command {
     protected void execute() {
     	final double joystickVal = OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.LSTICK_Y_AXIS);
     	if(Math.abs(joystickVal) > DEADZONE) {
-    		RobotMap.elevatorVictor.set(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
+    		//Check if we are at the boundary
+    		if((joystickVal > 0 && !Robot.elevatorSubsystem.topReached()) ||
+    				(joystickVal < 0 && !Robot.elevatorSubsystem.bottomReached())) {
+    			RobotMap.elevatorVictor.set(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
+    		}
+    		else {
+    			RobotMap.elevatorVictor.set(0);
+    		}
     	}
     	else {
     		RobotMap.elevatorVictor.set(0);
