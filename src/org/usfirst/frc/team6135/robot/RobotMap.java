@@ -74,6 +74,7 @@ public class RobotMap {
 		public static final double ELEVATOR_SPEED = 0.5;
 		public static final double TILT_SPEED = 0.3;
 		public static final double AUTO_SPEED = 0.6;
+		public static final double AUTO_INTAKE_SPEED = 0.3;
 		//This value is not final since there might be commands that change it
 		public static double DRIVE_SPEED = 1.0;
 	}

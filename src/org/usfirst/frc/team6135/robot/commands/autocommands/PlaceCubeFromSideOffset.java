@@ -48,6 +48,6 @@ public class PlaceCubeFromSideOffset extends CommandGroup {
     	addSequential(new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_CENTRE_DISTANCE, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_EDGE_OFFSET, RobotMap.Speeds.AUTO_SPEED));
-    	addSequential(new AutoIntake(1.5, -RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }
