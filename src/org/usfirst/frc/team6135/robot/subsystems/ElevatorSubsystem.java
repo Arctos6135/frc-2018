@@ -6,7 +6,7 @@ import org.usfirst.frc.team6135.robot.commands.teleopcommands.ElevatorAnalog;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ *	Elevator subsystem
  */
 public class ElevatorSubsystem extends Subsystem {
 

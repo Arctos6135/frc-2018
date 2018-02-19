@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
- *
+ *	Uses the pneumatics to shift between fast and slow drive gear configurations
  */
 public class GearShift extends InstantCommand {
 	

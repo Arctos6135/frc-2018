@@ -5,7 +5,7 @@ import org.usfirst.frc.team6135.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ *	Runs the intake.
  */
 public class OperateIntake extends Command {
 

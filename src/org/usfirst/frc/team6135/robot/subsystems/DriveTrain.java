@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ *	Subsystem for the driving of the robot
  */
 public class DriveTrain extends Subsystem {
 

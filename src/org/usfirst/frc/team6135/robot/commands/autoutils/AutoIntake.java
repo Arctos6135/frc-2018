@@ -4,7 +4,7 @@ import org.usfirst.frc.team6135.robot.Robot;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
- *
+ *	Runs the intake for a set period of time
  */
 public class AutoIntake extends TimedCommand {
 

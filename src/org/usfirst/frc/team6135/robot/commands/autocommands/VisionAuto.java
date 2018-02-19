@@ -77,7 +77,7 @@ public class VisionAuto extends InstantCommand {
     	moveForwardCommand = new DriveStraightDistance(yDist, RobotMap.Speeds.AUTO_SPEED);
     	moveForwardCommand.start();
     	while(!moveForwardCommand.isCompleted());
-    	Command dropCommand = new AutoIntake(1.5, -RobotMap.Speeds.AUTO_SPEED);
+    	Command dropCommand = new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED);
     	dropCommand.start();
     	while(!dropCommand.isCompleted());
     }

@@ -7,11 +7,11 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Handles the controlling of the clamp motors (controlled by LT and RT on the attachments
- * controller). The speed is based on the analog reading of the triggers; RT is intakeSubsystem,
- * LT is to reverse the intakeSubsystem. If both LT and RT are pressed, the intakeSubsystem will stop.
+ * Handles the controlling of the intake motors (controlled by LT and RT on the attachments
+ * controller). The speed is based on the analog reading of the triggers; RT is to intake,
+ * LT is to reverse the intake. If both LT and RT are pressed, the intake will stop.
  * 
- * Called as a default command by ClampSubsystem.
+ * Called as a default command by IntakeSubsystem.
  */
 public class IntakeAnalog extends Command {
 
