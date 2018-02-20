@@ -65,11 +65,11 @@ public class VisionSubsystem extends Subsystem {
 	}
 	public static class ImgPoint {
 		public int x, y;
-		int hash;
+		//int hash;
 		public ImgPoint(int x, int y) {
 			this.x = x;
 			this.y = y;
-			hash = (new Integer(this.x)).hashCode() * (new Integer(this.y)).hashCode();
+			//hash = (new Integer(this.x)).hashCode() * (new Integer(this.y)).hashCode();
 		}
 		@Override
 		public boolean equals(Object anotherObj) {
@@ -79,10 +79,10 @@ public class VisionSubsystem extends Subsystem {
 			boolean result = this.x == otherPoint.x && this.y == otherPoint.y;
 			return result;
 		}
-		@Override
-		public int hashCode() {
-			return hash;
-		}
+		//@Override
+		//public int hashCode() {
+			//return hash;
+		//}
 	}
 	
 	 public static enum Mode {
