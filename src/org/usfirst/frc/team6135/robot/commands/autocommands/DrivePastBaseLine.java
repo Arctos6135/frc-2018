@@ -1,7 +1,7 @@
 package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
+import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -30,6 +30,6 @@ public class DrivePastBaseLine extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightDistance(RobotMap.ArenaDimensions.BASELINE_DISTANCE, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.BASELINE_DISTANCE, RobotMap.Speeds.AUTO_SPEED));
     }
 }

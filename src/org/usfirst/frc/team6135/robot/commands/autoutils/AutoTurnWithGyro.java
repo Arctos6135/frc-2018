@@ -6,11 +6,11 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
+ * 	UNUSED
  *	Turns the robot a certain amount with a certain speed
  *	A positive value means counter-clockwise (left) turning. This is done to keep consistency with AutoTurnWithEncoders.
  *	Note that the brake/coast mechanics of the motor controllers may reduce precision.
  */
-@Deprecated
 public class AutoTurnWithGyro extends Command {
 
 	final int degrees;

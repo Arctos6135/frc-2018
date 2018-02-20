@@ -27,10 +27,10 @@ public class WristAnalog extends Command {
     protected void execute() {
     	final double joystickVal = OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.RSTICK_Y_AXIS);
     	if(Math.abs(joystickVal) > DEADZONE) {
-    		RobotMap.tiltVictor.set(RobotMap.Speeds.TILT_SPEED * joystickVal);
+    		RobotMap.wristVictor.set(RobotMap.Speeds.TILT_SPEED * joystickVal);
     	}
     	else {
-    		RobotMap.tiltVictor.set(0);
+    		RobotMap.wristVictor.set(0);
     	}
     }
 
@@ -41,12 +41,12 @@ public class WristAnalog extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	RobotMap.tiltVictor.set(0);
+    	RobotMap.wristVictor.set(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	RobotMap.tiltVictor.set(0);
+    	RobotMap.wristVictor.set(0);
     }
 }

@@ -14,7 +14,7 @@ public class WristSubsystem extends Subsystem {
     // here. Call these from Commands.
 
 	public void setSpeed(double speed) {
-		RobotMap.tiltVictor.set(speed);
+		RobotMap.wristVictor.set(speed);
 	}
 	
     public void initDefaultCommand() {

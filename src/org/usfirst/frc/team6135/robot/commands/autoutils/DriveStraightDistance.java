@@ -9,21 +9,21 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *	Drives a straight distance forward. The speed of the motors are constantly adjusted to ensure precision.
+ *	Use DriveStraightDistanceEx if possible, for it is more accurate and less error-prone.
  */
+@Deprecated
 public class DriveStraightDistance extends Command {
 
-	private double distance;
-	//private double speed;
-	private double leftSpeed;
-	private double rightSpeed;
-	private double adjustValue = 0.05;
+	protected double distance;
+	protected double leftSpeed;
+	protected double rightSpeed;
+	private final double adjustValue = 0.05;
 	
     public DriveStraightDistance(double distance, double speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
     	this.distance = distance;
-    	//this.speed = speed;
     	leftSpeed = speed;
     	rightSpeed = speed;
     }

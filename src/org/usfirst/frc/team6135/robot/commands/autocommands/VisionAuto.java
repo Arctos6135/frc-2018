@@ -4,7 +4,7 @@ import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
-import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
+import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -50,7 +50,7 @@ public class VisionAuto extends InstantCommand {
 			(new PlaceCubeFromMiddle(direction)).start();
 			return;
 		}
-    	Command moveForwardCommand = new DriveStraightDistance(RobotMap.ArenaDimensions.VISION_SAMPLING_DISTANCE, RobotMap.Speeds.AUTO_SPEED);
+    	Command moveForwardCommand = new DriveStraightDistanceEx(RobotMap.ArenaDimensions.VISION_SAMPLING_DISTANCE, RobotMap.Speeds.AUTO_SPEED);
     	d = RobotMap.ArenaDimensions.VISION_SAMPLING_DISTANCE;
     	moveForwardCommand.start();
     	while(!moveForwardCommand.isCompleted());
@@ -68,13 +68,13 @@ public class VisionAuto extends InstantCommand {
     	Command turnCommand = new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_SPEED);
     	turnCommand.start();
     	while(!turnCommand.isCompleted());
-    	moveForwardCommand = new DriveStraightDistance(xDist, RobotMap.Speeds.AUTO_SPEED);
+    	moveForwardCommand = new DriveStraightDistanceEx(xDist, RobotMap.Speeds.AUTO_SPEED);
     	moveForwardCommand.start();
     	while(!moveForwardCommand.isCompleted());
     	turnCommand = new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_SPEED);
     	turnCommand.start();
     	while(!turnCommand.isCompleted());    
-    	moveForwardCommand = new DriveStraightDistance(yDist, RobotMap.Speeds.AUTO_SPEED);
+    	moveForwardCommand = new DriveStraightDistanceEx(yDist, RobotMap.Speeds.AUTO_SPEED);
     	moveForwardCommand.start();
     	while(!moveForwardCommand.isCompleted());
     	Command dropCommand = new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED);
