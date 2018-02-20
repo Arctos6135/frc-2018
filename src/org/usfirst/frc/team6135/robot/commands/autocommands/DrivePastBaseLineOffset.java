@@ -12,12 +12,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *	is lined up with the switch.
  *	Direction indicates which side of the field the robot is on, left or right.
  *	
- *	^
- *	|  ------------------------------------------
- *	|  |		|						|		|
- *	|  |		|		Switch			|		|
- *	|  |		|						|		|
- *	|  ------------------------------------------
+ *	
+ *	  ------------------------------------------
+ *	  |		|						|		|
+ *	  |		|		Switch			|		|
+ *	  |		|						|		|
+ *	^ ------------------------------------------
  *	|
  *	--------
  *		   |

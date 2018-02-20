@@ -19,9 +19,9 @@ public class ElevatorSubsystem extends Subsystem {
 	public boolean topReached() {
 		return RobotMap.elevatorTopSwitch.get();
 	}
-	public boolean bottomReached() {
+	/*public boolean bottomReached() {
 		return RobotMap.elevatorBottomSwitch.get();
-	}
+	}*/
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
