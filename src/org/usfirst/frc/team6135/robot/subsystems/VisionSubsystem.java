@@ -114,8 +114,8 @@ public class VisionSubsystem extends Subsystem {
 	public static final Scalar blueUpperBound = new Scalar(170, 255, 255);
 	public static final Scalar blueLowerBound = new Scalar(145, 190, 75);
 	//49, 255, 255         32, 170, 10
-	public static final Scalar cubeUpperBound = new Scalar(75, 255, 255);
-	public static final Scalar cubeLowerBound = new Scalar(32, 170, 10);
+	public static final Scalar cubeUpperBound = new Scalar(73, 255, 255);
+	public static final Scalar cubeLowerBound = new Scalar(23, 170, 10);
 	//Locations for expanding pixels in processing
 	static final int[] expandLocationsX = new int[] {
 		-1, 0, 1,
