@@ -2,6 +2,7 @@ package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autoutils.Delay;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -50,9 +51,13 @@ public class DrivePastBaseLineOffset extends CommandGroup {
         // arm.
     	
     	addSequential(new DriveStraightDistanceEx(DISTANCE_Y / 2, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.BASELINE_OFFSET, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new DriveStraightDistanceEx(DISTANCE_Y / 2, RobotMap.Speeds.AUTO_SPEED));
     }
 }

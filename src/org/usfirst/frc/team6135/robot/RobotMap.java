@@ -68,6 +68,9 @@ public class RobotMap {
 	
 	//+7in for the bumpers
 	public static final double ROBOT_LENGTH = 32.0 + 7.0;
+	
+	//Delay between each autonomous action, in milliseconds.
+	public static final double AUTO_DELAY = 500;
 	/*
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */
@@ -76,8 +79,7 @@ public class RobotMap {
 		public static final double TILT_SPEED = 0.3;
 		public static final double AUTO_SPEED = 0.3; //0.6
 		public static final double AUTO_INTAKE_SPEED = 0.3;
-		//This value is not final since there might be commands that change it
-		public static double DRIVE_SPEED = 1.0;
+		public static final double DRIVE_SPEED = 1.0;
 	}
 	
 	public static final int WHEEL_DIAMETER = 6; //INCHES

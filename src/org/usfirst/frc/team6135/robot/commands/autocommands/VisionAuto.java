@@ -4,6 +4,7 @@ import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autoutils.Delay;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
 
@@ -40,6 +41,11 @@ public class VisionAuto extends InstantCommand {
         requires(Robot.drive);
         direction = switchDirection;
     }
+    
+    void execCmd(Command cmd) {
+    	cmd.start();
+    	while(!cmd.isCompleted());
+    }
 
     // Called once when the command executes
     protected void initialize() {
@@ -65,20 +71,19 @@ public class VisionAuto extends InstantCommand {
     	double xDist = Math.abs(Math.sin(theta2) * s);
     	double yDist = Math.cos(theta2) * s;
     	
+    	Command delay = new Delay(RobotMap.AUTO_DELAY);
     	Command turnCommand = new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_SPEED);
-    	turnCommand.start();
-    	while(!turnCommand.isCompleted());
+    	execCmd(turnCommand);
+    	execCmd(delay);
     	moveForwardCommand = new DriveStraightDistanceEx(xDist, RobotMap.Speeds.AUTO_SPEED);
-    	moveForwardCommand.start();
-    	while(!moveForwardCommand.isCompleted());
+    	execCmd(moveForwardCommand);
+    	execCmd(delay);
     	turnCommand = new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_SPEED);
-    	turnCommand.start();
-    	while(!turnCommand.isCompleted());    
+    	execCmd(turnCommand);  
+    	execCmd(delay);
     	moveForwardCommand = new DriveStraightDistanceEx(yDist, RobotMap.Speeds.AUTO_SPEED);
-    	moveForwardCommand.start();
-    	while(!moveForwardCommand.isCompleted());
+    	execCmd(turnCommand);
     	Command dropCommand = new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED);
-    	dropCommand.start();
-    	while(!dropCommand.isCompleted());
+    	execCmd(dropCommand);
     }
 }

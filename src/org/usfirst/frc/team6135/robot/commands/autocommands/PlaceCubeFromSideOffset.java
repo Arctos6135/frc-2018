@@ -3,13 +3,14 @@ package org.usfirst.frc.team6135.robot.commands.autocommands;
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autoutils.Delay;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  * Hard-Coded Command Group that goes around the switch and places a cube on the side.
- * The robot's initial position has to be lined up with one side of the switch
+ * The robot's initial position has to be to the side of the switch
  * Direction indicates what side of the field the robot is on.
  * 
  *	     ----------------------------------------
@@ -18,10 +19,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *	|    |		|						|		|
  *	|    ----------------------------------------
  *	|
- *	--------
- *		   |
- *		   |
- *		 Robot
+ *	|
+ *	|
+ * Robot
  */
 public class PlaceCubeFromSideOffset extends CommandGroup {
 
@@ -46,7 +46,9 @@ public class PlaceCubeFromSideOffset extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_CENTRE_DISTANCE, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_EDGE_OFFSET, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
