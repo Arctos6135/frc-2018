@@ -16,7 +16,7 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 @SuppressWarnings("deprecation")
 public class DriveStraightDistanceEx extends DriveStraightDistance {
 
-	protected static final double errorMultiplier = 0.10;
+	protected static final double errorMultiplier = 0.015;
 	static final double TOLERANCE = 0.05;
 	
 	protected double speed;
@@ -35,8 +35,7 @@ public class DriveStraightDistanceEx extends DriveStraightDistance {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-    	//TODO: add abs
-    	/*double left = RobotMap.leftEncoder.getDistance();
+    	double left = RobotMap.leftEncoder.getDistance();
     	double right = RobotMap.rightEncoder.getDistance();
     	double error = Math.abs(left - right) / 2;
     	double adjustment = error * errorMultiplier;
@@ -54,7 +53,7 @@ public class DriveStraightDistanceEx extends DriveStraightDistance {
     		double avgError = this.speed - avg;
     		leftSpeed += avgError;
     		rightSpeed += avgError;
-    	}*/
+    	}
     	
     	leftSpeed = constrain(leftSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);
     	rightSpeed = constrain(rightSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);

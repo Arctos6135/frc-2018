@@ -124,10 +124,10 @@ public class RobotMap {
 	
 	public static void init() {
 		//Set back motors to follow the front motors
-		leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
-		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
-		//leftDriveVictor.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
-		//rightDriveVictor.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
+		leftDriveTalon2.follow(leftDriveTalon1);
+		rightDriveTalon2.follow(rightDriveTalon1);
+		leftDriveVictor.follow(leftDriveTalon1);
+		rightDriveVictor.follow(rightDriveTalon1);
 		leftDriveVictor.setInverted(true);
 		rightDriveVictor.setInverted(true);
 		

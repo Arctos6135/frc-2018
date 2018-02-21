@@ -21,8 +21,8 @@ public class DriveTrain extends Subsystem {
 		
 		RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, leftMotorVBus);
 		RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, -rightMotorVBus);
-		RobotMap.leftDriveVictor.set(ControlMode.PercentOutput, leftMotorVBus);
-		RobotMap.rightDriveVictor.set(ControlMode.PercentOutput, -rightMotorVBus);
+		//RobotMap.leftDriveVictor.set(ControlMode.PercentOutput, leftMotorVBus);
+		//RobotMap.rightDriveVictor.set(ControlMode.PercentOutput, -rightMotorVBus);
 	}
 	
     public void initDefaultCommand() {
