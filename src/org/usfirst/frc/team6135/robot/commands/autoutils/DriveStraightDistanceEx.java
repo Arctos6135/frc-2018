@@ -35,7 +35,8 @@ public class DriveStraightDistanceEx extends DriveStraightDistance {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-    	double left = RobotMap.leftEncoder.getDistance();
+    	//TODO: add abs
+    	/*double left = RobotMap.leftEncoder.getDistance();
     	double right = RobotMap.rightEncoder.getDistance();
     	double error = Math.abs(left - right) / 2;
     	double adjustment = error * errorMultiplier;
@@ -53,7 +54,7 @@ public class DriveStraightDistanceEx extends DriveStraightDistance {
     		double avgError = this.speed - avg;
     		leftSpeed += avgError;
     		rightSpeed += avgError;
-    	}
+    	}*/
     	
     	leftSpeed = constrain(leftSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);
     	rightSpeed = constrain(rightSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);

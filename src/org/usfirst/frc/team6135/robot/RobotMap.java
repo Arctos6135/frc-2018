@@ -74,7 +74,7 @@ public class RobotMap {
 	public static class Speeds {
 		public static final double ELEVATOR_SPEED = 0.75;
 		public static final double TILT_SPEED = 0.3;
-		public static final double AUTO_SPEED = 0.6;
+		public static final double AUTO_SPEED = 0.3; //0.6
 		public static final double AUTO_INTAKE_SPEED = 0.3;
 		//This value is not final since there might be commands that change it
 		public static double DRIVE_SPEED = 1.0;
@@ -124,8 +124,10 @@ public class RobotMap {
 		//Set back motors to follow the front motors
 		leftDriveTalon2.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
 		rightDriveTalon2.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
-		leftDriveVictor.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
-		rightDriveVictor.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
+		//leftDriveVictor.set(ControlMode.Follower, leftDriveTalon1.getDeviceID());
+		//rightDriveVictor.set(ControlMode.Follower, rightDriveTalon1.getDeviceID());
+		leftDriveVictor.setInverted(true);
+		rightDriveVictor.setInverted(true);
 		
 		leftDriveTalon1.set(ControlMode.PercentOutput, 0);
 		rightDriveTalon1.set(ControlMode.PercentOutput, 0);

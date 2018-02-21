@@ -4,6 +4,9 @@ package org.usfirst.frc.team6135.robot;
 import org.usfirst.frc.team6135.robot.subsystems.*;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem.VisionException;
 import org.usfirst.frc.team6135.robot.commands.autocommands.*;
+import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
+
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -101,7 +104,7 @@ public class Robot extends IterativeRobot {
         	}
         })).start();*/
         
-        (new Thread(new Runnable() {
+       (new Thread(new Runnable() {
         	@Override
         	public void run() {
         		while(!Thread.interrupted()) {
@@ -116,8 +119,8 @@ public class Robot extends IterativeRobot {
         	}
         })).start();
         
-        //chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
-		//chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
+        chooser.addDefault("Drive straight distance", new DriveStraightDistanceEx(5.0, 0.5));
+		chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.75));
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
 		placeCubeLeftSide = new PlaceCubeSameSide();
 		placeCubeRightSide = new PlaceCubeSameSide();

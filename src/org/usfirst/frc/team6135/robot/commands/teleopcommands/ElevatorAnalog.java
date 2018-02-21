@@ -32,7 +32,7 @@ public class ElevatorAnalog extends Command {
     				(joystickVal < 0 && !Robot.elevatorSubsystem.bottomReached())) {
     			RobotMap.elevatorVictor.set(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
     		}*/
-    		if((joystickVal > 0 && !Robot.elevatorSubsystem.topReached()) || joystickVal < 0) {
+    		if((joystickVal < 0 && Robot.elevatorSubsystem.topReached()) || joystickVal > 0) {
     			RobotMap.elevatorVictor.set(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
     		}
     		else {
