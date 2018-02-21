@@ -16,8 +16,13 @@ public class DriveTrain extends Subsystem {
     // here. Call these from Commands.
 
 	public void setMotorsVBus(double leftMotorVBus, double rightMotorVBus) {
+		leftMotorVBus = -leftMotorVBus;
+		rightMotorVBus = -rightMotorVBus;
+		
 		RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, leftMotorVBus);
 		RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, -rightMotorVBus);
+		RobotMap.leftDriveVictor.set(ControlMode.PercentOutput, leftMotorVBus);
+		RobotMap.rightDriveVictor.set(ControlMode.PercentOutput, -rightMotorVBus);
 	}
 	
     public void initDefaultCommand() {

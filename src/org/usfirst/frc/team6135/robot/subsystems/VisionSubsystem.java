@@ -113,7 +113,8 @@ public class VisionSubsystem extends Subsystem {
 	public static final Scalar redUpperBound2 = new Scalar(255, 255, 255);
 	public static final Scalar blueUpperBound = new Scalar(170, 255, 255);
 	public static final Scalar blueLowerBound = new Scalar(145, 190, 75);
-	public static final Scalar cubeUpperBound = new Scalar(49, 255, 255);
+	//49, 255, 255         32, 170, 10
+	public static final Scalar cubeUpperBound = new Scalar(75, 255, 255);
 	public static final Scalar cubeLowerBound = new Scalar(32, 170, 10);
 	//Locations for expanding pixels in processing
 	static final int[] expandLocationsX = new int[] {
@@ -391,10 +392,12 @@ public class VisionSubsystem extends Subsystem {
 		
 		//If the filter did not detect any pixels skip the next part
 		if(!expandPixels(img, imgOut)) {
+			source.putFrame(imgOut.toMat(filteredImg.type()));
 			throw new VisionException("Cube not detected");
 		}
 		//Free up some ram
 		Mat processedImg = imgOut.toMat(filteredImg.type());
+		source.putFrame(processedImg);
 		//source.putFrame(processedImg);
 		imgOut = null;
 		img = null;

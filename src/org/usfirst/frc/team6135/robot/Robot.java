@@ -4,6 +4,9 @@ package org.usfirst.frc.team6135.robot;
 import org.usfirst.frc.team6135.robot.subsystems.*;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem.VisionException;
 import org.usfirst.frc.team6135.robot.commands.autocommands.*;
+import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
+
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -110,19 +113,21 @@ public class Robot extends IterativeRobot {
         (new Thread(new Runnable() {
         	@Override
         	public void run() {
-        		SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
-        		SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
-        		try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+        		while(!Thread.interrupted()) {
+	        		SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
+	        		SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
+	        		try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+        		}
         	}
         })).start();
-        
+
         //Add commands into the autonomous command chooser
-        //chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
-		//chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
+        chooser.addDefault("Drive straight distance", new DriveStraightDistanceEx(5.0, 0.5));
+		chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.75));
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
 		placeCubeLeftSide = new PlaceCubeSameSide();
 		placeCubeRightSide = new PlaceCubeSameSide();

@@ -26,7 +26,7 @@ public class AutoCubeAlign extends InstantCommand {
     protected void initialize() {
     	Robot.visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
     	try {
-			Thread.sleep(500);
+			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
@@ -43,6 +43,7 @@ public class AutoCubeAlign extends InstantCommand {
     		return;
     	}
     	int angle = (int) (-Math.round(Math.toDegrees(angleRaw)));
+    	SmartDashboard.putNumber("Angle: ", angle);
     	(new AutoTurn(angle, speed)).start();
     	
     	Robot.visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
