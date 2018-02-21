@@ -24,10 +24,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class VisionSubsystem extends Subsystem {
 	
+	/*
+	 * Custom exception
+	 */
 	public static class VisionException extends Exception {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 4674148715358218109L;
 		public VisionException(String message) {
 			super(message);
@@ -36,6 +36,11 @@ public class VisionSubsystem extends Subsystem {
 			super();
 		}
 	}
+	/*
+	 * A class that stores an image as a byte array, with methods to access pixels
+	 * One byte is one pixel
+	 * This is a very abstract class used for convenience in processing, so data such as colour space are not stored
+	 */
 	public static class ByteArrayImg {
 		byte[] data;
 		public final int width;
@@ -63,6 +68,9 @@ public class VisionSubsystem extends Subsystem {
 			return output;
 		}
 	}
+	/*
+	 * Represents a point in an image
+	 */
 	public static class ImgPoint {
 		public int x, y;
 		//int hash;
@@ -85,12 +93,20 @@ public class VisionSubsystem extends Subsystem {
 		//}
 	}
 	
+	/*
+	 * Camera mode
+	 * VISION mode has low exposure for better object detection, 
+	 * However VIDEO mode's high exposure gives a brighter picture, which is better for humans to view
+	 */
 	 public static enum Mode {
     	VISION,
     	VIDEO,
     }
 	
+	//Initial brightness of the camera
 	public static int cameraInitBrightness;
+	//Colour filters
+	//Note that red has two sets since its hue is split
 	public static final Scalar redUpperBound1 = new Scalar(10, 255, 255);
 	public static final Scalar redLowerBound1 = new Scalar(0, 210, 115);
 	public static final Scalar redLowerBound2 = new Scalar(245, 210, 115);
@@ -99,6 +115,7 @@ public class VisionSubsystem extends Subsystem {
 	public static final Scalar blueLowerBound = new Scalar(145, 190, 75);
 	public static final Scalar cubeUpperBound = new Scalar(49, 255, 255);
 	public static final Scalar cubeLowerBound = new Scalar(32, 170, 10);
+	//Locations for expanding pixels in processing
 	static final int[] expandLocationsX = new int[] {
 		-1, 0, 1,
 		-1, 0, 1,
@@ -109,6 +126,7 @@ public class VisionSubsystem extends Subsystem {
 			0, 0, 0,
 			1, 1, 1,
 	};
+	//Locations for flood filling pixels in processing
 	static final int[] fillLocationsX = new int[] {
 			-1, 0, 1,
 			-1,    1,
@@ -122,6 +140,15 @@ public class VisionSubsystem extends Subsystem {
 	
 	/*
 	 * Non-Recursive Flood Fill
+	 * Used to find the centre point of sections and detect the largest section
+	 * 
+	 * id - The section id
+	 * x - The x coordinate of the starting pixel
+	 * y - The y coordinate of the starting pixel
+	 * fillRef - A two dimensional array used to store data about which pixel belongs to which section
+	 * img - A black and white ByteArrayImg used as boundaries (flood fill ends upon reaching a black pixel)
+	 * occurrences - A map used to store section sizes
+	 * centers - A map used to store section center points
 	 */
 	static void visionFloodFill(int id, int x, int y, int[][] fillRef, ByteArrayImg img, HashMap<Integer, Integer> occurrences, HashMap<Integer, ImgPoint> centers) {
 		ArrayDeque<ImgPoint> stack = new ArrayDeque<ImgPoint>();
@@ -178,17 +205,23 @@ public class VisionSubsystem extends Subsystem {
 	public static double getKeyPointAngle(Mat processedImg) throws VisionException {
 		return getKeyPointAngle(processedImg, 0);
 	}
+	/*
+	 * Returns the angle, in radians, of the "key point" (center point) of the largest blob
+	 * from the camera. The angle is based on focal length and applies to real life.
+	 */
 	public static double getKeyPointAngle(Mat processedImg, int minSize) throws VisionException {
-		//Do a flood fill
+		//Convert the Mat to a ByteArrayImg
 		byte[] imgData = new byte[(int) (processedImg.total() * processedImg.channels())];
 		processedImg.get(0, 0, imgData);
 		ByteArrayImg imgOut = new ByteArrayImg(imgData, processedImg.width(), processedImg.height());
+		//Create other parameters for flood fill
 		int[][] fillRef = new int[processedImg.width()][processedImg.height()];
 		HashMap<Integer, Integer> occurrences = new HashMap<Integer, Integer>();
 		HashMap<Integer, ImgPoint> centers = new HashMap<Integer, ImgPoint>();
 		int sectionId = 1;
 		for(int y = 0; y < processedImg.height(); y ++) {
 			for(int x = 0; x < processedImg.width(); x ++) {
+				//Flood fill on every single pixel that's not already filled or black
 				if(imgOut.getPixelByte(x, y) != 0x00 && fillRef[x][y] == 0) {
 					visionFloodFill(sectionId ++, x, y, fillRef, imgOut, occurrences, centers);
 				}
@@ -203,6 +236,8 @@ public class VisionSubsystem extends Subsystem {
 				maxSectionId = i;
 			}
 		}
+		//Test to see if the size of the largest blob is bigger than the value specified
+		//This reduces false positives
 		if(occurrences.get(maxSectionId) < minSize)
 			throw new VisionException("The largest section is smaller than the minimum limit");
 		ImgPoint center = centers.get(maxSectionId);
@@ -210,6 +245,11 @@ public class VisionSubsystem extends Subsystem {
 		
 		return angle;
 	}
+	/*
+	 * Expands each white pixel in the image from 1x1 to 3x3
+	 * Used to connect different sections to make flood fill more accurate
+	 * Returns a boolean, whether there is a white pixel in the image at all
+	 */
 	public static boolean expandPixels(ByteArrayImg img, ByteArrayImg imgOut) {
 		boolean detected = false;
 		for(int y = 0; y < img.height; y ++) {
@@ -232,9 +272,13 @@ public class VisionSubsystem extends Subsystem {
 	
 	public VisionSubsystem(UsbCamera cam) {
 		camera = cam;
+		//Get our initial brightness
 		cameraInitBrightness = camera.getBrightness();
+		//Set resolution
 		camera.setResolution(RobotMap.CAMERA_WIDTH, RobotMap.CAMERA_HEIGHT);
+		//Get our sink, the source of our pictures
 		sink = CameraServer.getInstance().getVideo();
+		//Create a source, used to stream half-processed pictures
 		source = CameraServer.getInstance().putVideo("Vision Subsystem", RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT);
 	}
 	
@@ -242,7 +286,10 @@ public class VisionSubsystem extends Subsystem {
 		// Set the default command for a subsystem here.
 		//setDefaultCommand(new MySpecialCommand());
 	}
-	
+	/*
+	 * Sets the mode of the camera
+	 * For more information on modes see the Mode enum
+	 */
 	public void setMode(Mode mode) {
 		if(mode == Mode.VISION) {
 			sink.setEnabled(true);
@@ -260,7 +307,9 @@ public class VisionSubsystem extends Subsystem {
 			}
 		}
 	}
-	
+	/*
+	 * Returns, in radians, the angle between the camera and the center of our alliance's switch
+	 */
 	public double getSwitchAngle() throws VisionException {
 		Mat originalImg = new Mat();
 		Mat hsvImg = new Mat();
@@ -273,6 +322,7 @@ public class VisionSubsystem extends Subsystem {
 		sink.grabFrame(originalImg, 1);
 		Imgproc.resize(originalImg, buf, new Size(RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT));
 		originalImg = buf;
+		//Do a median blur to remove noise
 		Imgproc.medianBlur(originalImg, buf, 3);
 		//Convert the colour space from BGR to HSV
 		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
@@ -289,7 +339,7 @@ public class VisionSubsystem extends Subsystem {
 		filteredImg1 = null;
 		filteredImg2 = null;
 		originalImg = null;
-		
+		//Median blur again to make processing more accurate
 		Imgproc.medianBlur(filteredImg, buf, 7);
 		filteredImg = buf;
 		//Process the image
@@ -311,6 +361,10 @@ public class VisionSubsystem extends Subsystem {
 		
 		return getKeyPointAngle(processedImg);
 	}
+	/*
+	 * Returns, in radians, the angle between the camera and the center of the nearest
+	 * (largest on-screen) Power Cube.
+	 */
 	public double getCubeAngle() throws VisionException {
 		Mat originalImg = new Mat();
 		Mat hsvImg = new Mat();

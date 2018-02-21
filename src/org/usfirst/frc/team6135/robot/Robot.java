@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	
+	//SUBSYSTEMS
 	//public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
 	public static DriveTrain drive;
@@ -36,6 +37,8 @@ public class Robot extends IterativeRobot {
 	public static int station; //Starting position of robot
 	public static String gameData;
 	
+	//These commands are combined with the alliance colour and switch location and used later
+	//They are the options that are shown in the auto menu
 	public static PlaceCubeFromMiddle placeCubeFromMiddle;
 	public static PlaceCubeSameSide placeCubeLeftSide;
 	public static PlaceCubeFromSideOffset placeCubeLeftSideOffset;
@@ -43,7 +46,7 @@ public class Robot extends IterativeRobot {
 	public static PlaceCubeSameSide placeCubeRightSide;
 	public static VisionAuto visionAuto;
 	
-
+	//Autonomous command chooser
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
@@ -55,6 +58,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		//Initialize our subsystems
 		RobotMap.init();
 		drive = new DriveTrain();
 		intakeSubsystem = new IntakeSubsystem();
@@ -64,12 +68,13 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		
 		RobotMap.gyro.calibrate();
-		
+		//Get the team's colour and station number
 		station = DriverStation.getInstance().getLocation();
 		color = DriverStation.getInstance().getAlliance();
 		
 		//Initialize camera stream and vision subsystem
         visionSubsystem = new VisionSubsystem(CameraServer.getInstance().startAutomaticCapture());
+        //Set camera config
         visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
         
         //Vision test code
@@ -101,6 +106,7 @@ public class Robot extends IterativeRobot {
         	}
         })).start();*/
         
+        //Encoder test code
         (new Thread(new Runnable() {
         	@Override
         	public void run() {
@@ -114,6 +120,7 @@ public class Robot extends IterativeRobot {
         	}
         })).start();
         
+        //Add commands into the autonomous command chooser
         //chooser.addDefault("Drive straight distance", new DriveStraightDistance(5.0, 0.5));
 		//chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.5));
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
@@ -130,6 +137,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Place Cube: Robot is on the right (Robot is to the side of switch)", placeCubeRightSideOffset);
 		chooser.addObject("Place Cube: Robot is in the middle", placeCubeFromMiddle);
 		chooser.addObject("Place Cube With Vision: Robot is in the middle", visionAuto);
+		//Display the chooser
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 
@@ -227,9 +235,7 @@ public class Robot extends IterativeRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
-		//Run the selected auto command
-		//if (autonomousCommand != null)
-			//autonomousCommand.start();
+		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
 	}
 
@@ -249,6 +255,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
 	}
 
