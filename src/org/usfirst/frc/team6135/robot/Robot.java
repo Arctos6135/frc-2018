@@ -70,7 +70,7 @@ public class Robot extends IterativeRobot {
 		wristSubsystem = new WristSubsystem();
 		oi = new OI();
 		
-		RobotMap.gyro.calibrate();
+		RobotMap.wristGyro.calibrate();
 		//Get the team's colour and station number
 		station = DriverStation.getInstance().getLocation();
 		color = DriverStation.getInstance().getAlliance();

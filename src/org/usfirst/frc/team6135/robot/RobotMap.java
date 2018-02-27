@@ -76,7 +76,7 @@ public class RobotMap {
 	 */
 	public static class Speeds {
 		public static final double ELEVATOR_SPEED = 0.75;
-		public static final double TILT_SPEED = 0.3;
+		public static final double WRIST_SPEED = 0.3;
 		public static final double AUTO_SPEED = 0.3; //0.6
 		public static final double AUTO_INTAKE_SPEED = 0.3;
 		public static final double DRIVE_SPEED = 1.0;
@@ -120,7 +120,11 @@ public class RobotMap {
     //This is the gyroscope that is mounted in the SPI port of the roboRIO
     //Use the ADXRS450_Gyro class instead of AnalogGyro
     //NOT USED - The gyro is not positioned correctly on the robot and thus cannot be used
-    public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+    //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+    
+    //This is the gyroscope that is mounted on the wrist to detect its angle
+    //Due to the current design, wrist angle has to be constantly maintained
+    public static ADXRS450_Gyro wristGyro = new ADXRS450_Gyro();
 	
 	public static void init() {
 		//Set back motors to follow the front motors

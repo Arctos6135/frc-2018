@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class WristAnalog extends Command {
 	
-	static final double DEADZONE = 0.25;
+	protected static final double DEADZONE = 0.25;
 
     public WristAnalog() {
         // Use requires() here to declare subsystem dependencies
@@ -27,7 +27,7 @@ public class WristAnalog extends Command {
     protected void execute() {
     	final double joystickVal = OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.RSTICK_Y_AXIS);
     	if(Math.abs(joystickVal) > DEADZONE) {
-    		RobotMap.wristVictor.set(RobotMap.Speeds.TILT_SPEED * joystickVal);
+    		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * joystickVal);
     	}
     	else {
     		RobotMap.wristVictor.set(0);

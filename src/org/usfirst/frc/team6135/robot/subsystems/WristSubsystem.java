@@ -16,6 +16,9 @@ public class WristSubsystem extends Subsystem {
 	public void setSpeed(double speed) {
 		RobotMap.wristVictor.set(speed);
 	}
+	public double getGyro() {
+		return RobotMap.wristGyro.getAngle();
+	}
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
