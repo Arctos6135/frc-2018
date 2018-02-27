@@ -5,7 +5,11 @@ import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 
 /**
- *	Handles the teleop control of the wrist, and attemps to keep it at the same angle by reading from a gyro.
+ *	Handles the teleop control of the wrist, and attempts to keep it at the same angle by reading from a gyro
+ *	and applying corrections if necessary. Correction speed is proportional to the error (actual - desired angle)
+ *	This command also applies a soft limit to the wrist angle, and attempting to turn while it's over that limit
+ *	will not result in any movement. The angle to correct to is also constrained, and if the physical angle is
+ *	over the limit, it will be corrected (when there's no input on the controller).
  */
 public class WristAnalogAdjust extends WristAnalog {
 	//Multiplier to get the adjust speed of the wrist motor
@@ -16,6 +20,10 @@ public class WristAnalogAdjust extends WristAnalog {
 	protected double stationaryAngle;
 	//If the robot was stationary the last time
 	protected boolean wasStationary;
+	//Soft limits for the wrist angle. If past this angle, the wrist will not turn (in code) and angle will not be recorded
+	//This is to prevent slacking due to wrist reaching the bottom
+	protected static final double WRIST_SOFT_LIMIT_HIGH = Double.MAX_VALUE; //Not constrained - to be set w/ later testing
+	protected static final double WRIST_SOFT_LIMIT_LOW = Double.MIN_VALUE; //Not constrained - to be set w/ later testing
 
     public WristAnalogAdjust() {
         super();
@@ -24,35 +32,52 @@ public class WristAnalogAdjust extends WristAnalog {
     static double constrain(double val, double upper, double lower) {
     	return Math.max(lower, Math.min(upper, val));
     }
+    static boolean inRange(double val, double max, double min) {
+    	return val <= max && val >= min;
+    }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	stationaryAngle = Robot.wristSubsystem.getGyro();
+    	//Initialize the desired angle to the current angle
+    	stationaryAngle = constrain(Robot.wristSubsystem.getGyro(), WRIST_SOFT_LIMIT_HIGH, WRIST_SOFT_LIMIT_LOW);
     	wasStationary = true;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	final double joystickVal = OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.RSTICK_Y_AXIS);
+    	final double gyroReading = Robot.wristSubsystem.getGyro();
     	
     	if(Math.abs(joystickVal) > DEADZONE) {
-    		wasStationary = false;
-    		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * joystickVal);
+    		//Only move the wrist if the gyro shows that the angle is in the constraints
+    		if(inRange(gyroReading, WRIST_SOFT_LIMIT_HIGH, WRIST_SOFT_LIMIT_LOW)) {
+	    		wasStationary = false;
+	    		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * joystickVal);
+    		}
+    		else {
+    			wasStationary = true;
+    			RobotMap.wristVictor.set(0);
+    		}
     	}
-    	//If the joystick does not have an input, and in the last capture the wrist was stationary,
-    	//update the angle to return to
+    	//If the joystick does not have an input, and in the last capture the wrist was not stationary,
+    	//(i.e. the wrist just stopped moving) update the desired angle
     	else if(!wasStationary) {
     		wasStationary = true;
-    		stationaryAngle = Robot.wristSubsystem.getGyro();
+    		//Constrain the angle and then assign it
+    		stationaryAngle = constrain(gyroReading, WRIST_SOFT_LIMIT_HIGH, WRIST_SOFT_LIMIT_LOW);
     		RobotMap.wristVictor.set(0);
     	}
-    	//If nothing else, then try to return to the angle last recorded
+    	//If no input and the wrist is already "stationary", then try to return to the angle last recorded
     	else {
-    		double error = Robot.wristSubsystem.getGyro() - stationaryAngle;
+    		//Do not constrain the gyro reading here since we want to apply the correction even if
+    		//the current physical angle is outside the limits
+    		double error = gyroReading - stationaryAngle;
+    		//Do not do anything if the error is small
     		if(Math.abs(error) < TOLERANCE) {
     			RobotMap.wristVictor.set(0);
     			return;
     		}
+    		//Constrain the speed and apply correction
     		double adjustment = constrain(error * errorMultiplier, 1.0, -1.0);
     		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);
     	}
