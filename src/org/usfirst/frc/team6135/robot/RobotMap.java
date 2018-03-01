@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 
 /**
@@ -120,6 +121,9 @@ public class RobotMap {
     //This is the gyroscope that is mounted in the SPI port of the roboRIO
     //Use the ADXRS450_Gyro class instead of AnalogGyro
     //NOT USED - The gyro is not positioned correctly on the robot and thus cannot be used
+    //Just so that there are no compilation errors
+    //Comment out and switch to ADRXS450_Gyro for operation
+    public static Gyro gyro;
     //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
     
     //This is the gyroscope that is mounted on the wrist to detect its angle
