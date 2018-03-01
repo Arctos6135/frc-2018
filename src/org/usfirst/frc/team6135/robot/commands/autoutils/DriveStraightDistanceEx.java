@@ -17,7 +17,8 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 public class DriveStraightDistanceEx extends DriveStraightDistance {
 
 	protected static final double errorMultiplier = 0.015;
-	static final double TOLERANCE = 0.05;
+	static final double TOLERANCE = 0.80;
+	static final double DIST_TOLERANCE = 1.5;
 	
 	protected double speed;
 	
@@ -37,15 +38,18 @@ public class DriveStraightDistanceEx extends DriveStraightDistance {
     protected void execute() {
     	double left = RobotMap.leftEncoder.getDistance();
     	double right = RobotMap.rightEncoder.getDistance();
-    	double error = Math.abs(left - right) / 2;
-    	double adjustment = error * errorMultiplier;
-    	if(left > right) {
-    		leftSpeed -= adjustment;
-    		rightSpeed += adjustment;
-    	}
-    	else {
-    		leftSpeed += adjustment;
-    		rightSpeed -= adjustment;
+    	
+    	if(Math.abs(left - right) > DIST_TOLERANCE) {
+	    	double error = Math.abs(left - right) / 2;
+	    	double adjustment = error * errorMultiplier;
+	    	if(left > right) {
+	    		leftSpeed -= adjustment;
+	    		rightSpeed += adjustment;
+	    	}
+	    	else {
+	    		leftSpeed += adjustment;
+	    		rightSpeed -= adjustment;
+	    	}
     	}
     	
     	double avg = (leftSpeed + rightSpeed) / 2;
