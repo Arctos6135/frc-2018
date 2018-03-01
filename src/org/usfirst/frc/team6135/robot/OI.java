@@ -59,6 +59,20 @@ public class OI {
 	 * 	Right Trigger: Intake In (Analog)
 	 */
 	
+	public static class Controls {
+		public static final int FWD_REV = RobotMap.ControllerMap.LSTICK_Y_AXIS;
+		public static final int LEFT_RIGHT = RobotMap.ControllerMap.RSTICK_X_AXIS;
+		public static final int SLOW_GEAR = RobotMap.ControllerMap.LBUMPER;
+		public static final int FAST_GEAR = RobotMap.ControllerMap.RBUMPER;
+		public static final int AUTO_ALIGN = RobotMap.ControllerMap.BUTTON_Y;
+		public static final int CANCEL_ALIGN = RobotMap.ControllerMap.BUTTON_B;
+		
+		public static final int ELEVATOR = RobotMap.ControllerMap.LSTICK_Y_AXIS;
+		public static final int WRIST = RobotMap.ControllerMap.RSTICK_Y_AXIS;
+		public static final int INTAKE_IN = RobotMap.ControllerMap.RTRIGGER;
+		public static final int INTAKE_OUT = RobotMap.ControllerMap.LTRIGGER;
+	}
+	
 	public static Joystick driveController;
 	public static Joystick attachmentsController;
 	

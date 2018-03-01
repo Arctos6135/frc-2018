@@ -25,7 +25,7 @@ public class WristAnalog extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	final double joystickVal = OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.RSTICK_Y_AXIS);
+    	final double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.WRIST);
     	if(Math.abs(joystickVal) > DEADZONE) {
     		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * joystickVal);
     	}

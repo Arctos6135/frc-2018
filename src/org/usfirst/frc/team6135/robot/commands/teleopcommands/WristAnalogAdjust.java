@@ -45,7 +45,7 @@ public class WristAnalogAdjust extends WristAnalog {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	final double joystickVal = OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.RSTICK_Y_AXIS);
+    	final double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.WRIST);
     	final double gyroReading = Robot.wristSubsystem.getGyro();
     	
     	if(Math.abs(joystickVal) > DEADZONE) {

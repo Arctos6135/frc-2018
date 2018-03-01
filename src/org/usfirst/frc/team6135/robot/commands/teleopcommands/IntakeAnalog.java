@@ -2,7 +2,6 @@ package org.usfirst.frc.team6135.robot.commands.teleopcommands;
 
 import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;
-import org.usfirst.frc.team6135.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -38,8 +37,8 @@ public class IntakeAnalog extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	final double ltVal = Math.abs(OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.LTRIGGER));
-    	final double rtVal = Math.abs(OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.RTRIGGER));
+    	final double ltVal = Math.abs(OI.attachmentsController.getRawAxis(OI.Controls.INTAKE_OUT));
+    	final double rtVal = Math.abs(OI.attachmentsController.getRawAxis(OI.Controls.INTAKE_IN));
     	if(ltVal <= DEADZONE && rtVal > DEADZONE) {
     		Robot.intakeSubsystem.setSpeed(constrain(rtVal));
     	}

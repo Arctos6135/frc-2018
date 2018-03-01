@@ -25,7 +25,7 @@ public class ElevatorAnalog extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	final double joystickVal = OI.attachmentsController.getRawAxis(RobotMap.ControllerMap.LSTICK_Y_AXIS);
+    	final double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.ELEVATOR);
     	if(Math.abs(joystickVal) > DEADZONE) {
     		//Check if we are at the boundary
     		/*if((joystickVal > 0 && !Robot.elevatorSubsystem.topReached()) ||

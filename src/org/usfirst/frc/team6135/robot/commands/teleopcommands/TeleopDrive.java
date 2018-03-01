@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class TeleopDrive extends Command {
 	
-	private static final int X_AXIS = RobotMap.ControllerMap.RSTICK_X_AXIS;
-    private static final int Y_AXIS = RobotMap.ControllerMap.LSTICK_Y_AXIS;
+	private static final int X_AXIS = OI.Controls.LEFT_RIGHT;
+    private static final int Y_AXIS = OI.Controls.FWD_REV;
     
     private static final double DEADZONE = 0.15;
 
