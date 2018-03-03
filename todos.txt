@@ -13,10 +13,10 @@ Testing (Priority Level 1 - MUST):
 Testing (Priority Level 2 - OPTIONAL):
 	WristAnalogBackup/ElevatorAnalogBackup Commands
 	Auto Align Cancel Button
-	The Emergency Button (If implemented)
+	The Emergency Button
 
 Feature Implementations:
-	The Emergency Button (Changes default behavior of subsystems in case of hardware damage, e.g. gyro detachment)
+	(None)
 
 Priority Level 3 - May not apply, but if they do these things MUST be done:
 	Change Drive Motor Config (If motor controllers need to be changed - either to all Talon SRXes or Victor SPXes)

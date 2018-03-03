@@ -3,6 +3,7 @@ package org.usfirst.frc.team6135.robot;
 import org.usfirst.frc.team6135.robot.commands.AutoCubeAlign;
 import org.usfirst.frc.team6135.robot.commands.AutoSwitchAlign;
 import org.usfirst.frc.team6135.robot.commands.CancelOperation;
+import org.usfirst.frc.team6135.robot.commands.EmergencySwitch;
 import org.usfirst.frc.team6135.robot.commands.teleoputils.GearShift;
 
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -59,6 +60,7 @@ public class OI {
 	 * 	Right Analog Stick: Tilt Wrist (Max. speed = 30%, up/down)
 	 * 	Left Trigger: Intake Out (Analog)
 	 * 	Right Trigger: Intake In (Analog)
+	 * 	B Button: The Emergency Button (Changes behavior of the wrist, in case of gyro issues)
 	 */
 	
 	public static class Controls {
@@ -74,6 +76,7 @@ public class OI {
 		public static final int WRIST = RobotMap.ControllerMap.RSTICK_Y_AXIS;
 		public static final int INTAKE_IN = RobotMap.ControllerMap.RTRIGGER;
 		public static final int INTAKE_OUT = RobotMap.ControllerMap.LTRIGGER;
+		public static final int EMERGENCY = RobotMap.ControllerMap.BUTTON_B;
 	}
 	
 	public static Joystick driveController;
@@ -86,6 +89,8 @@ public class OI {
 	public static JoystickButton autoSwitchAlign;
 	public static JoystickButton cancelAlign;
 	
+	public static JoystickButton emergencyButton;
+	
 	public OI() {
 		//Port 0 is on the right of the programming laptop and port 1 is on the left.
 		driveController = new Joystick(0);
@@ -97,6 +102,7 @@ public class OI {
 		autoCubeAlign = new JoystickButton(driveController, Controls.AUTO_CUBE_ALIGN);
 		autoSwitchAlign = new JoystickButton(driveController, Controls.AUTO_SWITCH_ALIGN);
 		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
+		emergencyButton = new JoystickButton(attachmentsController, Controls.EMERGENCY);
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
@@ -109,5 +115,10 @@ public class OI {
 		autoCubeAlign.whenPressed(autoCubeAlignCmd);
 		autoSwitchAlign.whenPressed(autoSwitchAlignCmd);
 		cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd, autoSwitchAlignCmd));
+		
+		Command emergencyCmd = new EmergencySwitch();
+		
+		emergencyButton.whenPressed(emergencyCmd);
+		emergencyButton.whenReleased(new CancelOperation(emergencyCmd));
 	}
 }

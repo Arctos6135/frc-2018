@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ *	Uses a VisionSubsystem to find the Alliance Switch's angle offset from the robot,
+ *	then starts a new command to automatically turn towards it and thus aligning the two.
  */
 public class AutoSwitchAlign extends InstantCommand {
 

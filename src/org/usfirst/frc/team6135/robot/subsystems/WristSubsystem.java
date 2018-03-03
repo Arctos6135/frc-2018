@@ -2,12 +2,15 @@ package org.usfirst.frc.team6135.robot.subsystems;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalog;
+import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalogAdjust;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *	Intake tilt (wrist) subsystem
  */
+@SuppressWarnings("unused")
 public class WristSubsystem extends Subsystem {
 
     // Put methods for controlling this subsystem
@@ -21,9 +24,8 @@ public class WristSubsystem extends Subsystem {
 	}
 	
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new WristAnalog());
+    	//setDefaultCommand(new WristAnalog());
+    	setDefaultCommand(new WristAnalogAdjust());
     }
 }
 
