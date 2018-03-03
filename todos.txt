@@ -18,3 +18,8 @@ Testing (Priority Level 2 - OPTIONAL):
 Feature Implementations:
 	Auto Switch Align
 	The Emergency Button (Changes default behavior of subsystems in case of hardware damage, e.g. gyro detachment)
+
+Priority Level 3 - May not apply, but if they do these things MUST be done:
+	Change Drive Motor Config (If motor controllers need to be changed - either to all Talon SRXes or Victor SPXes)
+	Pneumatic Gear Shifting (If drive fixes the problem)
+	
