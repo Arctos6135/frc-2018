@@ -51,7 +51,7 @@ public class VisionAuto extends InstantCommand {
     protected void initialize() {
     	double theta1, theta2, d;
     	try {
-			theta1 = Robot.visionSubsystem.getSwitchAngle();
+			theta1 = Robot.visionSubsystem.getSwitchAngle(Robot.color);
 		} catch (VisionSubsystem.VisionException e) {
 			(new PlaceCubeFromMiddle(direction)).start();
 			return;
@@ -61,7 +61,7 @@ public class VisionAuto extends InstantCommand {
     	moveForwardCommand.start();
     	while(!moveForwardCommand.isCompleted());
     	try {
-			theta2 = Robot.visionSubsystem.getSwitchAngle();
+			theta2 = Robot.visionSubsystem.getSwitchAngle(Robot.color);
 		} catch (VisionSubsystem.VisionException e) {
 			(new PlaceCubeFromMiddleBackup(direction, d)).start();
 			return;

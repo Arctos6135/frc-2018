@@ -1,5 +1,5 @@
 # TODOS
-Todos are orgainized by category. The order they appear in in their specific categories is the order they should be done in.
+Todos are organized by category. The order they appear in in their specific categories is the order they should be done in.
 
 Testing (Priority Level 1 - MUST):
 	AutoTurn Command

@@ -15,6 +15,7 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -97,6 +98,7 @@ public class VisionSubsystem extends Subsystem {
 	 * Camera mode
 	 * VISION mode has low exposure for better object detection, 
 	 * However VIDEO mode's high exposure gives a brighter picture, which is better for humans to view
+	 * Note that switching between the two modes takes time; the program should wait for approx. 1s to compensate.
 	 */
 	 public static enum Mode {
     	VISION,
@@ -311,7 +313,10 @@ public class VisionSubsystem extends Subsystem {
 	/*
 	 * Returns, in radians, the angle between the camera and the center of our alliance's switch
 	 */
-	public double getSwitchAngle() throws VisionException {
+	public double getSwitchAngle(DriverStation.Alliance color) throws VisionException {
+		return getSwitchAngle(color, 1);
+	}
+	public double getSwitchAngle(DriverStation.Alliance color, double timeout) throws VisionException {
 		Mat originalImg = new Mat();
 		Mat hsvImg = new Mat();
 		Mat filteredImg1 = new Mat();
@@ -320,7 +325,8 @@ public class VisionSubsystem extends Subsystem {
 		Mat buf = new Mat();
 		
 		//Obtain the frame from the camera (1 second timeout)
-		sink.grabFrame(originalImg, 1);
+		if(sink.grabFrame(originalImg, timeout) == 0)
+			throw new VisionException("Failed to obtain frame within 1 second timeout");
 		Imgproc.resize(originalImg, buf, new Size(RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT));
 		originalImg = buf;
 		//Do a median blur to remove noise
@@ -328,13 +334,16 @@ public class VisionSubsystem extends Subsystem {
 		//Convert the colour space from BGR to HSV
 		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
 		//Filter out the colours
-		if(Robot.color.equals(Alliance.Red)) {
+		if(color.equals(DriverStation.Alliance.Red)) {
 			Core.inRange(hsvImg, redLowerBound1, redUpperBound1, filteredImg1);
 			Core.inRange(hsvImg, redLowerBound2, redUpperBound2, filteredImg2);
 			Core.addWeighted(filteredImg1, 1.0, filteredImg2, 1.0, 0.0, filteredImg);
 		}
-		else {
+		else if(color.equals(DriverStation.Alliance.Blue)) {
 			Core.inRange(hsvImg, blueLowerBound, blueUpperBound, filteredImg);
+		}
+		else {
+			throw new IllegalArgumentException("Invalid alliance colour");
 		}
 		//Free up RAM
 		filteredImg1 = null;
@@ -367,13 +376,17 @@ public class VisionSubsystem extends Subsystem {
 	 * (largest on-screen) Power Cube.
 	 */
 	public double getCubeAngle() throws VisionException {
+		return getCubeAngle(1);
+	}
+	public double getCubeAngle(double timeout) throws VisionException {
 		Mat originalImg = new Mat();
 		Mat hsvImg = new Mat();
 		Mat filteredImg = new Mat();
 		Mat buf = new Mat();
 		
 		//Obtain the frame from the camera (1 second timeout)
-		sink.grabFrame(originalImg, 1);
+		if(sink.grabFrame(originalImg, timeout) == 0)
+			throw new VisionException("Failed to obtain frame within 1 second timeout");
 		Imgproc.resize(originalImg, buf, new Size(RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT));
 		originalImg = buf;
 		Imgproc.medianBlur(originalImg, buf, 3);
