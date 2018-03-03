@@ -8,7 +8,7 @@ Testing (Priority Level 1 - MUST):
 	ALL Hard-Coded Auto Commands
 	Auto Cube Align
 	Vision Auto
-	Auto Switch Align (If implemented)
+	Auto Switch Align
 
 Testing (Priority Level 2 - OPTIONAL):
 	WristAnalogBackup/ElevatorAnalogBackup Commands
@@ -16,7 +16,6 @@ Testing (Priority Level 2 - OPTIONAL):
 	The Emergency Button (If implemented)
 
 Feature Implementations:
-	Auto Switch Align
 	The Emergency Button (Changes default behavior of subsystems in case of hardware damage, e.g. gyro detachment)
 
 Priority Level 3 - May not apply, but if they do these things MUST be done:

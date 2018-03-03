@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.commands.AutoCubeAlign;
+import org.usfirst.frc.team6135.robot.commands.AutoSwitchAlign;
 import org.usfirst.frc.team6135.robot.commands.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoputils.GearShift;
 
@@ -50,7 +51,8 @@ public class OI {
 	 * 	Left Bumper: Shift gear to slower configuration
 	 * 	Right Bumper: Shift gear to faster configuration
 	 * 	Y Button: Auto Power Cube align
-	 * 	B Button: Cancel auto align (when processing takes too long)
+	 * 	X Button: Auto Switch align
+	 * 	B Button: Cancel auto align (in case something goes terribly wrong)
 	 * 	XBOX Button: Enable rocket booster
 	 * Attachments:
 	 * 	Left Analog Stick: Elevator (Max. speed = 50%)
@@ -64,7 +66,8 @@ public class OI {
 		public static final int LEFT_RIGHT = RobotMap.ControllerMap.RSTICK_X_AXIS;
 		public static final int SLOW_GEAR = RobotMap.ControllerMap.LBUMPER;
 		public static final int FAST_GEAR = RobotMap.ControllerMap.RBUMPER;
-		public static final int AUTO_ALIGN = RobotMap.ControllerMap.BUTTON_Y;
+		public static final int AUTO_CUBE_ALIGN = RobotMap.ControllerMap.BUTTON_Y;
+		public static final int AUTO_SWITCH_ALIGN = RobotMap.ControllerMap.BUTTON_X;
 		public static final int CANCEL_ALIGN = RobotMap.ControllerMap.BUTTON_B;
 		
 		public static final int ELEVATOR = RobotMap.ControllerMap.LSTICK_Y_AXIS;
@@ -80,6 +83,7 @@ public class OI {
 	public static JoystickButton gearShiftSlow;
 	
 	public static JoystickButton autoCubeAlign;
+	public static JoystickButton autoSwitchAlign;
 	public static JoystickButton cancelAlign;
 	
 	public OI() {
@@ -88,17 +92,22 @@ public class OI {
 		attachmentsController = new Joystick(1);
 		
 		//Fast gear = right bumper
-		gearShiftFast = new JoystickButton(driveController, RobotMap.ControllerMap.RBUMPER);
-		gearShiftSlow = new JoystickButton(driveController, RobotMap.ControllerMap.LBUMPER);
+		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
+		gearShiftSlow = new JoystickButton(driveController, Controls.SLOW_GEAR);
+		autoCubeAlign = new JoystickButton(driveController, Controls.AUTO_CUBE_ALIGN);
+		autoSwitchAlign = new JoystickButton(driveController, Controls.AUTO_SWITCH_ALIGN);
+		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
+		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
 		gearShiftFast.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));
 		gearShiftSlow.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));
 		
-		autoCubeAlign = new JoystickButton(driveController, RobotMap.ControllerMap.BUTTON_Y);
-		Command autoAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_SPEED); 
-		autoCubeAlign.whenPressed(autoAlignCmd);
-		cancelAlign = new JoystickButton(driveController, RobotMap.ControllerMap.BUTTON_B);
-		cancelAlign.whenPressed(new CancelOperation(autoAlignCmd));
+		Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_SPEED); 
+		Command autoSwitchAlignCmd = new AutoSwitchAlign(RobotMap.Speeds.AUTO_SPEED);
+		
+		autoCubeAlign.whenPressed(autoCubeAlignCmd);
+		autoSwitchAlign.whenPressed(autoSwitchAlignCmd);
+		cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd, autoSwitchAlignCmd));
 	}
 }
