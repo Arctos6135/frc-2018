@@ -8,16 +8,13 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *	Uses a VisionSubsystem to find the Power Cube's angle offset from the robot,
- *	then starts a new command to automatically turn towards it and thus aligning the two.
+ *
  */
-public class AutoCubeAlign extends InstantCommand {
+public class AutoSwitchAlign extends InstantCommand {
 
 	protected final double speed;
-    public AutoCubeAlign(double speed) {
+    public AutoSwitchAlign(double speed) {
         super();
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
         requires(Robot.drive);
         requires(Robot.visionSubsystem);
         this.speed = speed;
@@ -28,14 +25,14 @@ public class AutoCubeAlign extends InstantCommand {
     	Robot.visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
     	try {
 			Thread.sleep(1000);
-		} 
+		}
     	catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
     	
     	double angleRaw;
     	try {
-    		angleRaw = Robot.visionSubsystem.getCubeAngle();
+    		angleRaw = Robot.visionSubsystem.getSwitchAngle(Robot.color);
     	}
     	catch(VisionSubsystem.VisionException e) {
     		return;
