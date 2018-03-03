@@ -1,0 +1,20 @@
+# TODOS
+Todos are orgainized by category. The order they appear in in their specific categories is the order they should be done in.
+
+Testing (Priority Level 1 - MUST):
+	AutoTurn Command
+	DriveStraightDistanceEx Command
+	WristAnalogAdjust Command
+	ALL Hard-Coded Auto Commands
+	Auto Cube Align
+	Vision Auto
+	Auto Switch Align (If implemented)
+
+Testing (Priority Level 2 - OPTIONAL):
+	WristAnalogBackup/ElevatorAnalogBackup Commands
+	Auto Align Cancel Button
+	The Emergency Button (If implemented)
+
+Feature Implementations:
+	Auto Switch Align
+	The Emergency Button (Changes default behavior of subsystems in case of hardware damage, e.g. gyro detachment)
