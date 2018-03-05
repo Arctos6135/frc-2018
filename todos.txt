@@ -16,7 +16,7 @@ Testing (Priority Level 2 - OPTIONAL):
 	The Emergency Button
 
 Feature Implementations:
-	AutoSwitchAlign (Ignore colour, in case enemy has control and none of the sides are of team colour)
+	(None)
 
 Priority Level 3 - May not apply, but if they do these things MUST be done:
 	Change Drive Motor Config (If motor controllers need to be changed - either to all Talon SRXes or Victor SPXes)
