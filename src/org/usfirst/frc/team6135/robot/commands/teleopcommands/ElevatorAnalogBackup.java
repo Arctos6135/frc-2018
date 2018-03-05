@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *	should be used as the default command to the wrist.
  *	IMPORTANT: For this command to function properly, the default command for the wrist should be set to WristAnalogBackup
  */
-public class ElevatorAnalogAdjust extends Command {
+public class ElevatorAnalogBackup extends Command {
 	
 	static final double DEADZONE = 0.15;
 	static final double SPEED_MULTIPLIER = 1.0; //Subject to adjustments
@@ -22,7 +22,7 @@ public class ElevatorAnalogAdjust extends Command {
 	//Caution must be taken: if set to true there is a chance of the wrist rope snapping due to tension.
 	static final boolean ALLOW_TIGHTENING = false;
 
-    public ElevatorAnalog() {
+    public ElevatorAnalogBackup() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.elevatorSubsystem);

@@ -10,14 +10,14 @@ import edu.wpi.first.wpilibj.command.Command;
  *	Handles the teleop control of the wrist.
  *  DO NOT USE UNLESS ElevatorAnalogBackup IS USED.
  */
-public class WristAnalog extends Command {
+public class WristAnalogBackup extends Command {
 	
 	protected static final double DEADZONE = 0.25;
 	//Whether the wrist has already been set to stationary. This is to stop the code from setting the output of the motor over and over again when there's no input,
 	//which messes up the auto rope releasing and/or tightening of ElevatorAnalogBackup
 	protected boolean stopped = false;
 
-    public WristAnalog() {
+    public WristAnalogBackup() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.wristSubsystem);
