@@ -1,9 +1,9 @@
 package org.usfirst.frc.team6135.robot;
 
-import org.usfirst.frc.team6135.robot.commands.AutoCubeAlign;
-import org.usfirst.frc.team6135.robot.commands.AutoSwitchAlign;
 import org.usfirst.frc.team6135.robot.commands.CancelOperation;
-import org.usfirst.frc.team6135.robot.commands.EmergencySwitch;
+import org.usfirst.frc.team6135.robot.commands.teleoputils.AutoCubeAlign;
+import org.usfirst.frc.team6135.robot.commands.teleoputils.AutoSwitchAlign;
+import org.usfirst.frc.team6135.robot.commands.teleoputils.EmergencySwitch;
 import org.usfirst.frc.team6135.robot.commands.teleoputils.GearShift;
 
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
