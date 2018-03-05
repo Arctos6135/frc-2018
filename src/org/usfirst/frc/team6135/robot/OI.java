@@ -53,6 +53,8 @@ public class OI {
 	 * 	Right Bumper: Shift gear to faster configuration
 	 * 	Y Button: Auto Power Cube align
 	 * 	X Button: Auto Switch align
+	 * 		- Note: The robot will first attempt to locate the alliance colour, but if
+	 * 		the team switch cannot be found, it will ignore the colour and try to find any switch at all.
 	 * 	B Button: Cancel auto align (in case something goes terribly wrong)
 	 * 	XBOX Button: Enable rocket booster
 	 * Attachments:
@@ -60,7 +62,7 @@ public class OI {
 	 * 	Right Analog Stick: Tilt Wrist (Max. speed = 30%, up/down)
 	 * 	Left Trigger: Intake Out (Analog)
 	 * 	Right Trigger: Intake In (Analog)
-	 * 	B Button: The Emergency Button (Changes behavior of the wrist, in case of gyro issues)
+	 * 	B Button: The Emergency Button (Hold 2s, changes behavior of the wrist, in case of gyro issues)
 	 */
 	
 	public static class Controls {

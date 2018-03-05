@@ -4,12 +4,15 @@ import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	Uses a VisionSubsystem to find the Alliance Switch's angle offset from the robot,
  *	then starts a new command to automatically turn towards it and thus aligning the two.
+ *
+ *	This is an InstantCommand
  */
 public class AutoSwitchAlign extends InstantCommand {
 
@@ -33,10 +36,19 @@ public class AutoSwitchAlign extends InstantCommand {
     	
     	double angleRaw;
     	try {
+    		//First try to look for the team colour
     		angleRaw = Robot.visionSubsystem.getSwitchAngle(Robot.color);
     	}
     	catch(VisionSubsystem.VisionException e) {
-    		return;
+    		try {
+    			//If team colour cannot be found, look for the other colour
+    			angleRaw = Robot.visionSubsystem.getSwitchAngle(
+    					Robot.color.equals(DriverStation.Alliance.Red) ? DriverStation.Alliance.Blue : DriverStation.Alliance.Red);
+    		}
+    		catch(VisionSubsystem.VisionException e1) {
+    			//If nothing can be found, give up.
+    			return;
+    		}
     	}
     	catch(Exception e) {
     		SmartDashboard.putString("Error:", "Unexpected Exception in Vision: " + e.toString());
