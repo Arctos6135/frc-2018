@@ -2,45 +2,26 @@ package org.usfirst.frc.team6135.robot.commands.teleoputils;
 
 import org.usfirst.frc.team6135.robot.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
- *	Runs the intake.
+ *	Sets the speed of the Robot's intake. A positive speed means to intake and a negative means to shoot out.
+ *	The speed of the intake will not change until another command sets it
  */
-public class OperateIntake extends Command {
+public class OperateIntake extends InstantCommand {
 
-	double speed;
-	
+	final double speed;
     public OperateIntake(double speed) {
+        super();
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.intakeSubsystem);
-    	this.speed = speed;
-    	
+        requires(Robot.intakeSubsystem);
+        this.speed = speed;
     }
 
-    // Called just before this Command runs the first time
+    // Called once when the command executes
     protected void initialize() {
-    	
+    	Robot.intakeSubsystem.setSpeed(speed);
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	Robot.intakeSubsystem.setSpeed(this.speed);
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
-
-    // Called once after isFinished returns true
-    protected void end() {
-    	Robot.intakeSubsystem.setSpeed(0);
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
 }
