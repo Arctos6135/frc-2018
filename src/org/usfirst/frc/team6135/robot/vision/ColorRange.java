@@ -10,8 +10,8 @@ public class ColorRange {
 	/**
 	 * Constructs a ColorRange object using two Scalars (in this case they represent HSV colour values).
 	 * 
-	 * @param l - The upper limit
-	 * @param u - The lower limit
+	 * @param l - The lower limit
+	 * @param u - The upper limit
 	 */
 	public ColorRange(Scalar l, Scalar u) {
 		upper = u;

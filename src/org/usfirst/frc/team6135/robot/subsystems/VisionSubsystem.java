@@ -90,9 +90,11 @@ public class VisionSubsystem extends Subsystem {
 	/*
 	 * Returns, in radians, the angle between the camera and the center of our alliance's switch
 	 */
+	@Deprecated
 	public double getSwitchAngle(DriverStation.Alliance color) throws VisionException {
 		return getSwitchAngle(color, 1);
 	}
+	@Deprecated
 	public double getSwitchAngle(DriverStation.Alliance color, double timeout) throws VisionException {
 		Mat originalImg = new Mat();
 		Mat hsvImg = new Mat();
@@ -152,9 +154,11 @@ public class VisionSubsystem extends Subsystem {
 	 * Returns, in radians, the angle between the camera and the center of the nearest
 	 * (largest on-screen) Power Cube.
 	 */
+	@Deprecated
 	public double getCubeAngle() throws VisionException {
 		return getCubeAngle(1);
 	}
+	@Deprecated
 	public double getCubeAngle(double timeout) throws VisionException {
 		Mat originalImg = new Mat();
 		Mat hsvImg = new Mat();
@@ -198,29 +202,20 @@ public class VisionSubsystem extends Subsystem {
 	}
 	
 	/*
-	 * Same as the above methods, however this version uses more OpenCV functions to speed things up.
+	 * Returns, in radians, the angle between the camera and the center of our alliance's switch
 	 */
 	public double getSwitchAngleEx(DriverStation.Alliance color) throws VisionException {
 		return getSwitchAngleEx(color, 1);
 	}
 	public double getSwitchAngleEx(DriverStation.Alliance color, double timeout) throws VisionException {
-		Mat originalImg = new Mat();
-		Mat hsvImg = new Mat();
-		Mat buf = new Mat();
-		Mat filteredImg1 = new Mat(), filteredImg2 = new Mat();
-		
-		if(sink.grabFrame(originalImg, timeout) == 0)
-			throw new VisionException("Failed to obtain image within timeout");
-		Imgproc.resize(originalImg, buf, new Size(RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT));
-		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
-		
+		Mat buf;
 		if(color.equals(DriverStation.Alliance.Red)) {
-			Core.inRange(hsvImg, redLowerBound1, redUpperBound1, filteredImg1);
-			Core.inRange(hsvImg, redLowerBound2, redUpperBound2, filteredImg2);
-			Core.addWeighted(filteredImg1, 1.0, filteredImg2, 1.0, 0.0, buf);
+			buf = Vision.grabThresholdedFrame(sink, timeout, RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT, 
+					new ColorRange(redLowerBound1, redUpperBound1), new ColorRange(redLowerBound2, redUpperBound2));
 		}
 		else if(color.equals(DriverStation.Alliance.Blue)) {
-			Core.inRange(hsvImg, blueLowerBound, blueUpperBound, buf);
+			buf = Vision.grabThresholdedFrame(sink, timeout, RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT, 
+					new ColorRange(blueLowerBound, blueUpperBound));
 		}
 		else {
 			throw new IllegalArgumentException("Invalid alliance colour");
@@ -238,20 +233,16 @@ public class VisionSubsystem extends Subsystem {
 		ImgPoint centre = new ImgPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
 		return Vision.getXAngleOffset(centre);
 	}
+	/*
+	 * Returns, in radians, the angle between the camera and the center of the nearest
+	 * (largest on-screen) Power Cube.
+	 */
 	public double getCubeAngleEx() throws VisionException {
 		return getCubeAngleEx(1);
 	}
 	public double getCubeAngleEx(double timeout) throws VisionException {
-		Mat originalImg = new Mat();
-		Mat hsvImg = new Mat();
-		Mat buf = new Mat();
-		
-		if(sink.grabFrame(originalImg, timeout) == 0)
-			throw new VisionException("Failed to obtain image within timeout");
-		Imgproc.resize(originalImg, buf, new Size(RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT));
-		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
-		Core.inRange(hsvImg, cubeLowerBound, cubeUpperBound, buf);
-		
+		Mat buf = Vision.grabThresholdedFrame(sink, timeout, RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT, 
+				new ColorRange(cubeLowerBound, cubeUpperBound));
 		Rect rect;
 		try {
 			rect = Vision.getBiggestBoundingRect(buf);

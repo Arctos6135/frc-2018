@@ -3,6 +3,7 @@ package org.usfirst.frc.team6135.robot.commands.teleoputils;
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
+import org.usfirst.frc.team6135.robot.vision.VisionException;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,7 +40,7 @@ public class AutoCubeAlign extends InstantCommand {
     	try {
     		angleRaw = Robot.visionSubsystem.getCubeAngle();
     	}
-    	catch(VisionSubsystem.VisionException e) {
+    	catch(VisionException e) {
     		return;
     	}
     	catch(Exception e) {

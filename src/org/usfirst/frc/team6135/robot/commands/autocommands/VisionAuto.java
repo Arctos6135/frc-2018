@@ -7,6 +7,7 @@ import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Delay;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
+import org.usfirst.frc.team6135.robot.vision.VisionException;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
@@ -52,7 +53,7 @@ public class VisionAuto extends InstantCommand {
     	double theta1, theta2, d;
     	try {
 			theta1 = Robot.visionSubsystem.getSwitchAngle(Robot.color);
-		} catch (VisionSubsystem.VisionException e) {
+		} catch (VisionException e) {
 			(new PlaceCubeFromMiddle(direction)).start();
 			return;
 		}
@@ -62,7 +63,7 @@ public class VisionAuto extends InstantCommand {
     	while(!moveForwardCommand.isCompleted());
     	try {
 			theta2 = Robot.visionSubsystem.getSwitchAngle(Robot.color);
-		} catch (VisionSubsystem.VisionException e) {
+		} catch (VisionException e) {
 			(new PlaceCubeFromMiddleBackup(direction, d)).start();
 			return;
 		}

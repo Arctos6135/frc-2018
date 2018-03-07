@@ -3,6 +3,7 @@ package org.usfirst.frc.team6135.robot.commands.teleoputils;
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
+import org.usfirst.frc.team6135.robot.vision.VisionException;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.InstantCommand;
@@ -39,13 +40,13 @@ public class AutoSwitchAlign extends InstantCommand {
     		//First try to look for the team colour
     		angleRaw = Robot.visionSubsystem.getSwitchAngle(Robot.color);
     	}
-    	catch(VisionSubsystem.VisionException e) {
+    	catch(VisionException e) {
     		try {
     			//If team colour cannot be found, look for the other colour
     			angleRaw = Robot.visionSubsystem.getSwitchAngle(
     					Robot.color.equals(DriverStation.Alliance.Red) ? DriverStation.Alliance.Blue : DriverStation.Alliance.Red);
     		}
-    		catch(VisionSubsystem.VisionException e1) {
+    		catch(VisionException e1) {
     			//If nothing can be found, give up.
     			return;
     		}
