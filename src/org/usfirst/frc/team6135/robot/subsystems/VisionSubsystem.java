@@ -1,11 +1,16 @@
 package org.usfirst.frc.team6135.robot.subsystems;
 
+import java.util.List;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
@@ -21,6 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *	Vision Subsystem
  */
+@SuppressWarnings("unused")
 public class VisionSubsystem extends Subsystem {
 	
 	/*
@@ -151,7 +157,7 @@ public class VisionSubsystem extends Subsystem {
 	 * occurrences - A map used to store section sizes
 	 * centers - A map used to store section center points
 	 */
-	static void visionFloodFill(int id, int x, int y, int[][] fillRef, ByteArrayImg img, HashMap<Integer, Integer> occurrences, HashMap<Integer, ImgPoint> centers) {
+	public static void visionFloodFill(int id, int x, int y, int[][] fillRef, ByteArrayImg img, HashMap<Integer, Integer> occurrences, HashMap<Integer, ImgPoint> centers) {
 		ArrayDeque<ImgPoint> stack = new ArrayDeque<ImgPoint>();
 		HashSet<ImgPoint> set = new HashSet<ImgPoint>();
 		if(!occurrences.containsKey(id))
@@ -265,7 +271,74 @@ public class VisionSubsystem extends Subsystem {
 		}
 		return detected;
 	}
-	
+	/*
+	 * Gets all of the bounding rects of the contours in an image, then returns the biggest one
+	 * This assumes that the input image is already thresholded
+	 */
+	public static Rect getBiggestBoundingRect(Mat img) throws VisionException {
+		Mat buf = new Mat();
+		//Get the structuring element for our morphological operation
+		//NOTE: These docs are for Python and C++, but should be easy to understand with the help of JavaDocs.
+		//TIP: In Eclipse, you can Ctrl + click to open the link in a browser
+		//https://docs.opencv.org/2.4/modules/imgproc/doc/filtering.html#getstructuringelement
+		Mat structuringElem = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+		//Dilate the image to join potentially separated elements
+		//https://docs.opencv.org/2.4/doc/tutorials/imgproc/erosion_dilatation/erosion_dilatation.html
+		Imgproc.dilate(img, buf, structuringElem);
+		
+		//Find the contours
+		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+		//https://docs.opencv.org/2.4/modules/imgproc/doc/structural_analysis_and_shape_descriptors.html?highlight=findcontours#findcontours
+		//Discard the hierarchy; we don't need that
+		Imgproc.findContours(buf, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+		//Create a List to store the bounding rectangles in
+		ArrayList<Rect> boundingRects = new ArrayList<Rect>();
+		//Iterate through all the contours
+		for(MatOfPoint contour : contours) {
+			//Commented out for a performance boost. However precision may be affected; the specific effects are not known.
+			/*
+			//Convert this MatOfPoint to a MatOfPoint2f
+			//The only difference is one uses floats and one uses ints
+			//https://stackoverflow.com/questions/11273588/how-to-convert-matofpoint-to-matofpoint2f-in-opencv-java-api
+			MatOfPoint2f contourf = new MatOfPoint2f(contour.toArray());
+			//Approximate a polygonal curve
+			//This will supposedly simplify the contour and approximate it to a polygon
+			//https://docs.opencv.org/2.4/modules/imgproc/doc/structural_analysis_and_shape_descriptors.html#approxpolydp
+			//https://docs.opencv.org/3.1.0/dd/d49/tutorial_py_contour_features.html
+			//https://docs.opencv.org/3.4.0/dd/d49/tutorial_py_contour_features.html
+			//First obtain the epsilon - the multiplier 0.1 was chosen according to the docs above
+			int epsilon = (int) Math.round(0.1 * Imgproc.arcLength(contourf, true));
+			//Then apply the approximation
+			MatOfPoint2f approximated = new MatOfPoint2f();
+			Imgproc.approxPolyDP(contourf, approximated, epsilon, true);
+			//Now find the bounding rect
+			//https://docs.opencv.org/3.1.0/d3/dc0/group__imgproc__shape.html#gacb413ddce8e48ff3ca61ed7cf626a366
+			boundingRects.add(Imgproc.boundingRect(new MatOfPoint(approximated.toArray())));
+			*/
+			
+			//Note that all of the above can be skipped for a potential accuracy penalty
+			boundingRects.add(Imgproc.boundingRect(contour));
+		}
+		//Find the largest rect
+		int maxRectIndex = -1;
+		int maxRectSize = 0;
+		for(int i = 0; i < boundingRects.size(); i ++) {
+			int rectSize = (int) boundingRects.get(i).area();
+			if(rectSize > maxRectSize) {
+				maxRectSize = rectSize;
+				maxRectIndex = i;
+			}
+		}
+		if(maxRectIndex == -1)
+			throw new VisionException("No bounding rect has a size > 0!");
+		return boundingRects.get(maxRectIndex);
+	}
+	/*
+	 * Finds the X angle offset from the center of the camera (in radians)
+	 */
+	public static double getXAngleOffset(ImgPoint pt) {
+		return Math.atan((pt.x - RobotMap.VISION_CENTER) / RobotMap.VISION_FOCAL_LEN);
+	}
 	
 	UsbCamera camera;
 	CvSink sink;
@@ -324,7 +397,7 @@ public class VisionSubsystem extends Subsystem {
 		
 		//Obtain the frame from the camera (1 second timeout)
 		if(sink.grabFrame(originalImg, timeout) == 0)
-			throw new VisionException("Failed to obtain frame within 1 second timeout");
+			throw new VisionException("Failed to obtain frame within timeout");
 		Imgproc.resize(originalImg, buf, new Size(RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT));
 		originalImg = buf;
 		//Do a median blur to remove noise
@@ -384,7 +457,7 @@ public class VisionSubsystem extends Subsystem {
 		
 		//Obtain the frame from the camera (1 second timeout)
 		if(sink.grabFrame(originalImg, timeout) == 0)
-			throw new VisionException("Failed to obtain frame within 1 second timeout");
+			throw new VisionException("Failed to obtain frame within timeout");
 		Imgproc.resize(originalImg, buf, new Size(RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT));
 		originalImg = buf;
 		Imgproc.medianBlur(originalImg, buf, 3);
@@ -416,6 +489,74 @@ public class VisionSubsystem extends Subsystem {
 		processed = null;
 		
 		return getKeyPointAngle(processedImg, 300);
+	}
+	
+	/*
+	 * Same as the above methods, however this version uses more OpenCV functions to speed things up.
+	 */
+	public double getSwitchAngleEx(DriverStation.Alliance color) throws VisionException {
+		return getSwitchAngleEx(color, 1);
+	}
+	public double getSwitchAngleEx(DriverStation.Alliance color, double timeout) throws VisionException {
+		Mat originalImg = new Mat();
+		Mat hsvImg = new Mat();
+		Mat buf = new Mat();
+		Mat filteredImg1 = new Mat(), filteredImg2 = new Mat();
+		
+		if(sink.grabFrame(originalImg, timeout) == 0)
+			throw new VisionException("Failed to obtain image within timeout");
+		Imgproc.resize(originalImg, buf, new Size(RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT));
+		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
+		
+		if(color.equals(DriverStation.Alliance.Red)) {
+			Core.inRange(hsvImg, redLowerBound1, redUpperBound1, filteredImg1);
+			Core.inRange(hsvImg, redLowerBound2, redUpperBound2, filteredImg2);
+			Core.addWeighted(filteredImg1, 1.0, filteredImg2, 1.0, 0.0, buf);
+		}
+		else if(color.equals(DriverStation.Alliance.Blue)) {
+			Core.inRange(hsvImg, blueLowerBound, blueUpperBound, buf);
+		}
+		else {
+			throw new IllegalArgumentException("Invalid alliance colour");
+		}
+		
+		Rect rect;
+		try {
+			rect = getBiggestBoundingRect(buf);
+			if(rect.area() < 20)
+				throw new VisionException();
+		}
+		catch(Exception ve) {
+			throw new VisionException("Switch could not be located");
+		}
+		ImgPoint centre = new ImgPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
+		return getXAngleOffset(centre);
+	}
+	public double getCubeAngleEx() throws VisionException {
+		return getCubeAngleEx(1);
+	}
+	public double getCubeAngleEx(double timeout) throws VisionException {
+		Mat originalImg = new Mat();
+		Mat hsvImg = new Mat();
+		Mat buf = new Mat();
+		
+		if(sink.grabFrame(originalImg, timeout) == 0)
+			throw new VisionException("Failed to obtain image within timeout");
+		Imgproc.resize(originalImg, buf, new Size(RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT));
+		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
+		Core.inRange(hsvImg, cubeLowerBound, cubeUpperBound, buf);
+		
+		Rect rect;
+		try {
+			rect = getBiggestBoundingRect(buf);
+			if(rect.area() < 75)
+				throw new VisionException();
+		}
+		catch(Exception ve) {
+			throw new VisionException("Cube could not be located");
+		}
+		ImgPoint centre = new ImgPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
+		return getXAngleOffset(centre);
 	}
 	
 }
