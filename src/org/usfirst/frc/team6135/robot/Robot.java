@@ -63,6 +63,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		//Initialize our subsystems
 		RobotMap.init();
+		RobotMap.wristGyro.calibrate();
 		drive = new DriveTrain();
 		intakeSubsystem = new IntakeSubsystem();
 		gearShiftSubsystem = new GearShiftSubsystem();
@@ -70,7 +71,6 @@ public class Robot extends IterativeRobot {
 		wristSubsystem = new WristSubsystem();
 		oi = new OI();
 		
-		RobotMap.wristGyro.calibrate();
 		//Get the team's colour and station number
 		station = DriverStation.getInstance().getLocation();
 		color = DriverStation.getInstance().getAlliance();
