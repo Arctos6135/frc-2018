@@ -23,4 +23,4 @@ Priority Level 3 - May not apply, but if they do these things MUST be done:
 	Pneumatic Gear Shifting (If drive fixes the problem)
 	
 Other:
-	Improve Vision Code
+	Test Theoretical Performance of Improved Vision Code, and if it's better update code to use them instead
