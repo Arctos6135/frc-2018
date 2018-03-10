@@ -24,8 +24,8 @@ public class WristSubsystem extends Subsystem {
 	}
 	
     public void initDefaultCommand() {
-    	//setDefaultCommand(new WristAnalog());
-    	setDefaultCommand(new WristAnalogAdjust());
+    	setDefaultCommand(new WristAnalog());
+    	//setDefaultCommand(new WristAnalogAdjust());
     }
 }
 

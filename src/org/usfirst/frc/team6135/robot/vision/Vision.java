@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Utilities class for vision processing with OpenCV.<br>
  * <b>Note:</b> For this class to function properly, the following public member variables in RobotMap must be set:<br>
- * <b>VISION_CENTER</b> - The X center of the vision camera, in <em>PIXELS</em>
+ * <b>VISION_CENTER</b> - The X center of the vision camera, in <em>PIXELS</em><br>
  * <b>VISION_FOCAL_LEN</b> - The <em>focal length</em> of the vision camera
  */
 public final class Vision {
