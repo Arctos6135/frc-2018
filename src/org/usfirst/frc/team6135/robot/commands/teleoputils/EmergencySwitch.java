@@ -28,15 +28,16 @@ public class EmergencySwitch extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(timeSinceInitialized() > HOLD_REQUIREMENT) {
-    		Command oldDefault = Robot.wristSubsystem.getDefaultCommand();
-    		Robot.wristSubsystem.setDefaultCommand(oldDefault instanceof WristAnalogAdjust ? new WristAnalog() : new WristAnalogAdjust());
-    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timeSinceInitialized() > HOLD_REQUIREMENT;
+    	if(timeSinceInitialized() > HOLD_REQUIREMENT) {
+    		Command oldDefault = Robot.wristSubsystem.getDefaultCommand();
+    		Robot.wristSubsystem.setDefaultCommand(oldDefault instanceof WristAnalogAdjust ? new WristAnalog() : new WristAnalogAdjust());
+    		return true;
+    	}
+    	return false;
     }
 
     // Called once after isFinished returns true
