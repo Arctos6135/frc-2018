@@ -27,11 +27,11 @@ public class DriveStraightDistance extends Command {
 	//The averaged encoder readings from the last check
 	protected double lastCheckDist = 0;
 	//The interval for checking in seconds
-	private final double checkInterval = 2;
+	private static final double checkInterval = 2;
 	//The minimum distance difference between checks in inches
-	private final double minDist = 1.5;
+	private static final double minDist = 1.5;
 	
-	private final double adjustValue = 0.05;
+	private static final double adjustValue = 0.05;
 	
     public DriveStraightDistance(double distance, double speed) {
         // Use requires() here to declare subsystem dependencies

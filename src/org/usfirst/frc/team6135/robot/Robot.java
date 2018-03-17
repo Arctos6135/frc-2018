@@ -2,7 +2,6 @@
 package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.subsystems.*;
-import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem.VisionException;
 import org.usfirst.frc.team6135.robot.commands.autocommands.*;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
@@ -136,12 +135,12 @@ public class Robot extends IterativeRobot {
 		visionAuto = new VisionAuto(VisionAuto.DIRECTION_LEFT);
 		chooser.addDefault("No Auto", null);
 		chooser.addObject("Drive Past Baseline", new DrivePastBaseLine());
-		chooser.addObject("Place Cube: Robot is on the left (Robot lines up with switch)", placeCubeLeftSide);
-		chooser.addObject("Place Cube: Robot is on the right (Robot lines up with switch)", placeCubeRightSide);
-		chooser.addObject("Place Cube: Robot is on the left (Robot is to the side of switch)", placeCubeLeftSideOffset);
-		chooser.addObject("Place Cube: Robot is on the right (Robot is to the side of switch)", placeCubeRightSideOffset);
-		chooser.addObject("Place Cube: Robot is in the middle", placeCubeFromMiddle);
-		chooser.addObject("Place Cube With Vision: Robot is in the middle", visionAuto);
+		chooser.addObject("Place Cube (Aligned with switch): Left", placeCubeLeftSide);
+		chooser.addObject("Place Cube (Aligned with switch): Right", placeCubeRightSide);
+		chooser.addObject("Place Cube (From side): Left", placeCubeLeftSideOffset);
+		chooser.addObject("Place Cube (From side): Right", placeCubeRightSideOffset);
+		chooser.addObject("Place Cube: Middle", placeCubeFromMiddle);
+		chooser.addObject("Place Cube With Vision: Middle", visionAuto);
 		//Display the chooser
 		SmartDashboard.putData("Auto mode", chooser);
 	}
