@@ -40,7 +40,7 @@ public class PlaceCubeSameSide extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH / 2, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }

@@ -183,15 +183,20 @@ public class Robot extends IterativeRobot {
 			if(gameData.length() > 0){
 				//Depending on which side the alliance switch is on, some commands need to change
 				if(gameData.charAt(0) == 'L'){
+					//If the alliance switch is on the left side
 					if(autonomousCommand.equals(placeCubeFromMiddle)) {
+						//If command is to place a cube from the middle
 						(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT)).start();
 					}
 					//Use == to check if they're the exact same object
 					else if(autonomousCommand == placeCubeLeftSide) {
+						//If command is to place a cube from the left side, start the command
 						autonomousCommand.start();
 					}
 					else if(autonomousCommand == placeCubeRightSide) {
-						(new DrivePastBaseLineOffset(DrivePastBaseLineOffset.DIRECTION_LEFT)).start();
+						//If command is to place a cube from the right, give up placing the cube and
+						//instead drive past the paseline
+						(new DrivePastBaseLineOffset(DrivePastBaseLineOffset.DIRECTION_RIGHT)).start();
 					}
 					else if(autonomousCommand == placeCubeLeftSideOffset) {
 						autonomousCommand.start();
@@ -214,7 +219,7 @@ public class Robot extends IterativeRobot {
 						autonomousCommand.start();
 					}
 					else if(autonomousCommand == placeCubeLeftSide) {
-						(new DrivePastBaseLineOffset(DrivePastBaseLineOffset.DIRECTION_RIGHT)).start();
+						(new DrivePastBaseLineOffset(DrivePastBaseLineOffset.DIRECTION_LEFT)).start();
 					}
 					else if(autonomousCommand == placeCubeRightSideOffset) {
 						autonomousCommand.start();

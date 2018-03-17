@@ -45,7 +45,7 @@ public class PlaceCubeFromSideOffset extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_CENTRE_DISTANCE, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_CENTRE_DISTANCE - RobotMap.ROBOT_LENGTH / 2, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));

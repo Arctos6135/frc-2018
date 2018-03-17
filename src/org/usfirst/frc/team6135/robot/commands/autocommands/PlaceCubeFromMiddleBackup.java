@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class PlaceCubeFromMiddleBackup extends CommandGroup {
 	
-	static double DISTANCE_Y = RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH / 2;
+	static double DISTANCE_Y = RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH;
 	
 	public static final int DIRECTION_LEFT = 1;
 	public static final int DIRECTION_RIGHT = -1;
