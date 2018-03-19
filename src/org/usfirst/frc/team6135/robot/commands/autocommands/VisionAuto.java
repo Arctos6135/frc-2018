@@ -43,9 +43,11 @@ public class VisionAuto extends InstantCommand {
         direction = switchDirection;
     }
     
-    void execCmd(Command cmd) {
-    	cmd.start();
-    	while(!cmd.isCompleted());
+    void execCmds(Command... commands) {
+    	for(Command cmd : commands) {
+    		cmd.start();
+    		while(!cmd.isCompleted());
+    	}
     }
 
     // Called once when the command executes
@@ -59,8 +61,7 @@ public class VisionAuto extends InstantCommand {
 		}
     	Command moveForwardCommand = new DriveStraightDistanceEx(RobotMap.ArenaDimensions.VISION_SAMPLING_DISTANCE, RobotMap.Speeds.AUTO_SPEED);
     	d = RobotMap.ArenaDimensions.VISION_SAMPLING_DISTANCE;
-    	moveForwardCommand.start();
-    	while(!moveForwardCommand.isCompleted());
+    	execCmds(moveForwardCommand);
     	try {
 			theta2 = Robot.visionSubsystem.getSwitchAngle(Robot.color);
 		} catch (VisionException e) {
@@ -70,21 +71,13 @@ public class VisionAuto extends InstantCommand {
     	
     	double s = (d * Math.sin(theta1)) / Math.sin(theta2 - theta1);
     	double xDist = Math.abs(Math.sin(theta2) * s);
-    	double yDist = Math.cos(theta2) * s;
+    	double yDist = Math.abs(Math.cos(theta2) * s);
     	
     	Command delay = new Delay(RobotMap.AUTO_DELAY);
-    	Command turnCommand = new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_SPEED);
-    	execCmd(turnCommand);
-    	execCmd(delay);
-    	moveForwardCommand = new DriveStraightDistanceEx(xDist, RobotMap.Speeds.AUTO_SPEED);
-    	execCmd(moveForwardCommand);
-    	execCmd(delay);
-    	turnCommand = new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_SPEED);
-    	execCmd(turnCommand);  
-    	execCmd(delay);
-    	moveForwardCommand = new DriveStraightDistanceEx(yDist, RobotMap.Speeds.AUTO_SPEED);
-    	execCmd(turnCommand);
-    	Command dropCommand = new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED);
-    	execCmd(dropCommand);
+    	execCmds(new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_SPEED), delay,
+    			new DriveStraightDistanceEx(xDist, RobotMap.Speeds.AUTO_SPEED), delay,
+    			new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_SPEED), delay,
+    			new DriveStraightDistanceEx(yDist, RobotMap.Speeds.AUTO_SPEED),
+    			new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }

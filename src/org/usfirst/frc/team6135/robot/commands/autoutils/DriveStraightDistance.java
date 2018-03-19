@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *	Drives a straight distance forward. The speed of the motors are constantly adjusted to ensure precision.
+ *	Since this command uses encoders instead of time, the readings will be checked periodically to ensure that
+ *	the robot is not stuck forever.
+ *
  *	@deprecated Use DriveStraightDistanceEx if possible, for it is more accurate and less error-prone.
  */
 @Deprecated

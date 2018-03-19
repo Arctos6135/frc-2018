@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *	and also checks if the average speed of the motors is about equal to what they were initially supposed
  *	to run on, and adjusts them if necessary. This class also checks if the values are out of bounds; in which
  *	case it will constrain them.
+ *	Since this command uses encoders instead of time, the readings will be checked periodically to ensure that
+ *	the robot is not stuck forever.
  *
  *	It is recommended to use this command instead of DriveStraightDistance.
  */

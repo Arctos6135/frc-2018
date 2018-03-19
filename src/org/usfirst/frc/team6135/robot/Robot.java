@@ -79,50 +79,7 @@ public class Robot extends IterativeRobot {
         //Set camera config
         visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
         
-        //Vision test code
-        /*(new Thread(new Runnable() {
-        	@Override
-        	public void run() {
-        		while(!Thread.interrupted()) {
-        			SmartDashboard.putString("Vision Test Status", "RUNNING");
-	        		try {
-	        			long start = System.currentTimeMillis();
-						SmartDashboard.putNumber("Cube angle", Math.toDegrees(visionSubsystem.getCubeAngle()));
-						long elapsed = System.currentTimeMillis() - start;
-						SmartDashboard.putNumber("Processing time (ms)", elapsed);
-						SmartDashboard.putString("Error:", "");
-					} 
-	        		catch (VisionException e) {
-						SmartDashboard.putString("Error:", "Vision Exception");
-					} 
-	        		catch(Throwable e) {
-						SmartDashboard.putString("Error:", e.toString());
-					}
-	        		try {
-						Thread.sleep(2000);
-					} 
-	        		catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-        		}
-        	}
-        })).start();*/
-        
-        //Encoder test code
-        (new Thread(new Runnable() {
-        	@Override
-        	public void run() {
-        		while(!Thread.interrupted()) {
-	        		SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
-	        		SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
-	        		try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-        		}
-        	}
-        })).start();
+       //(new Thread(new TestingThread())).start();
 
         //Add commands into the autonomous command chooser
         chooser.addDefault("Drive straight distance", new DriveStraightDistanceEx(5.0, 0.5));

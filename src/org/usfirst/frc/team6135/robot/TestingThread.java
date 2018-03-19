@@ -4,7 +4,12 @@ import org.usfirst.frc.team6135.robot.vision.VisionException;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class VisionTestingRunnable implements Runnable {
+/**
+ * Class {@code TestingThread} is a Runnable that loops forever and prints testing/debug info.
+ * @author Tyler
+ *
+ */
+public class TestingThread implements Runnable {
 
 	@Override
 	public void run() {
@@ -27,6 +32,7 @@ public class VisionTestingRunnable implements Runnable {
 			SmartDashboard.putNumber("Cube angle", success ? angle : 0);
 			SmartDashboard.putNumber("Time elapsed", success ? endTime - startTime : 0);
 			
+			SmartDashboard.putNumber("Gyro reading", Robot.wristSubsystem.getGyro());
 		}
 	}
 

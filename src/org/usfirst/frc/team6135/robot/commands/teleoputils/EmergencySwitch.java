@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class EmergencySwitch extends Command {
 
-	//The amount of time this command must keep running
-	protected static final double HOLD_REQUIREMENT = 2.0;
+	//The amount of time this command must keep running to disable auto adjustment
+	protected static final double HOLD_REQUIREMENT_EMERGENCY = 2.0;
+	//The amount of time this command must keep running to re-enable auto adjustment
+	protected static final double HOLD_REQUIREMENT_CANCEL = 5.0;
 	
     public EmergencySwitch() {
         // Use requires() here to declare subsystem dependencies
@@ -32,8 +34,9 @@ public class EmergencySwitch extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(timeSinceInitialized() > HOLD_REQUIREMENT) {
-    		Command oldDefault = Robot.wristSubsystem.getDefaultCommand();
+    	Command oldDefault = Robot.wristSubsystem.getDefaultCommand();
+    	double requirement = oldDefault instanceof WristAnalogAdjust ? HOLD_REQUIREMENT_EMERGENCY : HOLD_REQUIREMENT_CANCEL;
+    	if(timeSinceInitialized() > requirement) {
     		Robot.wristSubsystem.setDefaultCommand(oldDefault instanceof WristAnalogAdjust ? new WristAnalog() : new WristAnalogAdjust());
     		return true;
     	}
