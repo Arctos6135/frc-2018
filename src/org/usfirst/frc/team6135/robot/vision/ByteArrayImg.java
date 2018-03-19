@@ -17,6 +17,12 @@ public class ByteArrayImg {
 		this.width = width;
 		this.height = height;
 	}
+	public ByteArrayImg(Mat img) {
+		this.width = img.width();
+		this.height = img.height();
+		this.data = new byte[(int) (img.channels() * img.total())];
+		img.get(0, 0, this.data);
+	}
 	public byte getPixelByte(int x, int y) {
 		return data[y * width + x];
 	}

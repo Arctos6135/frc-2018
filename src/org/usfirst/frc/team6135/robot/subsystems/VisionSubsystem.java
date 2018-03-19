@@ -2,6 +2,9 @@ package org.usfirst.frc.team6135.robot.subsystems;
 
 import org.usfirst.frc.team6135.robot.vision.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
@@ -21,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *	Vision Subsystem
  */
 public class VisionSubsystem extends Subsystem {
-	/*
+	/**
 	 * Camera mode
 	 * VISION mode has low exposure for better object detection, 
 	 * However VIDEO mode's high exposure gives a brighter picture, which is better for humans to view
@@ -66,7 +69,7 @@ public class VisionSubsystem extends Subsystem {
 		// Set the default command for a subsystem here.
 		//setDefaultCommand(new MySpecialCommand());
 	}
-	/*
+	/**
 	 * Sets the mode of the camera
 	 * For more information on modes see the Mode enum
 	 */
@@ -87,7 +90,7 @@ public class VisionSubsystem extends Subsystem {
 			}
 		}
 	}
-	/*
+	/**
 	 * Returns, in radians, the angle between the camera and the center of our alliance's switch
 	 */
 	@Deprecated
@@ -150,7 +153,7 @@ public class VisionSubsystem extends Subsystem {
 		
 		return Vision.getKeyPointAngle(processedImg);
 	}
-	/*
+	/**
 	 * Returns, in radians, the angle between the camera and the center of the nearest
 	 * (largest on-screen) Power Cube.
 	 */
@@ -201,13 +204,20 @@ public class VisionSubsystem extends Subsystem {
 		return Vision.getKeyPointAngle(processedImg, 300);
 	}
 	
-	/*
+	/**
 	 * Returns, in radians, the angle between the camera and the center of our alliance's switch
+	 * @deprecated It's not logical to use this method to extract the angle given the LED lighting on the switch.
+	 * Use getSwitchAngleEx instead.
 	 */
-	public double getSwitchAngleEx(DriverStation.Alliance color) throws VisionException {
-		return getSwitchAngleEx(color, 1);
+	public double getSwitchAngleOpenCV(DriverStation.Alliance color) throws VisionException {
+		return getSwitchAngleOpenCV(color, 1);
 	}
-	public double getSwitchAngleEx(DriverStation.Alliance color, double timeout) throws VisionException {
+	/**
+	 * Returns, in radians, the angle between the camera and the center of our alliance's switch
+	 * @deprecated It's not logical to use this method to extract the angle given the LED lighting on the switch.
+	 * Use getSwitchAngleEx instead.
+	 */
+	public double getSwitchAngleOpenCV(DriverStation.Alliance color, double timeout) throws VisionException {
 		Mat buf;
 		if(color.equals(DriverStation.Alliance.Red)) {
 			buf = Vision.grabThresholdedFrame(sink, timeout, RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT, 
@@ -233,14 +243,18 @@ public class VisionSubsystem extends Subsystem {
 		ImgPoint centre = new ImgPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
 		return Vision.getXAngleOffset(centre);
 	}
-	/*
+	/**
 	 * Returns, in radians, the angle between the camera and the center of the nearest
 	 * (largest on-screen) Power Cube.
 	 */
-	public double getCubeAngleEx() throws VisionException {
-		return getCubeAngleEx(1);
+	public double getCubeAngleOpenCV() throws VisionException {
+		return getCubeAngleOpenCV(1);
 	}
-	public double getCubeAngleEx(double timeout) throws VisionException {
+	/**
+	 * Returns, in radians, the angle between the camera and the center of the nearest
+	 * (largest on-screen) Power Cube.
+	 */
+	public double getCubeAngleOpenCV(double timeout) throws VisionException {
 		Mat buf = Vision.grabThresholdedFrame(sink, timeout, RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT, 
 				new ColorRange(cubeLowerBound, cubeUpperBound));
 		Rect rect;
@@ -256,5 +270,58 @@ public class VisionSubsystem extends Subsystem {
 		return Vision.getXAngleOffset(centre);
 	}
 	
+	/**
+	 * Returns, in radians, the angle between the camera and the center of our alliance's switch.<br>
+	 * Its function is identical to the other {@code getSwitchAngle} methods, but uses a different strategy.
+	 * Instead of looking for the largest blob on screen, it takes into account every point that has a minimum size
+	 * of 10px and averages over all of them.
+	 */
+	public double getSwitchAngleEx(DriverStation.Alliance color) throws VisionException {
+		return getSwitchAngleEx(color, 1);
+	}
+	/**
+	 * Returns, in radians, the angle between the camera and the center of our alliance's switch.<br>
+	 * Its function is identical to the other {@code getSwitchAngle} methods, but uses a different strategy.
+	 * Instead of looking for the largest blob on screen, it takes into account every point that has a minimum size
+	 * of 10px and averages over all of them.
+	 */
+	public double getSwitchAngleEx(DriverStation.Alliance color, double timeout) throws VisionException {
+		Mat buf;
+		if(color.equals(DriverStation.Alliance.Red)) {
+			buf = Vision.grabThresholdedFrame(sink, timeout, RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT, 
+					new ColorRange(redLowerBound1, redUpperBound1), new ColorRange(redLowerBound2, redUpperBound2));
+		}
+		else if(color.equals(DriverStation.Alliance.Blue)) {
+			buf = Vision.grabThresholdedFrame(sink, timeout, RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT, 
+					new ColorRange(blueLowerBound, blueUpperBound));
+		}
+		else {
+			throw new IllegalArgumentException("Invalid alliance colour");
+		}
+		
+		//Go through each pixel, and flood fill
+		int[][] marking = new int[buf.width()][buf.height()];
+		ByteArrayImg img = new ByteArrayImg(buf);
+		HashMap<Integer, Integer> sizes = new HashMap<Integer, Integer>();
+		HashMap<Integer, ImgPoint> centers = new HashMap<Integer, ImgPoint>();
+		
+		int sectionId = 1;
+		for(int x = 0; x < img.width; x ++) {
+			for(int y = 0; y < img.height; y ++) {
+				if(img.getPixelByte(x, y) != 0x00 && marking[x][y] == 0) {
+					Vision.visionFloodFill(sectionId++, x, y, marking, img, sizes, centers);
+				}
+			}
+		}
+		ArrayList<ImgPoint> list = new ArrayList<ImgPoint>();
+		//Filter out dots
+		for(int i = 1; i < sectionId; i ++) {
+			if(sizes.get(i) >= 10) {
+				list.add(centers.get(i));
+			}
+		}
+		ImgPoint center = ImgPoint.average(list);
+		return Vision.getXAngleOffset(center);
+	}
 }
 

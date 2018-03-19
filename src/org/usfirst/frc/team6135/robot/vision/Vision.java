@@ -52,7 +52,6 @@ public final class Vision {
 	};
 	
 	
-	/* PRIVATE METHODS */
 	/**
 	 * Non-Recursive Flood Fill.
 	 * Used to find the centre point of sections and detect the largest section.
@@ -64,9 +63,8 @@ public final class Vision {
 	 * @param img - A black and white ByteArrayImg used as boundaries (flood fill ends upon reaching a black pixel)
 	 * @param occurrences - A map used to store section sizes
 	 * @param centers - A map used to store section center points
-	 * @deprecated Better and faster results can be achieved using OpenCV libraries.
 	 */
-	static void visionFloodFill(int id, int x, int y, int[][] fillRef, ByteArrayImg img, HashMap<Integer, Integer> occurrences, HashMap<Integer, ImgPoint> centers) {
+	public static void visionFloodFill(int id, int x, int y, int[][] fillRef, ByteArrayImg img, HashMap<Integer, Integer> occurrences, HashMap<Integer, ImgPoint> centers) {
 		ArrayDeque<ImgPoint> stack = new ArrayDeque<ImgPoint>();
 		HashSet<ImgPoint> set = new HashSet<ImgPoint>();
 		if(!occurrences.containsKey(id))
@@ -117,9 +115,7 @@ public final class Vision {
 			SmartDashboard.putString("ERROR", t.toString());
 		}
 	}
-
 	
-	/* PUBLIC METHODS */
 	/**
 	 * Returns the angle, in radians, of the "key point" (center point) of the largest blob
 	 * from the image. The angle is based on focal length and applies to real life.
