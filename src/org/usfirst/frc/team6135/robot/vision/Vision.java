@@ -64,6 +64,7 @@ public final class Vision {
 	 * @param occurrences - A map used to store section sizes
 	 * @param centers - A map used to store section center points
 	 */
+	//public static int counter = 0;
 	public static void visionFloodFill(int id, int x, int y, int[][] fillRef, ByteArrayImg img, HashMap<Integer, Integer> occurrences, HashMap<Integer, ImgPoint> centers) {
 		ArrayDeque<ImgPoint> stack = new ArrayDeque<ImgPoint>();
 		HashSet<ImgPoint> set = new HashSet<ImgPoint>();
@@ -74,6 +75,7 @@ public final class Vision {
 		ImgPoint firstPoint = new ImgPoint(x, y);
 		stack.push(firstPoint);
 		set.add(firstPoint);
+		//SmartDashboard.putNumber("Calls", counter++);
 		try {
 			if(id == 0)
 				throw new IllegalArgumentException("ID is 0");
@@ -329,6 +331,11 @@ public final class Vision {
 		Core.inRange(hsvImg, range1.getLower(), range1.getUpper(), buf2);
 		Core.inRange(hsvImg, range2.getLower(), range2.getUpper(), buf3);
 		Core.addWeighted(buf2, 1.0, buf3, 1.0, 0.0, buf);
+		originalImg = null;
+		buf2 = null;
+		buf3 = null;
+		hsvImg = null;
+		System.gc();
 		return buf;
 	}
 }

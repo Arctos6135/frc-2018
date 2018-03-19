@@ -55,7 +55,7 @@ public class DriveStraightDistance extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(leftEncoder.getDistance() > rightEncoder.getDistance()) {
+    	/*if(leftEncoder.getDistance() > rightEncoder.getDistance()) {
     		leftSpeed -= adjustValue;
     		rightSpeed += adjustValue;
     	} else if(leftEncoder.getDistance() < rightEncoder.getDistance()) {
@@ -63,7 +63,7 @@ public class DriveStraightDistance extends Command {
     		rightSpeed -= adjustValue;
     	}
     	leftSpeed = Math.max(Math.min(RobotMap.Speeds.DRIVE_SPEED, leftSpeed), -RobotMap.Speeds.DRIVE_SPEED);
-    	rightSpeed = Math.max(Math.min(RobotMap.Speeds.DRIVE_SPEED, rightSpeed), -RobotMap.Speeds.DRIVE_SPEED);
+    	rightSpeed = Math.max(Math.min(RobotMap.Speeds.DRIVE_SPEED, rightSpeed), -RobotMap.Speeds.DRIVE_SPEED);*/
     	Robot.drive.setMotorsVBus(leftSpeed, rightSpeed);
     }
 

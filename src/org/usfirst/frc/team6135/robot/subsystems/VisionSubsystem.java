@@ -39,10 +39,13 @@ public class VisionSubsystem extends Subsystem {
 	public static int cameraInitBrightness;
 	//Colour filters
 	//Note that red has two sets since its hue is split
+	//public static final Scalar redUpperBound1 = new Scalar(10, 255, 255);
+	//public static final Scalar redLowerBound1 = new Scalar(0, 210, 115);
 	public static final Scalar redUpperBound1 = new Scalar(10, 255, 255);
-	public static final Scalar redLowerBound1 = new Scalar(0, 210, 115);
-	public static final Scalar redLowerBound2 = new Scalar(245, 210, 115);
+	public static final Scalar redLowerBound1 = new Scalar(0, 5, 75);
 	public static final Scalar redUpperBound2 = new Scalar(255, 255, 255);
+	public static final Scalar redLowerBound2 = new Scalar(245, 5, 75);
+	
 	public static final Scalar blueUpperBound = new Scalar(170, 255, 255);
 	public static final Scalar blueLowerBound = new Scalar(145, 190, 75);
 	//49, 255, 255         32, 170, 10
@@ -79,6 +82,9 @@ public class VisionSubsystem extends Subsystem {
 			camera.setBrightness(100);
 			camera.setExposureManual(20);
 			camera.setExposureHoldCurrent();
+			/*camera.setBrightness(25);
+			camera.setExposureManual(5);
+			camera.setExposureHoldCurrent();*/
 			camera.setFPS(8);
 		}
 		else {
@@ -230,7 +236,7 @@ public class VisionSubsystem extends Subsystem {
 		else {
 			throw new IllegalArgumentException("Invalid alliance colour");
 		}
-		
+		source.putFrame(buf);
 		Rect rect;
 		try {
 			rect = Vision.getBiggestBoundingRect(buf);
@@ -303,10 +309,13 @@ public class VisionSubsystem extends Subsystem {
 		else {
 			throw new IllegalArgumentException("Invalid alliance colour");
 		}
-		
+		Mat dilated = new Mat();
+		Mat mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+		Imgproc.dilate(buf, dilated, mat);
+		source.putFrame(dilated);
 		//Go through each pixel, and flood fill
-		int[][] marking = new int[buf.width()][buf.height()];
-		ByteArrayImg img = new ByteArrayImg(buf);
+		int[][] marking = new int[dilated.width()][dilated.height()];
+		ByteArrayImg img = new ByteArrayImg(dilated);
 		HashMap<Integer, Integer> sizes = new HashMap<Integer, Integer>();
 		HashMap<Integer, ImgPoint> centers = new HashMap<Integer, ImgPoint>();
 		
@@ -315,6 +324,7 @@ public class VisionSubsystem extends Subsystem {
 			for(int y = 0; y < img.height; y ++) {
 				if(img.getPixelByte(x, y) != 0x00 && marking[x][y] == 0) {
 					Vision.visionFloodFill(sectionId++, x, y, marking, img, sizes, centers);
+					SmartDashboard.putString("Called", "YES");
 				}
 			}
 		}
@@ -325,7 +335,11 @@ public class VisionSubsystem extends Subsystem {
 				list.add(centers.get(i));
 			}
 		}
+		if(list.isEmpty())
+			throw new VisionException("Switch not detected");
 		ImgPoint center = ImgPoint.average(list);
+		buf = null;
+		dilated = null;
 		return Vision.getXAngleOffset(center);
 	}
 }
