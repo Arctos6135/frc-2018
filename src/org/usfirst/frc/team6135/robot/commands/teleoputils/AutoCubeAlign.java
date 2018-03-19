@@ -38,7 +38,7 @@ public class AutoCubeAlign extends InstantCommand {
     	
     	double angleRaw;
     	try {
-    		angleRaw = Robot.visionSubsystem.getCubeAngle();
+    		angleRaw = Robot.visionSubsystem.getCubeAngleOpenCV();
     	}
     	catch(VisionException e) {
     		return;

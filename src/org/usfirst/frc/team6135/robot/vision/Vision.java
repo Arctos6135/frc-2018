@@ -262,6 +262,8 @@ public final class Vision {
 		}
 		if(maxRectIndex == -1)
 			throw new VisionException("No bounding rect has a size > 0!");
+		if(maxRectSize < 2500)
+			throw new VisionException("Cube was not found");
 		return boundingRects.get(maxRectIndex);
 	}
 	
