@@ -24,7 +24,7 @@ public class TestingThread implements Runnable {
 			
 			
 			try {
-				angle = Robot.visionSubsystem.getCubeAngleOpenCV();
+				angle = Math.toDegrees(Robot.visionSubsystem.getCubeAngleOpenCV());
 				endTime = System.currentTimeMillis();
 				SmartDashboard.putString("Cube Vision Error:", "Success");
 				success = true;

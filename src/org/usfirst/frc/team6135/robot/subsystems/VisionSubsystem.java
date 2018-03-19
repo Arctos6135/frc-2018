@@ -46,8 +46,8 @@ public class VisionSubsystem extends Subsystem {
 	public static final Scalar blueUpperBound = new Scalar(170, 255, 255);
 	public static final Scalar blueLowerBound = new Scalar(145, 190, 75);
 	//49, 255, 255         32, 170, 10
-	public static final Scalar cubeUpperBound = new Scalar(73, 255, 255);
-	public static final Scalar cubeLowerBound = new Scalar(23, 170, 10);
+	public static final Scalar cubeUpperBound = new Scalar(68, 255, 255);
+	public static final Scalar cubeLowerBound = new Scalar(30, 170, 20);
 	
 	UsbCamera camera;
 	CvSink sink;
@@ -257,9 +257,14 @@ public class VisionSubsystem extends Subsystem {
 	public double getCubeAngleOpenCV(double timeout) throws VisionException {
 		Mat buf = Vision.grabThresholdedFrame(sink, timeout, RobotMap.VISION_WIDTH, RobotMap.VISION_HEIGHT, 
 				new ColorRange(cubeLowerBound, cubeUpperBound));
+		Mat eroded = new Mat();
+		Mat mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+		Imgproc.erode(buf, eroded, mat);
+		
+		source.putFrame(eroded);
 		Rect rect;
 		try {
-			rect = Vision.getBiggestBoundingRect(buf);
+			rect = Vision.getBiggestBoundingRect(eroded);
 			if(rect.area() < 75)
 				throw new VisionException();
 		}

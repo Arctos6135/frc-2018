@@ -68,7 +68,6 @@ public class Robot extends IterativeRobot {
 		gearShiftSubsystem = new GearShiftSubsystem();
 		elevatorSubsystem = new ElevatorSubsystem();
 		wristSubsystem = new WristSubsystem();
-		oi = new OI();
 		
 		//Get the team's colour and station number
 		station = DriverStation.getInstance().getLocation();
@@ -79,7 +78,8 @@ public class Robot extends IterativeRobot {
         //Set camera config
         visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
         
-       //(new Thread(new TestingThread())).start();
+        oi = new OI();
+        (new Thread(new TestingThread())).start();
 
         //Add commands into the autonomous command chooser
         chooser.addDefault("Drive straight distance", new DriveStraightDistanceEx(5.0, 0.5));
