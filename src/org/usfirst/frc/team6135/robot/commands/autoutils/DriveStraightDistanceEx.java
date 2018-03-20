@@ -49,6 +49,8 @@ public class DriveStraightDistanceEx extends Command {
     	requires(Robot.drive);
     	this.distance = distance;
     	this.speed = speed;
+    	this.leftSpeed = speed;
+    	this.rightSpeed = speed;
     }
     
     static double constrain(double val, double upper, double lower) {
