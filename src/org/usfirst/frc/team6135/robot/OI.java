@@ -108,8 +108,8 @@ public class OI {
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
-		gearShiftFast.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));
-		gearShiftSlow.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));
+		//gearShiftFast.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));
+		//gearShiftSlow.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));
 		
 		Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_SPEED); 
 		Command autoSwitchAlignCmd = new AutoSwitchAlign(RobotMap.Speeds.AUTO_SPEED);
