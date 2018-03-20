@@ -134,9 +134,10 @@ public class VisionSubsystem extends Subsystem {
 			throw new IllegalArgumentException("Invalid alliance colour");
 		}
 		//Free up RAM
-		filteredImg1 = null;
-		filteredImg2 = null;
-		originalImg = null;
+		originalImg.release();
+		filteredImg.release();
+		filteredImg2.release();
+		filteredImg1.release();
 		//Median blur again to make processing more accurate
 		Imgproc.medianBlur(filteredImg, buf, 7);
 		filteredImg = buf;
@@ -156,6 +157,9 @@ public class VisionSubsystem extends Subsystem {
 		img = null;
 		imgData = null;
 		processed = null;
+		
+		buf.release();
+		hsvImg.release();
 		
 		return Vision.getKeyPointAngle(processedImg);
 	}
@@ -206,6 +210,10 @@ public class VisionSubsystem extends Subsystem {
 		img = null;
 		imgData = null;
 		processed = null;
+		originalImg.release();
+		filteredImg.release();
+		buf.release();
+		hsvImg.release();
 		
 		return Vision.getKeyPointAngle(processedImg, 300);
 	}
@@ -247,6 +255,7 @@ public class VisionSubsystem extends Subsystem {
 			throw new VisionException("Switch could not be located");
 		}
 		ImgPoint centre = new ImgPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
+		buf.release();
 		return Vision.getXAngleOffset(centre);
 	}
 	/**
@@ -278,6 +287,7 @@ public class VisionSubsystem extends Subsystem {
 			throw new VisionException("Cube could not be located");
 		}
 		ImgPoint centre = new ImgPoint(rect.x + rect.width / 2, rect.y + rect.height / 2);
+		buf.release();
 		return Vision.getXAngleOffset(centre);
 	}
 	
@@ -338,8 +348,8 @@ public class VisionSubsystem extends Subsystem {
 		if(list.isEmpty())
 			throw new VisionException("Switch not detected");
 		ImgPoint center = ImgPoint.average(list);
-		buf = null;
-		dilated = null;
+		buf.release();
+		dilated.release();
 		return Vision.getXAngleOffset(center);
 	}
 }

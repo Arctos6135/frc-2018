@@ -218,7 +218,7 @@ public final class Vision {
 		//Dilate the image to join potentially separated elements
 		//https://docs.opencv.org/2.4/doc/tutorials/imgproc/erosion_dilatation/erosion_dilatation.html
 		Imgproc.dilate(img, buf, structuringElem);
-		
+		structuringElem.release();
 		//Find the contours
 		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 		//https://docs.opencv.org/2.4/modules/imgproc/doc/structural_analysis_and_shape_descriptors.html?highlight=findcontours#findcontours
@@ -301,6 +301,9 @@ public final class Vision {
 		Imgproc.resize(originalImg, buf, new Size(width, height));
 		Imgproc.cvtColor(buf, hsvImg, Imgproc.COLOR_BGR2HSV_FULL);
 		Core.inRange(hsvImg, range.getLower(), range.getUpper(), buf2);
+		originalImg.release();
+		buf.release();
+		hsvImg.release();
 		return buf2;
 	}
 	/**
@@ -331,11 +334,10 @@ public final class Vision {
 		Core.inRange(hsvImg, range1.getLower(), range1.getUpper(), buf2);
 		Core.inRange(hsvImg, range2.getLower(), range2.getUpper(), buf3);
 		Core.addWeighted(buf2, 1.0, buf3, 1.0, 0.0, buf);
-		originalImg = null;
-		buf2 = null;
-		buf3 = null;
-		hsvImg = null;
-		System.gc();
+		originalImg.release();
+		buf2.release();
+		buf3.release();
+		hsvImg.release();
 		return buf;
 	}
 }
