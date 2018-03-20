@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6135.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -140,6 +141,13 @@ public class RobotMap {
 		rightDriveVictor.follow(rightDriveTalon1);
 		leftDriveVictor.setInverted(true);
 		rightDriveVictor.setInverted(true);
+		
+		leftDriveTalon1.setNeutralMode(NeutralMode.Brake);
+		leftDriveTalon2.setNeutralMode(NeutralMode.Brake);
+		rightDriveTalon1.setNeutralMode(NeutralMode.Brake);
+		rightDriveTalon2.setNeutralMode(NeutralMode.Brake);
+		leftDriveVictor.setNeutralMode(NeutralMode.Brake);
+		rightDriveVictor.setNeutralMode(NeutralMode.Brake);
 		
 		leftDriveTalon1.set(ControlMode.PercentOutput, 0);
 		rightDriveTalon1.set(ControlMode.PercentOutput, 0);
