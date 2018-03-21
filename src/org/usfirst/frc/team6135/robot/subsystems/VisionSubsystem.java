@@ -334,7 +334,6 @@ public class VisionSubsystem extends Subsystem {
 			for(int y = 0; y < img.height; y ++) {
 				if(img.getPixelByte(x, y) != 0x00 && marking[x][y] == 0) {
 					Vision.visionFloodFill(sectionId++, x, y, marking, img, sizes, centers);
-					SmartDashboard.putString("Called", "YES");
 				}
 			}
 		}
