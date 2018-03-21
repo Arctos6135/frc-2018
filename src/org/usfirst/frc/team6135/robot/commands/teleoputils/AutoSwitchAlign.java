@@ -38,12 +38,12 @@ public class AutoSwitchAlign extends InstantCommand {
     	double angleRaw;
     	try {
     		//First try to look for the team colour
-    		angleRaw = Robot.visionSubsystem.getSwitchAngle(Robot.color);
+    		angleRaw = Robot.visionSubsystem.getSwitchAngleEx(Robot.color);
     	}
     	catch(VisionException e) {
     		try {
     			//If team colour cannot be found, look for the other colour
-    			angleRaw = Robot.visionSubsystem.getSwitchAngle(
+    			angleRaw = Robot.visionSubsystem.getSwitchAngleEx(
     					Robot.color.equals(DriverStation.Alliance.Red) ? DriverStation.Alliance.Blue : DriverStation.Alliance.Red);
     		}
     		catch(VisionException e1) {
