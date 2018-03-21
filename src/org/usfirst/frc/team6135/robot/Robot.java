@@ -4,7 +4,7 @@ package org.usfirst.frc.team6135.robot;
 import org.usfirst.frc.team6135.robot.subsystems.*;
 import org.usfirst.frc.team6135.robot.commands.autocommands.*;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
-import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistance;
+import org.usfirst.frc.team6135.robot.commands.autoutils.Brake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 
 import edu.wpi.first.wpilibj.CameraServer;
@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-//import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -83,7 +82,7 @@ public class Robot extends IterativeRobot {
         (new Thread(new TestingThread())).start();
 
         //Add commands into the autonomous command chooser
-        chooser.addDefault("Drive straight distance", new DriveStraightDistance(30.0, 0.5));
+        chooser.addDefault("Drive straight distance", new DriveStraightDistanceEx(30.0, 0.5));
 		chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.75));
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
 		placeCubeLeftSide = new PlaceCubeSameSide();
@@ -110,7 +109,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		Robot.drive.setDefaultCommand(null);
 	}
 
 	@Override
@@ -204,6 +203,8 @@ public class Robot extends IterativeRobot {
 
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
+		
+		//Robot.drive.setDefaultCommand(new Brake());
 	}
 
 	/**
@@ -224,6 +225,8 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.cancel();
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
+		
+		Robot.drive.setDefaultCommand(null);
 	}
 
 	/**
@@ -239,7 +242,5 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		//According to documentation, this method is deprecated since it's no longer required
-		//LiveWindow.run();
 	}
 }
