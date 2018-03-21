@@ -81,7 +81,7 @@ public class RobotMap {
 	public static class Speeds {
 		public static final double ELEVATOR_SPEED = 0.75;
 		public static final double WRIST_SPEED = 0.3;
-		public static final double AUTO_SPEED = 0.3; //0.6
+		public static final double AUTO_SPEED = 0.25; //0.6
 		public static final double AUTO_INTAKE_SPEED = 0.3;
 		public static final double DRIVE_SPEED = 1.0;
 	}
@@ -142,12 +142,12 @@ public class RobotMap {
 		leftDriveVictor.setInverted(true);
 		rightDriveVictor.setInverted(true);
 		
-		leftDriveTalon1.setNeutralMode(NeutralMode.Brake);
+		/*leftDriveTalon1.setNeutralMode(NeutralMode.Brake);
 		leftDriveTalon2.setNeutralMode(NeutralMode.Brake);
 		rightDriveTalon1.setNeutralMode(NeutralMode.Brake);
 		rightDriveTalon2.setNeutralMode(NeutralMode.Brake);
 		leftDriveVictor.setNeutralMode(NeutralMode.Brake);
-		rightDriveVictor.setNeutralMode(NeutralMode.Brake);
+		rightDriveVictor.setNeutralMode(NeutralMode.Brake);*/
 		
 		leftDriveTalon1.set(ControlMode.PercentOutput, 0);
 		rightDriveTalon1.set(ControlMode.PercentOutput, 0);

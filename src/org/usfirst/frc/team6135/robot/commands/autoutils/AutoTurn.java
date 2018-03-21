@@ -62,11 +62,15 @@ public class AutoTurn extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	Robot.drive.setMotorsVBus(0, 0);
+    	leftEncoder.reset();
+    	rightEncoder.reset();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
     	Robot.drive.setMotorsVBus(0, 0);
+    	leftEncoder.reset();
+    	rightEncoder.reset();
     }
 }

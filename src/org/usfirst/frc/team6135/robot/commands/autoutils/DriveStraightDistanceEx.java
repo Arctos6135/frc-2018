@@ -123,6 +123,8 @@ public class DriveStraightDistanceEx extends Command {
     @Override
     protected void end() {
     	Robot.drive.setMotorsVBus(0, 0);
+    	leftEncoder.reset();
+    	rightEncoder.reset();
     }
 
     // Called when another command which requires one or more of the same
@@ -130,5 +132,7 @@ public class DriveStraightDistanceEx extends Command {
     @Override
     protected void interrupted() {
     	Robot.drive.setMotorsVBus(0, 0);
+    	leftEncoder.reset();
+    	rightEncoder.reset();
     }
 }

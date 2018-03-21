@@ -2,10 +2,14 @@
 package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.subsystems.*;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import org.usfirst.frc.team6135.robot.commands.autocommands.*;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Brake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
+import org.usfirst.frc.team6135.robot.commands.teleopcommands.TeleopDrive;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -62,12 +66,13 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		//Initialize our subsystems
 		RobotMap.init();
-		RobotMap.wristGyro.calibrate();
 		drive = new DriveTrain();
 		intakeSubsystem = new IntakeSubsystem();
 		gearShiftSubsystem = new GearShiftSubsystem();
 		elevatorSubsystem = new ElevatorSubsystem();
 		wristSubsystem = new WristSubsystem();
+		RobotMap.wristGyro.calibrate();
+		wristSubsystem.START_TIME = System.currentTimeMillis();
 		
 		//Get the team's colour and station number
 		station = DriverStation.getInstance().getLocation();
@@ -82,8 +87,8 @@ public class Robot extends IterativeRobot {
         (new Thread(new TestingThread())).start();
 
         //Add commands into the autonomous command chooser
-        chooser.addDefault("Drive straight distance", new DriveStraightDistanceEx(30.0, 0.5));
-		chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.75));
+        chooser.addDefault("Drive straight distance", new DriveStraightDistanceEx(60.0, 0.25));
+		chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.3));
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
 		placeCubeLeftSide = new PlaceCubeSameSide();
 		placeCubeRightSide = new PlaceCubeSameSide();
@@ -100,6 +105,8 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Place Cube With Vision: Middle", visionAuto);
 		//Display the chooser
 		SmartDashboard.putData("Auto mode", chooser);
+		
+		
 	}
 
 	/**
@@ -109,7 +116,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-		Robot.drive.setDefaultCommand(null);
+		Robot.drive.setDefaultCommand(new TeleopDrive());
 	}
 
 	@Override
@@ -204,7 +211,13 @@ public class Robot extends IterativeRobot {
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
 		
-		//Robot.drive.setDefaultCommand(new Brake());
+		RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Brake);
+		RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Brake);
+		RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Brake);
+		RobotMap.rightDriveTalon2.setNeutralMode(NeutralMode.Brake);
+		RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Brake);
+		RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Brake);
+		Robot.drive.setDefaultCommand(new Brake(true));
 	}
 
 	/**
@@ -226,7 +239,13 @@ public class Robot extends IterativeRobot {
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
 		
-		Robot.drive.setDefaultCommand(null);
+		Robot.drive.setDefaultCommand(new TeleopDrive());
+		RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Coast);
+		RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Coast);
+		RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Coast);
+		RobotMap.rightDriveTalon2.setNeutralMode(NeutralMode.Coast);
+		RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Coast);
+		RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Coast);
 	}
 
 	/**

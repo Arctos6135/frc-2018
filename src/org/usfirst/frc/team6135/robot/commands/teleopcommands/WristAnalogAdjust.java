@@ -22,7 +22,7 @@ public class WristAnalogAdjust extends WristAnalog {
 	protected boolean wasStationary;
 	//Soft limits for the wrist angle. If past this angle, the wrist will not turn (in code) and angle will not be recorded
 	//This is to prevent slacking due to wrist reaching the bottom
-	protected static final double WRIST_SOFT_LIMIT_HIGH = Double.MAX_VALUE; //Not constrained - to be set w/ later testing
+	protected static final double WRIST_SOFT_LIMIT_HIGH = 3.0; //Not constrained - to be set w/ later testing
 	protected static final double WRIST_SOFT_LIMIT_LOW = Double.MIN_VALUE; //Not constrained - to be set w/ later testing
 
     public WristAnalogAdjust() {
@@ -50,14 +50,15 @@ public class WristAnalogAdjust extends WristAnalog {
     	
     	if(Math.abs(joystickVal) > DEADZONE) {
     		//Only move the wrist if the gyro shows that the angle is in the constraints
-    		if(inRange(gyroReading, WRIST_SOFT_LIMIT_HIGH, WRIST_SOFT_LIMIT_LOW)) {
+    		/*if(inRange(gyroReading, WRIST_SOFT_LIMIT_HIGH, WRIST_SOFT_LIMIT_LOW)) {
 	    		wasStationary = false;
 	    		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * joystickVal);
     		}
     		else {
     			wasStationary = true;
     			RobotMap.wristVictor.set(0);
-    		}
+    		}*/
+    		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * joystickVal);
     	}
     	//If the joystick does not have an input, and in the last capture the wrist was not stationary,
     	//(i.e. the wrist just stopped moving) update the desired angle
