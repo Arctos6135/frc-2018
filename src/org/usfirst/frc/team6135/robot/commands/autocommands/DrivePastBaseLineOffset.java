@@ -52,11 +52,11 @@ public class DrivePastBaseLineOffset extends CommandGroup {
     	
     	addSequential(new DriveStraightDistanceEx(DISTANCE_Y / 2, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.BASELINE_OFFSET, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new DriveStraightDistanceEx(DISTANCE_Y / 2, RobotMap.Speeds.AUTO_SPEED));
     }

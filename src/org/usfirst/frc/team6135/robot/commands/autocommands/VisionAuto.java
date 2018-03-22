@@ -74,9 +74,9 @@ public class VisionAuto extends InstantCommand {
     	double yDist = Math.abs(Math.cos(theta2) * s);
     	
     	Command delay = new Delay(RobotMap.AUTO_DELAY);
-    	execCmds(new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_SPEED), delay,
+    	execCmds(new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED), delay,
     			new DriveStraightDistanceEx(xDist, RobotMap.Speeds.AUTO_SPEED), delay,
-    			new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_SPEED), delay,
+    			new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED), delay,
     			new DriveStraightDistanceEx(yDist, RobotMap.Speeds.AUTO_SPEED),
     			new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }

@@ -47,7 +47,7 @@ public class PlaceCubeFromSideOffset extends CommandGroup {
         // arm.
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_CENTRE_DISTANCE - RobotMap.ROBOT_LENGTH / 2, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_EDGE_OFFSET, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED));

@@ -74,14 +74,18 @@ public class RobotMap {
 	public static final double ROBOT_LENGTH = 32.0 + 7.0;
 	
 	//Delay between each autonomous action, in milliseconds.
-	public static final double AUTO_DELAY = 500;
+	public static final double AUTO_DELAY = 1000;
 	/*
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */
 	public static class Speeds {
 		public static final double ELEVATOR_SPEED = 0.75;
 		public static final double WRIST_SPEED = 0.3;
+		//Driving
 		public static final double AUTO_SPEED = 0.25; //0.6
+		//Turning
+		public static final double AUTO_TURN_SPEED = 0.25;
+		
 		public static final double AUTO_INTAKE_SPEED = 0.3;
 		public static final double DRIVE_SPEED = 1.0;
 	}
