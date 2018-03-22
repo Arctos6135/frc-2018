@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
+import org.usfirst.frc.team6135.robot.commands.autoutils.AutoElevator;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Delay;
@@ -57,6 +58,7 @@ public class PlaceCubeFromMiddleBackup extends CommandGroup {
     	addSequential(new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new DriveStraightDistanceEx(DISTANCE_Y / 2, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new AutoElevator(RobotMap.AUTO_ELEVATOR_TIME, RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addSequential(new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }
