@@ -14,8 +14,8 @@ public class GearShift extends InstantCommand {
 	Value val;
 	
 	//Dependent on how the pneumatics are wired and gear box configurations
-	public static final Value GEAR_FAST = DoubleSolenoid.Value.kReverse;
-	public static final Value GEAR_SLOW = DoubleSolenoid.Value.kForward;
+	public static final Value GEAR_SLOW = DoubleSolenoid.Value.kReverse;
+	public static final Value GEAR_FAST = DoubleSolenoid.Value.kForward;
 	public static final Value GEAR_STOPSHIFT = DoubleSolenoid.Value.kOff;
 	
     public GearShift(DoubleSolenoid.Value value) {
