@@ -85,7 +85,7 @@ public class WristAnalogAdjust extends WristAnalog {
     		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);*/
     		//Logarithmic adjustment
     		double adjustment = Math.copySign(Math.log(Math.abs(error - 2) / 4), error);
-    		
+    		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);
     	}
     }
 }
