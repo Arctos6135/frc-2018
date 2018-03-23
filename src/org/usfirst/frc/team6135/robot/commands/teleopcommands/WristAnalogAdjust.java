@@ -60,7 +60,9 @@ public class WristAnalogAdjust extends WristAnalog {
     			wasStationary = true;
     			RobotMap.wristVictor.set(0);
     		}*/
+    		
     		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * joystickVal);
+    		wasStationary = true;
     	}
     	//If the joystick does not have an input, and in the last capture the wrist was not stationary,
     	//(i.e. the wrist just stopped moving) update the desired angle
@@ -84,7 +86,7 @@ public class WristAnalogAdjust extends WristAnalog {
     		double adjustment = constrain(error * errorMultiplier, 1.0, -1.0);
     		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);*/
     		//Logarithmic adjustment
-    		double adjustment = Math.copySign(Math.log(Math.abs(error - 2) / 4), error);
+    		double adjustment = constrain(Math.copySign(Math.log(Math.abs(error - 2) / 4), error), 1.0, -1.0);
     		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);
     	}
     }
