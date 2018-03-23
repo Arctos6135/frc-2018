@@ -15,6 +15,8 @@ public class WristAnalogAdjust extends WristAnalog {
 	//Multiplier to get the adjust speed of the wrist motor
 	protected static final double errorMultiplier = 0.01;
 	//Allow up to 4 degrees of imprecision
+	//IMPORTANT: MUST BE GREATER THAN 3 IF USING LOGARITHMIC ADJUSTMENTS.
+	//See graph at https://www.desmos.com/calculator/4x4qkmrf62
 	protected static final double TOLERANCE = 4.0;
 	//The angle to return to
 	protected double stationaryAngle;
@@ -78,8 +80,11 @@ public class WristAnalogAdjust extends WristAnalog {
     			RobotMap.wristVictor.set(0);
     			return;
     		}
-    		//Constrain the speed and apply correction
+    		/*//Constrain the speed and apply correction
     		double adjustment = constrain(error * errorMultiplier, 1.0, -1.0);
+    		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);*/
+    		//Logarithmic adjustment
+    		double adjustment = Math.copySign(Math.log(Math.abs(error - 2) / 4), error);
     		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);
     	}
     }
