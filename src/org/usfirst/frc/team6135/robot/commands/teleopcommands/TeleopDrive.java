@@ -33,6 +33,11 @@ public class TeleopDrive extends Command {
         double y = Math.abs(OI.driveController.getRawAxis(Y_AXIS))>DEADZONE?-OI.driveController.getRawAxis(Y_AXIS):0;
         double l = Math.max(-RobotMap.Speeds.DRIVE_SPEED, Math.min(RobotMap.Speeds.DRIVE_SPEED, y + x));//constrain to [-1,1]
         double r = Math.max(-RobotMap.Speeds.DRIVE_SPEED, Math.min(RobotMap.Speeds.DRIVE_SPEED, y - x));
+        
+        //Square the final values to smooth out driving
+        l = Math.copySign(l * l, l);
+        r = Math.copySign(r * r, r);
+        
         Robot.drive.setMotorsVBus(l, r);
     }
 
