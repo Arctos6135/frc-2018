@@ -16,6 +16,10 @@ public class ElevatorSubsystem extends Subsystem {
 	public void setSpeed(double speed) {
 		RobotMap.elevatorVictor.set(speed);
 	}
+	/**
+	 * Returns true if <b>not at top</b> (???)<br>
+	 * Don't question if it works.
+	 */
 	public boolean topReached() {
 		return RobotMap.elevatorTopSwitch.get();
 	}
