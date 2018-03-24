@@ -4,6 +4,8 @@ import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  *	Handles the teleop control of the wrist, and attempts to keep it at the same angle by reading from a gyro
  *	and applying corrections if necessary. Correction speed is proportional to the error (actual - desired angle)
@@ -50,6 +52,10 @@ public class WristAnalogAdjust extends WristAnalog {
     	final double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.WRIST);
     	final double gyroReading = Robot.wristSubsystem.getGyro();
     	
+    	SmartDashboard.putNumber("Stationary Angle", stationaryAngle);
+    	SmartDashboard.putNumber("Current Angle", gyroReading);
+    	SmartDashboard.putNumber("Joystick Value", joystickVal);
+    	
     	if(Math.abs(joystickVal) > DEADZONE) {
     		//Only move the wrist if the gyro shows that the angle is in the constraints
     		/*if(inRange(gyroReading, WRIST_SOFT_LIMIT_HIGH, WRIST_SOFT_LIMIT_LOW)) {
@@ -62,7 +68,7 @@ public class WristAnalogAdjust extends WristAnalog {
     		}*/
     		
     		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * joystickVal);
-    		wasStationary = true;
+    		wasStationary = false;
     	}
     	//If the joystick does not have an input, and in the last capture the wrist was not stationary,
     	//(i.e. the wrist just stopped moving) update the desired angle
@@ -87,6 +93,7 @@ public class WristAnalogAdjust extends WristAnalog {
     		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);*/
     		//Logarithmic adjustment
     		double adjustment = constrain(Math.copySign(Math.log(Math.abs(error - 2) / 4), error), 1.0, -1.0);
+    		SmartDashboard.putNumber("Adjustment Value", adjustment);
     		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);
     	}
     }

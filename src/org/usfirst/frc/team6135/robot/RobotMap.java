@@ -127,6 +127,7 @@ public class RobotMap {
     public static Encoder leftEncoder = new Encoder(0, 1, true, EncodingType.k4X);
     
     public static DigitalInput elevatorTopSwitch = new DigitalInput(4);
+    
     //public static DigitalInput elevatorBottomSwitch = new DigitalInput(5);
     
     //This is the gyroscope that is mounted in the SPI port of the roboRIO
