@@ -53,17 +53,6 @@ public class Brake extends Command {
 	    		rightSpeed = -error * sign * SPEED_MULTIPLIER;
 	    		rightSpeed = Math.abs(rightSpeed) > MIN_SPEED ? rightSpeed : MIN_SPEED*sign;
 	    	}
-	    	/*
-	    	if(Math.abs(left) > TOLERANCE) {
-	    		double error = Math.abs(left);
-	    		int sign = left < 0 ? -1 : 1;
-	    		leftSpeed = Math.log(error + 0.7) / 4.0 * -sign;
-	    	}
-	    	if(Math.abs(right) > TOLERANCE) {
-	    		double error = Math.abs(right);
-	    		int sign = right < 0 ? -1 : 1;
-	    		rightSpeed = Math.log(error + 0.7) / 4.0 * -sign;
-	    	}*/
 	    	leftSpeed = constrain(leftSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);
 	    	rightSpeed = constrain(rightSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);
 	    	
