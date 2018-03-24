@@ -43,6 +43,7 @@ public class PlaceCubeSameSide extends CommandGroup {
         // arm.
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new AutoElevator(RobotMap.AUTO_ELEVATOR_TIME, RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
+    	addSequential(new DriveStraightDistanceEx(RobotMap.INTAKE_LENGTH, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }

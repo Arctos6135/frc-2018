@@ -80,6 +80,7 @@ public class VisionAuto extends InstantCommand {
     			new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED), delay,
     			new DriveStraightDistanceEx(yDist, RobotMap.Speeds.AUTO_SPEED),
     			new AutoElevator(RobotMap.AUTO_ELEVATOR_TIME, RobotMap.Speeds.AUTO_ELEVATOR_SPEED),
-    			new AutoIntake(1.5, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
+    			new DriveStraightDistanceEx(RobotMap.INTAKE_LENGTH, RobotMap.Speeds.AUTO_SPEED),
+    			new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }
