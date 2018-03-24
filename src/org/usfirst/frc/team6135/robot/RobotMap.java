@@ -76,7 +76,7 @@ public class RobotMap {
 	//Delay between each autonomous action, in milliseconds.
 	public static final double AUTO_DELAY = 1000;
 	//Amount of time the elevator climbs for
-	public static final double AUTO_ELEVATOR_TIME = 4.5;
+	public static final double AUTO_ELEVATOR_TIME = 4.5; //4.5
 	/*
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */
@@ -84,11 +84,11 @@ public class RobotMap {
 		public static final double ELEVATOR_SPEED = 0.50;
 		public static final double WRIST_SPEED = 0.3;
 		//Driving
-		public static final double AUTO_SPEED = 0.25; //0.6
+		public static final double AUTO_SPEED = 0.30; //0.6
 		//Turning
 		public static final double AUTO_TURN_SPEED = 0.25;
 		//Intake
-		public static final double AUTO_INTAKE_SPEED = 0.3;
+		public static final double AUTO_INTAKE_SPEED = 0.5;
 		//Elevator
 		public static final double AUTO_ELEVATOR_SPEED = 0.90; 
 		public static final double DRIVE_SPEED = 1.0;
