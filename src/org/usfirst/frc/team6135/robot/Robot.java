@@ -96,8 +96,6 @@ public class Robot extends IterativeRobot {
         //(new Thread(new TestingThread())).start();
 
         //Add commands into the autonomous command chooser
-        chooser.addDefault("Drive straight distance", new DriveStraightDistanceEx(60.0, 0.25));
-		chooser.addObject("Turn 90 degrees", new AutoTurn(90, 0.3));
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
 		placeCubeLeftSide = new PlaceCubeSameSide();
 		placeCubeRightSide = new PlaceCubeSameSide();
