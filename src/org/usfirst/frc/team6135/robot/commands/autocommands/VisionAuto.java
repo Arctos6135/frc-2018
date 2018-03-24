@@ -2,12 +2,11 @@ package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.commands.autoutils.AutoElevator;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Delay;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
-import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
+import org.usfirst.frc.team6135.robot.commands.autoutils.RaiseElevator;
 import org.usfirst.frc.team6135.robot.vision.VisionException;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -79,7 +78,7 @@ public class VisionAuto extends InstantCommand {
     			new DriveStraightDistanceEx(xDist, RobotMap.Speeds.AUTO_SPEED), delay,
     			new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED), delay,
     			new DriveStraightDistanceEx(yDist, RobotMap.Speeds.AUTO_SPEED),
-    			new AutoElevator(RobotMap.AUTO_ELEVATOR_TIME, RobotMap.Speeds.AUTO_ELEVATOR_SPEED),
+    			new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED),
     			new DriveStraightDistanceEx(RobotMap.INTAKE_LENGTH, RobotMap.Speeds.AUTO_SPEED),
     			new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }

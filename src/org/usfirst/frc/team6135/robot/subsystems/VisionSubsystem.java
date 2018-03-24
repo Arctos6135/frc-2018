@@ -1,7 +1,5 @@
 package org.usfirst.frc.team6135.robot.subsystems;
 
-import org.usfirst.frc.team6135.robot.vision.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,6 +10,12 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team6135.robot.RobotMap;
+import org.usfirst.frc.team6135.robot.vision.ByteArrayImg;
+import org.usfirst.frc.team6135.robot.vision.ColorRange;
+import org.usfirst.frc.team6135.robot.vision.ImgPoint;
+import org.usfirst.frc.team6135.robot.vision.Vision;
+import org.usfirst.frc.team6135.robot.vision.VisionException;
+
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;

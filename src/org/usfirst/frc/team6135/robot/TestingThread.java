@@ -1,7 +1,5 @@
 package org.usfirst.frc.team6135.robot;
 
-import org.usfirst.frc.team6135.robot.vision.VisionException;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**

@@ -1,15 +1,24 @@
 
 package org.usfirst.frc.team6135.robot;
 
-import org.usfirst.frc.team6135.robot.subsystems.*;
-
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
-import org.usfirst.frc.team6135.robot.commands.autocommands.*;
+import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseLine;
+import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseLineOffset;
+import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromMiddle;
+import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSideOffset;
+import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeSameSide;
+import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Brake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.commands.teleopcommands.TeleopDrive;
+import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
+import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
+import org.usfirst.frc.team6135.robot.subsystems.IntakeSubsystem;
+import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
+import org.usfirst.frc.team6135.robot.subsystems.WristSubsystem;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -84,7 +93,7 @@ public class Robot extends IterativeRobot {
         visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
         
         oi = new OI();
-        (new Thread(new TestingThread())).start();
+        //(new Thread(new TestingThread())).start();
 
         //Add commands into the autonomous command chooser
         chooser.addDefault("Drive straight distance", new DriveStraightDistanceEx(60.0, 0.25));

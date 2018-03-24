@@ -1,7 +1,9 @@
 package org.usfirst.frc.team6135.robot.commands.autoutils;
 
+import static org.usfirst.frc.team6135.robot.RobotMap.leftEncoder;
+import static org.usfirst.frc.team6135.robot.RobotMap.rightEncoder;
+
 import org.usfirst.frc.team6135.robot.Robot;
-import static org.usfirst.frc.team6135.robot.RobotMap.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 

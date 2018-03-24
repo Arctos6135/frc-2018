@@ -1,10 +1,9 @@
 package org.usfirst.frc.team6135.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-
 import org.usfirst.frc.team6135.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *	Drive gear shifting subsystem
