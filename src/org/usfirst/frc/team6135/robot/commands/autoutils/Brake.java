@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.command.Command;
 public class Brake extends Command {
 
 	public static final double TOLERANCE = 0.5;
-	//public static final double SPEED_MULTIPLIER = 0.03;
-	//public static final double MIN_SPEED = 0.1;
+	public static final double SPEED_MULTIPLIER = 0.03;
+	public static final double MIN_SPEED = 0.1;
 	
 	final boolean brake;
 	
@@ -41,7 +41,7 @@ public class Brake extends Command {
 	    	double left = RobotMap.leftEncoder.getDistance();
 	    	double right = RobotMap.rightEncoder.getDistance();
 	    	double leftSpeed = 0, rightSpeed = 0;
-	    	/*if(Math.abs(left) > TOLERANCE) {
+	    	if(Math.abs(left) > TOLERANCE) {
 	    		double error = Math.abs(left);
 	    		int sign = left < 0 ? -1 : 1;
 	    		leftSpeed = -error * sign * SPEED_MULTIPLIER;
@@ -52,7 +52,8 @@ public class Brake extends Command {
 	    		int sign = right < 0 ? -1 : 1;
 	    		rightSpeed = -error * sign * SPEED_MULTIPLIER;
 	    		rightSpeed = Math.abs(rightSpeed) > MIN_SPEED ? rightSpeed : MIN_SPEED*sign;
-	    	}*/
+	    	}
+	    	/*
 	    	if(Math.abs(left) > TOLERANCE) {
 	    		double error = Math.abs(left);
 	    		int sign = left < 0 ? -1 : 1;
@@ -62,7 +63,7 @@ public class Brake extends Command {
 	    		double error = Math.abs(right);
 	    		int sign = right < 0 ? -1 : 1;
 	    		rightSpeed = Math.log(error + 0.7) / 4.0 * -sign;
-	    	}
+	    	}*/
 	    	leftSpeed = constrain(leftSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);
 	    	rightSpeed = constrain(rightSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);
 	    	

@@ -59,7 +59,7 @@ public class RobotMap {
 		//Actual auto line is 10 feet from the alliance wall, but an extra 2ft is added just in case
 		public static final double BASELINE_DISTANCE = 12.0 * 12;
 		//Minus 28 inches since 14ft is to the middle of the switch
-		public static final double SWITCH_DISTANCE = 14.0 * 12 - 28;
+		public static final double SWITCH_DISTANCE = 14.0 * 12 - 28 - 4;
 		public static final double VISION_SAMPLING_DISTANCE = SWITCH_DISTANCE / 4;
 		public static final double SWITCH_CENTRE_DISTANCE = 14.0 * 12;
 		//Alliance station width = 22ft, switch (including walls) width = 12ft 9 1/2in
@@ -76,12 +76,12 @@ public class RobotMap {
 	//Delay between each autonomous action, in milliseconds.
 	public static final double AUTO_DELAY = 1000;
 	//Amount of time the elevator climbs for
-	public static final double AUTO_ELEVATOR_TIME = 3.0;
+	public static final double AUTO_ELEVATOR_TIME = 4.5;
 	/*
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */
 	public static class Speeds {
-		public static final double ELEVATOR_SPEED = 0.75;
+		public static final double ELEVATOR_SPEED = 0.50;
 		public static final double WRIST_SPEED = 0.3;
 		//Driving
 		public static final double AUTO_SPEED = 0.25; //0.6
@@ -90,7 +90,7 @@ public class RobotMap {
 		//Intake
 		public static final double AUTO_INTAKE_SPEED = 0.3;
 		//Elevator
-		public static final double AUTO_ELEVATOR_SPEED = 0.50; 
+		public static final double AUTO_ELEVATOR_SPEED = 0.90; 
 		public static final double DRIVE_SPEED = 1.0;
 	}
 	

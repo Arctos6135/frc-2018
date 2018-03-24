@@ -17,9 +17,9 @@ public class WristAnalogAdjust extends WristAnalog {
 	//Multiplier to get the adjust speed of the wrist motor
 	protected static final double errorMultiplier = 0.01;
 	//Allow up to 4 degrees of imprecision
-	//IMPORTANT: MUST BE GREATER THAN 3 IF USING LOGARITHMIC ADJUSTMENTS.
+	//IMPORTANT: MUST BE GREATER THAN 5 IF USING LOGARITHMIC ADJUSTMENTS.
 	//See graph at https://www.desmos.com/calculator/4x4qkmrf62
-	protected static final double TOLERANCE = 4.0;
+	protected static final double TOLERANCE = 6.0;
 	//The angle to return to
 	protected double stationaryAngle;
 	//If the robot was stationary the last time
@@ -55,6 +55,7 @@ public class WristAnalogAdjust extends WristAnalog {
     	SmartDashboard.putNumber("Stationary Angle", stationaryAngle);
     	SmartDashboard.putNumber("Current Angle", gyroReading);
     	SmartDashboard.putNumber("Joystick Value", joystickVal);
+    	SmartDashboard.putBoolean("stationary", wasStationary);
     	
     	if(Math.abs(joystickVal) > DEADZONE) {
     		//Only move the wrist if the gyro shows that the angle is in the constraints
@@ -81,20 +82,26 @@ public class WristAnalogAdjust extends WristAnalog {
     	//If no input and the wrist is already "stationary", then try to return to the angle last recorded
     	else {
     		//Do not constrain the gyro reading here since we want to apply the correction even if
-    		//the current physical angle is outside the limits
+    		//the current physical angle is outside the limits.
+    		
     		double error = gyroReading - stationaryAngle;
+    		SmartDashboard.putNumber("Error", error);
     		//Do not do anything if the error is small
     		if(Math.abs(error) < TOLERANCE) {
     			RobotMap.wristVictor.set(0);
     			return;
     		}
-    		/*//Constrain the speed and apply correction
+    		//Constrain the speed and apply correction
     		double adjustment = constrain(error * errorMultiplier, 1.0, -1.0);
-    		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);*/
-    		//Logarithmic adjustment
-    		double adjustment = constrain(Math.copySign(Math.log(Math.abs(error - 2) / 4), error), 1.0, -1.0);
-    		SmartDashboard.putNumber("Adjustment Value", adjustment);
+    		SmartDashboard.putNumber("Adjustment", adjustment);
     		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);
+    		//Logarithmic adjustment
+    		/*double adjustment = constrain(Math.copySign(
+    				Math.log(
+    						(Math.abs(error) - 2) / 4)
+    				, error), 1.0, -1.0);
+    		SmartDashboard.putNumber("Adjustment Value", adjustment);
+    		RobotMap.wristVictor.set(RobotMap.Speeds.WRIST_SPEED * adjustment);*/
     	}
     }
 }
