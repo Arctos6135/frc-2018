@@ -8,8 +8,10 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSideOff
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autoutils.AutoWrist;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Brake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
+import org.usfirst.frc.team6135.robot.commands.autoutils.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.teleopcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
@@ -96,6 +98,7 @@ public class Robot extends IterativeRobot {
         //(new Thread(new TestingThread())).start();
 
         //Add commands into the autonomous command chooser
+        chooser.addObject("Lower Wrist", new AutoWrist(RobotMap.AUTO_WRIST_TIME));
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
 		placeCubeLeftSide = new PlaceCubeSameSide();
 		placeCubeRightSide = new PlaceCubeSameSide();

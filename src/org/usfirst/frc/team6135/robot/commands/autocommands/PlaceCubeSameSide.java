@@ -2,6 +2,7 @@ package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoIntake;
+import org.usfirst.frc.team6135.robot.commands.autoutils.AutoWrist;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.commands.autoutils.RaiseElevator;
 
@@ -41,6 +42,7 @@ public class PlaceCubeSameSide extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	addParallel(new AutoWrist(RobotMap.AUTO_WRIST_TIME));
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addSequential(new DriveStraightDistanceEx(RobotMap.INTAKE_LENGTH, RobotMap.Speeds.AUTO_SPEED));

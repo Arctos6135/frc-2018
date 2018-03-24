@@ -2,20 +2,20 @@ package org.usfirst.frc.team6135.robot.commands.autoutils;
 
 import org.usfirst.frc.team6135.robot.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
- *	Raises the elevator all the way to the top until it hits the limit switch.
+ *
  */
-public class RaiseElevator extends Command {
-
-	double speed;
+public class AutoWrist extends TimedCommand {
 	
-    public RaiseElevator(double speed) {
+	public static final double SPEED = -1.0;
+
+    public AutoWrist(double timeout) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.elevatorSubsystem);
-    	this.speed = -speed;
+    	super(timeout);
+    	requires(Robot.wristSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -24,22 +24,17 @@ public class RaiseElevator extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevatorSubsystem.setSpeed(speed);
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return !Robot.elevatorSubsystem.notAtTop();
+    	Robot.wristSubsystem.setSpeed(SPEED);
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.elevatorSubsystem.setSpeed(0);
+    	Robot.wristSubsystem.setSpeed(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.elevatorSubsystem.setSpeed(0);
+    	Robot.wristSubsystem.setSpeed(0);
     }
 }

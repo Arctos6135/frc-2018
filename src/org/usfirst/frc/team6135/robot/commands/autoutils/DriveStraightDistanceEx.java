@@ -21,7 +21,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveStraightDistanceEx extends Command {
 
-	protected static final double errorMultiplier = 0.015;
+	protected static final double errorMultiplier = 0.003;
+			
 	static final double TOLERANCE = 0.10;
 	static final double DIST_TOLERANCE = 1.5;
 	

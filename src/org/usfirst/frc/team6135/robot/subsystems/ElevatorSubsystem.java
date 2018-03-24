@@ -20,7 +20,7 @@ public class ElevatorSubsystem extends Subsystem {
 	 * Returns true if <b>not at top</b> (???)<br>
 	 * Don't question if it works.
 	 */
-	public boolean topReached() {
+	public boolean notAtTop() {
 		return RobotMap.elevatorTopSwitch.get();
 	}
 	/*public boolean bottomReached() {

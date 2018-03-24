@@ -40,7 +40,7 @@ public class ElevatorAnalogBackup extends Command {
     	if(Math.abs(joystickVal) > DEADZONE) {
     		//Check if we are at the boundary
 			//Super messed up conditional. Reason unknown but it works.
-    		if((joystickVal < 0 && Robot.elevatorSubsystem.topReached()) || joystickVal > 0) {
+    		if((joystickVal < 0 && Robot.elevatorSubsystem.notAtTop()) || joystickVal > 0) {
     			RobotMap.elevatorVictor.set(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
 				//Subject to change
 				if(!ALLOW_TIGHTENING && joystickVal > 0)
