@@ -72,24 +72,24 @@ public class RobotMap {
 	//+7in for the bumpers
 	public static final double ROBOT_LENGTH = 32.0 + 7.0;
 	
-	public static final double INTAKE_LENGTH = 4;
+	public static final double INTAKE_LENGTH = 6;
 	
 	//Delay between each autonomous action, in milliseconds.
-	public static final double AUTO_DELAY = 1000;
+	public static final double AUTO_DELAY = 500;
 	//Amount of time the elevator climbs for
 	public static final double AUTO_ELEVATOR_TIME = 4.5; //4.5
 	
 	public static final double AUTO_INTAKE_TIME = 1.5;
 	
-	public static final double AUTO_WRIST_TIME = 1;
+	public static final double AUTO_WRIST_TIME = 3;
 	/*
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */
 	public static class Speeds {
-		public static final double ELEVATOR_SPEED = 0.50;
+		public static final double ELEVATOR_SPEED = 0.70;
 		public static final double WRIST_SPEED = 1.0;
 		//Driving
-		public static final double AUTO_SPEED = 0.30; //0.6
+		public static final double AUTO_SPEED = 0.40; //0.6
 		//Turning
 		public static final double AUTO_TURN_SPEED = 0.35;
 		//Intake
