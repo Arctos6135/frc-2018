@@ -5,8 +5,8 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseLine;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSideOffset;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeSameSide;
+import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
-import org.usfirst.frc.team6135.robot.commands.autoutils.AutoWrist;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Brake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.commands.teleopcommands.TeleopDrive;
@@ -59,6 +59,7 @@ public class Robot extends IterativeRobot {
 	public static PlaceCubeFromSideOffset placeCubeRightSideOffset;
 	public static PlaceCubeSameSide placeCubeRightSide;
 	public static VisionAuto visionAuto;
+	public static ScaleCubeSameSide scaleSameSideLeft, scaleSameSideRight;
 	
 	//Autonomous command chooser
 	Command autonomousCommand;
@@ -100,6 +101,8 @@ public class Robot extends IterativeRobot {
 		placeCubeRightSide = new PlaceCubeSameSide();
 		placeCubeLeftSideOffset = new PlaceCubeFromSideOffset(PlaceCubeFromSideOffset.DIRECTION_LEFT);
 		placeCubeRightSideOffset = new PlaceCubeFromSideOffset(PlaceCubeFromSideOffset.DIRECTION_RIGHT);
+		scaleSameSideLeft = new ScaleCubeSameSide(ScaleCubeSameSide.DIRECTION_LEFT);
+		scaleSameSideRight = new ScaleCubeSameSide(ScaleCubeSameSide.DIRECTION_RIGHT);
 		visionAuto = new VisionAuto(VisionAuto.DIRECTION_LEFT);
 		chooser.addDefault("No Auto", null);
 		chooser.addObject("Drive Past Baseline (Better to use one of the commands below)", new DrivePastBaseLine());
@@ -108,6 +111,8 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Place Cube (Aligned with switch): Left", placeCubeLeftSide);
 		chooser.addObject("Place Cube (Aligned with switch): Right", placeCubeRightSide);
 		chooser.addObject("Place Cube: Middle", placeCubeFromMiddle);
+		chooser.addObject("Shoot Cube into Scale: Left", scaleSameSideLeft);
+		chooser.addObject("Shoot Cube into Scale: Right", scaleSameSideRight);
 		//chooser.addObject("Place Cube With Vision: Middle", visionAuto);
 		//Display the chooser
 		SmartDashboard.putData("Auto mode", chooser);
@@ -151,55 +156,79 @@ public class Robot extends IterativeRobot {
 			gameData = DriverStation.getInstance().getGameSpecificMessage().toUpperCase();
 			if(gameData.length() > 0){
 				//Depending on which side the alliance switch is on, some commands need to change
-				if(gameData.charAt(0) == 'L'){
-					//If the alliance switch is on the left side
-					if(autonomousCommand.equals(placeCubeFromMiddle)) {
-						//If command is to place a cube from the middle
-						(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT)).start();
-					}
-					//Use == to check if they're the exact same object
-					else if(autonomousCommand == placeCubeLeftSide) {
-						//If command is to place a cube from the left side, start the command
-						autonomousCommand.start();
-					}
-					else if(autonomousCommand == placeCubeRightSide) {
-						//If command is to place a cube from the right, give up placing the cube and
-						//instead drive past the baseline
-						(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_DISTANCE, RobotMap.Speeds.AUTO_SPEED)).start();					}
-					else if(autonomousCommand == placeCubeLeftSideOffset) {
-						autonomousCommand.start();
-					}
-					else if(autonomousCommand == placeCubeRightSideOffset) {
-						(new DrivePastBaseLine()).start();
-					}
-					else if(autonomousCommand == visionAuto) {
-						(new VisionAuto(VisionAuto.DIRECTION_LEFT)).start();
+				//Check if command is a scale command
+				if(autonomousCommand instanceof ScaleCubeSameSide) {
+					//Check the second character of the game data for the direction of the alliance scale
+					if(gameData.charAt(1) == 'L') {
+						if(autonomousCommand == scaleSameSideLeft) {
+							autonomousCommand.start();
+						}
+						else {
+							(new DrivePastBaseLine()).start();
+						}
 					}
 					else {
-						autonomousCommand.start();
+						if(autonomousCommand == scaleSameSideRight) {
+							autonomousCommand.start();
+						}
+						else {
+							(new DrivePastBaseLine()).start();
+						}
 					}
-				} 
+				}
 				else {
-					if(autonomousCommand.equals(placeCubeFromMiddle)) {
-						(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_RIGHT)).start();
-					}
-					else if(autonomousCommand == placeCubeRightSide) {
-						autonomousCommand.start();
-					}
-					else if(autonomousCommand == placeCubeLeftSide) {
-						(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_DISTANCE, RobotMap.Speeds.AUTO_SPEED)).start();
-					}
-					else if(autonomousCommand == placeCubeRightSideOffset) {
-						autonomousCommand.start();
-					}
-					else if(autonomousCommand == placeCubeLeftSideOffset) {
-						(new DrivePastBaseLine()).start();
-					}
-					else if(autonomousCommand == visionAuto) {
-						(new VisionAuto(VisionAuto.DIRECTION_RIGHT)).start();
-					}
+					//Check the first character of the game data for the direction of the alliance switch
+					
+					if(gameData.charAt(0) == 'L'){
+						//If the alliance switch is on the left side
+						if(autonomousCommand == placeCubeFromMiddle) {
+							//If command is to place a cube from the middle
+							(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT)).start();
+						}
+						//Use == to check if they're the exact same object
+						else if(autonomousCommand == placeCubeLeftSide) {
+							//If command is to place a cube from the left side, start the command
+							autonomousCommand.start();
+						}
+						else if(autonomousCommand == placeCubeRightSide) {
+							//If command is to place a cube from the right, give up placing the cube and
+							//instead drive past the baseline
+							(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_DISTANCE, RobotMap.Speeds.AUTO_SPEED)).start();					}
+						else if(autonomousCommand == placeCubeLeftSideOffset) {
+							autonomousCommand.start();
+						}
+						else if(autonomousCommand == placeCubeRightSideOffset) {
+							(new DrivePastBaseLine()).start();
+						}
+						else if(autonomousCommand == visionAuto) {
+							(new VisionAuto(VisionAuto.DIRECTION_LEFT)).start();
+						}
+						else {
+							autonomousCommand.start();
+						}
+					} 
 					else {
-						autonomousCommand.start();
+						if(autonomousCommand == placeCubeFromMiddle) {
+							(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_RIGHT)).start();
+						}
+						else if(autonomousCommand == placeCubeRightSide) {
+							autonomousCommand.start();
+						}
+						else if(autonomousCommand == placeCubeLeftSide) {
+							(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_DISTANCE, RobotMap.Speeds.AUTO_SPEED)).start();
+						}
+						else if(autonomousCommand == placeCubeRightSideOffset) {
+							autonomousCommand.start();
+						}
+						else if(autonomousCommand == placeCubeLeftSideOffset) {
+							(new DrivePastBaseLine()).start();
+						}
+						else if(autonomousCommand == visionAuto) {
+							(new VisionAuto(VisionAuto.DIRECTION_RIGHT)).start();
+						}
+						else {
+							autonomousCommand.start();
+						}
 					}
 				}
 			}
