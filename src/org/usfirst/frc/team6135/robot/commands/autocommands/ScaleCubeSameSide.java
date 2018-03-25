@@ -34,7 +34,7 @@ public class ScaleCubeSameSide extends CommandGroup {
         // would require.
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
-        // arm.
+        // arm.z
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_CENTER_DISTANCE, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurn(-85 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));

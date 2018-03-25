@@ -11,6 +11,8 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Brake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.commands.teleopcommands.TeleopDrive;
+import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalog;
+import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalogAdjust;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
@@ -255,6 +257,7 @@ public class Robot extends IterativeRobot {
 		RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Brake);
 		RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Brake);
 		Robot.drive.setDefaultCommand(new Brake(true));
+		Robot.wristSubsystem.setDefaultCommand(new WristAnalog());
 	}
 
 	/**
@@ -277,6 +280,7 @@ public class Robot extends IterativeRobot {
 		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
 		
 		Robot.drive.setDefaultCommand(new TeleopDrive());
+		Robot.wristSubsystem.setDefaultCommand(new WristAnalogAdjust());
 		RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Coast);
 		RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Coast);
 		RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Coast);

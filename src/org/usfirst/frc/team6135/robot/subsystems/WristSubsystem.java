@@ -18,12 +18,12 @@ public class WristSubsystem extends Subsystem {
 	public long START_TIME;
 
 	public void setSpeed(double speed) {
-		RobotMap.wristVictor.set(speed);
+		RobotMap.wristVictor.set(Math.max(Math.min(speed, 1.0), -1.0));
 	}
 	public double getGyro() {
-		SmartDashboard.putNumber("Adjustment", (System.currentTimeMillis() - START_TIME) * DRIFT_DEG_PER_SECOND);
-		return RobotMap.wristGyro.getAngle() - (System.currentTimeMillis() - START_TIME) * DRIFT_DEG_PER_SECOND;
-		//return RobotMap.wristGyro.getAngle();
+		//SmartDashboard.putNumber("Adjustment", (System.currentTimeMillis() - START_TIME) * DRIFT_DEG_PER_SECOND);
+		//return RobotMap.wristGyro.getAngle() - (System.currentTimeMillis() - START_TIME) * DRIFT_DEG_PER_SECOND;
+		return RobotMap.wristGyro.getAngle();
 	}
 	
     public void initDefaultCommand() {

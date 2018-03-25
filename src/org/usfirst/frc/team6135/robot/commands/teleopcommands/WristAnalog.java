@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class WristAnalog extends Command {
 	
-	protected static final double DEADZONE = 0.25;
+	protected static final double DEADZONE = 0.15;
 
     public WristAnalog() {
         // Use requires() here to declare subsystem dependencies
