@@ -257,7 +257,7 @@ public class Robot extends IterativeRobot {
 		RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Brake);
 		RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Brake);
 		Robot.drive.setDefaultCommand(new Brake(true));
-		Robot.wristSubsystem.setDefaultCommand(new WristAnalog());
+		Robot.wristSubsystem.setDefaultCommand(null);
 	}
 
 	/**

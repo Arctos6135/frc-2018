@@ -44,14 +44,18 @@ public class WristAnalogAdjust extends Command {
     		stationaryAngle = Math.max(Math.min(Robot.wristSubsystem.getGyro(), ANGLE_MAX), ANGLE_MIN);
     	}
     	else {
-	    	double angle = Robot.wristSubsystem.getGyro();
-	    	double error = angle - stationaryAngle;
-	    	
-	    	double adjustmentSpeed = error * -errorMultiplier;
-	    	Robot.wristSubsystem.setSpeed(adjustmentSpeed);
+	    	adjustForAngle();
     	}
     }
 
+    public void adjustForAngle(){
+    	double angle = Robot.wristSubsystem.getGyro();
+    	double error = angle - stationaryAngle;
+    	
+    	double adjustmentSpeed = error * -errorMultiplier;
+    	Robot.wristSubsystem.setSpeed(adjustmentSpeed);
+    }
+    
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return false;
