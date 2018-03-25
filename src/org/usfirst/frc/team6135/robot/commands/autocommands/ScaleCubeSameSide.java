@@ -3,34 +3,22 @@ package org.usfirst.frc.team6135.robot.commands.autocommands;
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
-import org.usfirst.frc.team6135.robot.commands.autoutils.AutoWrist;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Delay;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
-import org.usfirst.frc.team6135.robot.commands.autoutils.RaiseElevator;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- * Hard-Coded Command Group that goes around the switch and places a cube on the side.
- * The robot's initial position has to be to the side of the switch
- * Direction indicates what side of the field the robot is on.
- * 
- *	     ----------------------------------------
- *	     |		|						|		|
- *	--->>|		|		Switch			|		|
- *	|    |		|						|		|
- *	|    ----------------------------------------
- *	|
- *	|
- *	|
- * Robot
+ *	Hard-coded auto command that drives forward and turns 90 degrees, then shoots the Power Cube at full speed to the Scale. <br>
+ *	Note that this command requires a different starting position; while others require the elevator to be down, this command
+ *	requires the elevator and wrist to be fully raised to shoot the Power Cube properly.
  */
-public class PlaceCubeFromSideOffset extends CommandGroup {
-
+public class ScaleCubeSameSide extends CommandGroup {
+	
 	public static final int DIRECTION_LEFT = 1;
 	public static final int DIRECTION_RIGHT = -1;
-	
-    public PlaceCubeFromSideOffset(int direction) {
+
+    public ScaleCubeSameSide(int direction) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -47,13 +35,13 @@ public class PlaceCubeFromSideOffset extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_CENTER_DISTANCE - RobotMap.ROBOT_LENGTH / 2, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_CENTER_DISTANCE, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurn(-85 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_EDGE_OFFSET, RobotMap.Speeds.AUTO_SPEED));
-    	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
-    	addSequential(new DriveStraightDistanceEx(RobotMap.INTAKE_LENGTH, RobotMap.Speeds.AUTO_SPEED));
-    	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
+    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_OFFSET, RobotMap.Speeds.AUTO_SPEED));
+    	//Delay for a short period of time for the robot to stablize before shooting
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	addSequential(new AutoIntake(2, 1.0));
     }
 }

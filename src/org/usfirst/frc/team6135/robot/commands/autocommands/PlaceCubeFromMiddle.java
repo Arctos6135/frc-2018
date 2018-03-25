@@ -49,7 +49,6 @@ public class PlaceCubeFromMiddle extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addParallel(new AutoWrist(RobotMap.AUTO_WRIST_TIME));
     	addSequential(new DriveStraightDistanceEx(DISTANCE_Y / 2, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurn(85 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));

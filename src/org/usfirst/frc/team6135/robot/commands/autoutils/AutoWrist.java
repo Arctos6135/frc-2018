@@ -5,7 +5,7 @@ import org.usfirst.frc.team6135.robot.Robot;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
- *
+ *	Lowers the wrist for a set period of time.
  */
 public class AutoWrist extends TimedCommand {
 	
@@ -14,7 +14,7 @@ public class AutoWrist extends TimedCommand {
     public AutoWrist(double timeout) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	super(0);
+    	super(timeout);
     	requires(Robot.wristSubsystem);
     }
 
@@ -24,7 +24,7 @@ public class AutoWrist extends TimedCommand {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Robot.wristSubsystem.setSpeed(SPEED);
+    	Robot.wristSubsystem.setSpeed(SPEED);
     }
 
     // Called once after isFinished returns true

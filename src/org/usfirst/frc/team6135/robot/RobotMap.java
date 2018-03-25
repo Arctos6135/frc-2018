@@ -60,19 +60,25 @@ public class RobotMap {
 		//Minus 28 inches since 14ft is to the middle of the switch
 		public static final double SWITCH_DISTANCE = 14.0 * 12 - 28 - 4;
 		public static final double VISION_SAMPLING_DISTANCE = SWITCH_DISTANCE / 4;
-		public static final double SWITCH_CENTRE_DISTANCE = 14.0 * 12;
+		public static final double SWITCH_CENTER_DISTANCE = 14.0 * 12;
 		//Alliance station width = 22ft, switch (including walls) width = 12ft 9 1/2in
-		//Leftover = 110 1/2in, so each side has 55 1/4in. Subtract away the Robot's length since we only want front of the Robot to be at the switch.
-		public static final double SWITCH_EDGE_OFFSET = 55.25 - ROBOT_LENGTH;
+		//Leftover = 110 1/2in, so each side has 55 1/4in. Subtract away the Robot's width since we only want front of the Robot to be at the switch.
+		public static final double SWITCH_EDGE_OFFSET = 55.25 - ROBOT_WIDTH;
 		//Minus 3ft since we want to target the middle
 		public static final double SWITCH_SIZE = 12.0 * 12 - 3.0 * 12;
 		public static final double BASELINE_OFFSET = 3.0 * 12;
 		//17ft minus half of robot length
 		public static final double SCALE_CENTER_DISTANCE = 17.0 * 12 - ROBOT_LENGTH / 2;
+		//Distance from the scale plate to shoot
+		public static final double SHOOTING_DISTANCE = 1.5 * 12;
+		//3.5ft from parallel to the alliance station edge to the scale plate, 
+		//Minus 1.5ft shooting distance, and minus half of robot length to make sure the front is at the right spot
+		public static final double SCALE_OFFSET = (3.5 * 12) - SHOOTING_DISTANCE - ROBOT_WIDTH / 2;
 	}
 	
 	//+7in for the bumpers
 	public static final double ROBOT_LENGTH = 32.0 + 7.0;
+	public static final double ROBOT_WIDTH = 27.0 + 7.0;
 	
 	public static final double INTAKE_LENGTH = 6;
 	
