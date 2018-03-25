@@ -14,7 +14,7 @@ public class Brake extends Command {
 
 	public static final double TOLERANCE = 0.5;
 	public static final double SPEED_MULTIPLIER = 0.03;
-	public static final double MIN_SPEED = 0.1;
+	public static final double MIN_SPEED = 0.0;
 	
 	final boolean brake;
 	

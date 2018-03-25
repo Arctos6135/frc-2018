@@ -67,6 +67,8 @@ public class RobotMap {
 		//Minus 3ft since we want to target the middle
 		public static final double SWITCH_SIZE = 12.0 * 12 - 3.0 * 12;
 		public static final double BASELINE_OFFSET = 3.0 * 12;
+		//17ft minus half of robot length
+		public static final double SCALE_CENTER_DISTANCE = 17.0 * 12 - ROBOT_LENGTH / 2;
 	}
 	
 	//+7in for the bumpers
