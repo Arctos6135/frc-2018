@@ -68,9 +68,13 @@ public class RobotMap {
 		public static final double SWITCH_SIZE = 12.0 * 12 - 3.0 * 12;
 		public static final double BASELINE_OFFSET = 3.0 * 12;
 		//17ft minus half of robot length
-		public static final double SCALE_CENTER_DISTANCE = 17.0 * 12 - ROBOT_LENGTH / 2;
+		public static final double SCALE_CENTER_DISTANCE = 27.0 * 12 - ROBOT_LENGTH / 2;
+		//Scale without robot length subtracted
+		public static final double SCALE_CENTER_DISTANCE_RAW = 27.0 * 12;
 		//Distance from the scale plate to shoot
 		public static final double SHOOTING_DISTANCE = 1.5 * 12;
+		//Length of entire scale
+		public static final double SCALE_LENGTH = 15 * 12;
 		//3.5ft from parallel to the alliance station edge to the scale plate, 
 		//Minus 1.5ft shooting distance, and minus half of robot length to make sure the front is at the right spot
 		public static final double SCALE_OFFSET = (3.5 * 12) - SHOOTING_DISTANCE - ROBOT_WIDTH / 2;
@@ -94,7 +98,7 @@ public class RobotMap {
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */
 	public static class Speeds {
-		public static final double ELEVATOR_SPEED = 0.70;
+		public static final double ELEVATOR_SPEED = 1.0;
 		public static final double WRIST_SPEED = 1.0;
 		//Driving
 		public static final double AUTO_SPEED = 0.40; //0.6
@@ -103,7 +107,7 @@ public class RobotMap {
 		//Intake
 		public static final double AUTO_INTAKE_SPEED = 0.5;
 		//Elevator
-		public static final double AUTO_ELEVATOR_SPEED = 0.90; 
+		public static final double AUTO_ELEVATOR_SPEED = 1.0; 
 		public static final double DRIVE_SPEED = 1.0;
 	}
 	

@@ -5,6 +5,7 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseLine;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSideOffset;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeSameSide;
+import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Brake;
@@ -90,7 +91,7 @@ public class Robot extends IterativeRobot {
 		//Initialize camera stream and vision subsystem
         visionSubsystem = new VisionSubsystem(CameraServer.getInstance().startAutomaticCapture());
         //Set camera config
-        visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
+        visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO); //For vision, change to Mode.VISION
         
         oi = new OI();
         //(new Thread(new TestingThread())).start();
@@ -104,8 +105,8 @@ public class Robot extends IterativeRobot {
 		scaleSameSideLeft = new ScaleCubeSameSide(ScaleCubeSameSide.DIRECTION_LEFT);
 		scaleSameSideRight = new ScaleCubeSameSide(ScaleCubeSameSide.DIRECTION_RIGHT);
 		visionAuto = new VisionAuto(VisionAuto.DIRECTION_LEFT);
-		chooser.addDefault("No Auto", null);
-		chooser.addObject("Drive Past Baseline (Better to use one of the commands below)", new DrivePastBaseLine());
+		//chooser.addDefault("No Auto", null);
+		chooser.addDefault("Drive Past Baseline (Better to use one of the commands below)", new DrivePastBaseLine());
 		chooser.addObject("Place Cube from left side", placeCubeLeftSideOffset);
 		chooser.addObject("Place Cube from right side", placeCubeRightSideOffset);
 		chooser.addObject("Place Cube (Aligned with switch): Left", placeCubeLeftSide);
@@ -164,7 +165,8 @@ public class Robot extends IterativeRobot {
 							autonomousCommand.start();
 						}
 						else {
-							(new DrivePastBaseLine()).start();
+							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.DIRECTION_LEFT);
+							//(new DrivePastBaseLine()).start();
 						}
 					}
 					else {
@@ -172,7 +174,8 @@ public class Robot extends IterativeRobot {
 							autonomousCommand.start();
 						}
 						else {
-							(new DrivePastBaseLine()).start();
+							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.DIRECTION_RIGHT);
+							//(new DrivePastBaseLine()).start();
 						}
 					}
 				}

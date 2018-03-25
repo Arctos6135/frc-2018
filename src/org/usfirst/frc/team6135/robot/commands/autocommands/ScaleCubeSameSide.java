@@ -39,9 +39,9 @@ public class ScaleCubeSameSide extends CommandGroup {
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurn(-85 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_OFFSET, RobotMap.Speeds.AUTO_SPEED));
+    	//addSequential(new DriveStraightDistanceEx(-4, -RobotMap.Speeds.AUTO_SPEED));
     	//Delay for a short period of time for the robot to stablize before shooting
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoIntake(2, 1.0));
+    	addSequential(new AutoIntake(2, -1.0));
     }
 }
