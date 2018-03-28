@@ -138,8 +138,9 @@ public class RobotMap {
     
     public static Encoder rightEncoder = new Encoder(2, 3, false, EncodingType.k4X);
     public static Encoder leftEncoder = new Encoder(0, 1, true, EncodingType.k4X);
+    public static Encoder elevatorEncoder = new Encoder(4, 5, false, EncodingType.k4X);
     
-    public static DigitalInput elevatorTopSwitch = new DigitalInput(4);
+    public static DigitalInput elevatorTopSwitch = new DigitalInput(6);
     
     //public static DigitalInput elevatorBottomSwitch = new DigitalInput(5);
     
@@ -164,17 +165,13 @@ public class RobotMap {
 		leftDriveVictor.setInverted(true);
 		rightDriveVictor.setInverted(true);
 		
-		/*leftDriveTalon1.setNeutralMode(NeutralMode.Brake);
-		leftDriveTalon2.setNeutralMode(NeutralMode.Brake);
-		rightDriveTalon1.setNeutralMode(NeutralMode.Brake);
-		rightDriveTalon2.setNeutralMode(NeutralMode.Brake);
-		leftDriveVictor.setNeutralMode(NeutralMode.Brake);
-		rightDriveVictor.setNeutralMode(NeutralMode.Brake);*/
-		
 		leftDriveTalon1.set(ControlMode.PercentOutput, 0);
 		rightDriveTalon1.set(ControlMode.PercentOutput, 0);
+		
 		leftEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 		rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
+		elevatorEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
+		
 		intakeRight.setInverted(false);
 		intakeLeft.setInverted(true);
 	}
