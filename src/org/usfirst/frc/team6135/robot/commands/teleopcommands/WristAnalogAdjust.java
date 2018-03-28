@@ -19,6 +19,8 @@ public class WristAnalogAdjust extends Command {
 	static final double ANGLE_MAX = 1.0;
 	static final double ANGLE_MIN = -90.0;
 	
+	boolean adjustOn = true;
+	
 	/*
 	 * Drift -> Everything to shift up or down
 	 * Keep an angle constant, or some difference between the current angle and the "minimum angle"
@@ -29,6 +31,14 @@ public class WristAnalogAdjust extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.wristSubsystem);
+    }
+    
+    //Getter and setter for whether to adjust
+    public boolean getAdjustOn() {
+    	return adjustOn;
+    }
+    public void setAdjustOn(boolean b) {
+    	adjustOn = b;
     }
 
     // Called just before this Command runs the first time
@@ -43,8 +53,11 @@ public class WristAnalogAdjust extends Command {
     		Robot.wristSubsystem.setSpeed(joystickVal * RobotMap.Speeds.WRIST_SPEED);
     		stationaryAngle = Math.max(Math.min(Robot.wristSubsystem.getGyro(), ANGLE_MAX), ANGLE_MIN);
     	}
-    	else {
+    	else if(adjustOn) {
 	    	adjustForAngle();
+    	}
+    	else {
+    		Robot.wristSubsystem.setSpeed(0);
     	}
     }
 
