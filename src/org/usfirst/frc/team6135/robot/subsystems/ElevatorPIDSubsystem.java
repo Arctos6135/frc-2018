@@ -1,11 +1,13 @@
 package org.usfirst.frc.team6135.robot.subsystems;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
+import org.usfirst.frc.team6135.robot.commands.teleopcommands.ElevatorAnalogPID;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
 /**
- *
+ *	Controls the elevator with a encoder PID. To use this instead of the plain elevator subsystem, 
+ *	initialize {@code Robot.elevatorSubsystem} to an instance of ElevatorPIDSubsystem instead.
  */
 public class ElevatorPIDSubsystem extends PIDSubsystem {
 	
@@ -29,9 +31,12 @@ public class ElevatorPIDSubsystem extends PIDSubsystem {
     	super("Elevator PID Subsystem", kP, kI, kD);
     	//Allow up to 7% of imprecision
     	setAbsoluteTolerance(0.07);
+    	setInputRange(0.0, 1.0);
+    	getPIDController().setContinuous(false);
     }
 
     public void initDefaultCommand() {
+    	setDefaultCommand(new ElevatorAnalogPID());
     }
 
     //Note: Instead of returning a raw value, this will return a ratio
