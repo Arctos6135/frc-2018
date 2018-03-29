@@ -21,8 +21,5 @@
 	<classpathentry kind="lib" path="C:/Users/Arctos6135/Downloads/CTRE_Phoenix_FRCLibs_NON-WINDOWS_v5.2.1.1/java/lib/CTRE_Phoenix-sources.jar" sourcepath="C:/Users/Arctos6135/Downloads/CTRE_Phoenix_FRCLibs_NON-WINDOWS_v5.2.1.1/java/lib/CTRE_Phoenix-sources.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix-sources.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix.jar"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/niVisionWPI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
