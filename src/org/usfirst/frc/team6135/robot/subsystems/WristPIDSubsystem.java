@@ -31,10 +31,13 @@ public class WristPIDSubsystem extends PIDSubsystem {
     	getPIDController().setContinuous(false);
     	setAbsoluteTolerance(TOLERANCE);
     	RobotMap.wristGyro.calibrate();
+    	setSetpoint(returnPIDInput());
     }
     
     public void setRaw(double speed) {
-    	RobotMap.wristVictor.set(speed);
+    	//If the speed is to go down, or there is still room to go up
+    	if(speed < 0 || notAtTop())
+    		RobotMap.wristVictor.set(speed);
     }
     
     public boolean isEnabled() {
@@ -43,6 +46,10 @@ public class WristPIDSubsystem extends PIDSubsystem {
     
     public double getGyro() {
     	return RobotMap.gyro.getAngle();
+    }
+    
+    public boolean notAtTop() {
+    	return RobotMap.elevatorTopSwitch.get();
     }
 
     public void initDefaultCommand() {
@@ -61,6 +68,8 @@ public class WristPIDSubsystem extends PIDSubsystem {
         // Use output to drive your system, like a motor
         // e.g. yourMotor.set(output);
     	//Might need to be reversed
-    	RobotMap.wristVictor.set(-output);
+    	//If the speed is to go down, or there is still room to go up
+    	if(-output < 0 || notAtTop())
+    		RobotMap.wristVictor.set(-output);
     }
 }

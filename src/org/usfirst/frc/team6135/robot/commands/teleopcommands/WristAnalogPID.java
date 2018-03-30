@@ -40,6 +40,8 @@ public class WristAnalogPID extends Command {
     			//At this point we can set a new set point for the PID to hold the wrist in place
     			Robot.wristSubsystem.setSetpoint(Robot.wristSubsystem.getGyro());
     			//Enable and let the PID take over
+    			//Reset to make sure no integral windup happens
+    			Robot.wristSubsystem.getPIDController().reset();
     			Robot.wristSubsystem.enable();
     		}
     	}
