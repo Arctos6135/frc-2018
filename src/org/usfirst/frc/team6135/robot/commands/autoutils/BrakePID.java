@@ -42,7 +42,7 @@ public class BrakePID extends Command {
 	}
 	
 	static final PIDMotorController LEFT_CONTROLLER = new PIDMotorController(RobotMap.leftDriveTalon1);
-	static final PIDMotorController RIGHT_CONTROLLER = new PIDMotorController(RobotMap.rightDriveTalon2);
+	static final PIDMotorController RIGHT_CONTROLLER = new PIDMotorController(RobotMap.rightDriveTalon1);
 
     public BrakePID() {
         // Use requires() here to declare subsystem dependencies
