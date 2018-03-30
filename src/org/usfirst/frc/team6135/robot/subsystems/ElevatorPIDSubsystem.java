@@ -32,6 +32,7 @@ public class ElevatorPIDSubsystem extends PIDSubsystem {
     	//Allow up to 7% of imprecision
     	setAbsoluteTolerance(0.07);
     	setInputRange(0.0, 1.0);
+    	setOutputRange(-1.0, 1.0);
     	getPIDController().setContinuous(false);
     }
 

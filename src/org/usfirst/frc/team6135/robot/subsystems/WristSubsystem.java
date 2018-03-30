@@ -1,7 +1,6 @@
 package org.usfirst.frc.team6135.robot.subsystems;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalog;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,8 +26,7 @@ public class WristSubsystem extends Subsystem {
 	}
 	
     public void initDefaultCommand() {
-    	setDefaultCommand(new WristAnalog());
-    	//setDefaultCommand(new WristAnalogAdjust());
+    	setDefaultCommand(new WristAnalogAdjust());
     }
 }
 
