@@ -11,14 +11,13 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Brake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.commands.teleopcommands.TeleopDrive;
-import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalog;
 import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalogAdjust;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.IntakeSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
-import org.usfirst.frc.team6135.robot.subsystems.WristSubsystem;
+import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -47,7 +46,7 @@ public class Robot extends IterativeRobot {
 	public static IntakeSubsystem intakeSubsystem;
 	public static GearShiftSubsystem gearShiftSubsystem;
 	public static ElevatorSubsystem elevatorSubsystem;
-	public static WristSubsystem wristSubsystem;
+	public static WristPIDSubsystem wristSubsystem;
 	public static VisionSubsystem visionSubsystem;
 	
 	public static Alliance color;
@@ -82,9 +81,10 @@ public class Robot extends IterativeRobot {
 		intakeSubsystem = new IntakeSubsystem();
 		gearShiftSubsystem = new GearShiftSubsystem();
 		elevatorSubsystem = new ElevatorSubsystem();
-		wristSubsystem = new WristSubsystem();
-		RobotMap.wristGyro.calibrate();
-		wristSubsystem.START_TIME = System.currentTimeMillis();
+		wristSubsystem = new WristPIDSubsystem();
+		//Already done
+		//RobotMap.wristGyro.calibrate();
+		//wristSubsystem.START_TIME = System.currentTimeMillis();
 		
 		//Get the team's colour and station number
 		station = DriverStation.getInstance().getLocation();
