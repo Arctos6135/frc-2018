@@ -45,7 +45,7 @@ public class WristPIDSubsystem extends PIDSubsystem {
     }
     
     public double getGyro() {
-    	return RobotMap.gyro.getAngle();
+    	return RobotMap.wristGyro.getAngle();
     }
     
     public boolean notAtTop() {
