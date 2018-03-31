@@ -78,6 +78,10 @@ public class RobotMap {
 		//3.5ft from parallel to the alliance station edge to the scale plate, 
 		//Minus 1.5ft shooting distance, and minus half of robot length to make sure the front is at the right spot
 		public static final double SCALE_OFFSET = (3.5 * 12) - SHOOTING_DISTANCE - ROBOT_WIDTH / 2;
+		//Distance robot travels before turning to scale cube opposite side
+		public static final double SCALE_OPPOSITE_DIST1 = 20.0 * 12;
+		
+		
 	}
 	
 	//+7in for the bumpers

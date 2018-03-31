@@ -25,12 +25,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *	|
  * Robot
  */
-public class PlaceCubeFromSideOffset extends CommandGroup {
+public class PlaceCubeFromSide extends CommandGroup {
 
-	public static final int DIRECTION_LEFT = 1;
-	public static final int DIRECTION_RIGHT = -1;
+	public static final int SIDE_LEFT = 1;
+	public static final int SIDE_RIGHT = -1;
 	
-    public PlaceCubeFromSideOffset(int direction) {
+    public PlaceCubeFromSide(int side) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -50,7 +50,7 @@ public class PlaceCubeFromSideOffset extends CommandGroup {
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_CENTER_DISTANCE - RobotMap.ROBOT_LENGTH / 2, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	
-    	addSequential(new AutoTurn(-85 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));
+    	addSequential(new AutoTurn(-85 * side, RobotMap.Speeds.AUTO_TURN_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_EDGE_OFFSET, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
