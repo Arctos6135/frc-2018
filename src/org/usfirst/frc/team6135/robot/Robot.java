@@ -1,8 +1,14 @@
 
 package org.usfirst.frc.team6135.robot;
 
-import org.usfirst.frc.team6135.robot.commands.autocommands.*;
-import org.usfirst.frc.team6135.robot.commands.autoutils.Brake;
+import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseLine;
+import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromMiddle;
+import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSideOffset;
+import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeSameSide;
+import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSide;
+import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
+import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
+import org.usfirst.frc.team6135.robot.commands.autoutils.BrakePID;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.commands.teleopcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalogPID;
@@ -254,7 +260,7 @@ public class Robot extends IterativeRobot {
 		RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Brake);
 		RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Brake);
 		//Set the drivetrain's default command to enable braking
-		Robot.drive.setDefaultCommand(new Brake());
+		Robot.drive.setDefaultCommand(new BrakePID());
 		//Disable the wrist's adjustments
 		((WristAnalogPID) Robot.wristSubsystem.getDefaultCommand()).setEnabled(false);
 	}
