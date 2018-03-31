@@ -35,7 +35,17 @@ public class ScaleCubeOppositeSide extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_OPPOSITE_DIST1, RobotMap.Speeds.AUTO_SPEED));
-    	
+    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_OPPOSITE_DIST1 - RobotMap.ROBOT_LENGTH / 2, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	addSequential(new AutoTurn(-85 * side, RobotMap.Speeds.AUTO_TURN_SPEED));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_OPPOSITE_DIST2 - RobotMap.ROBOT_WIDTH / 2, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	addSequential(new AutoTurn(85 * side, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	//ROBOT_LENGTH / 2 is going to be similar to SCALE_OPPOSITE_DIST3 so probably no point in driving
+    	//addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_OPPOSITE_DIST3 - RobotMap.ROBOT_LENGTH / 2, RobotMap.Speeds.AUTO_SPEED));
+    	//addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -1.0));
     }
 }
