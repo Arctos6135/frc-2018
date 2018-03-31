@@ -1,7 +1,7 @@
 package org.usfirst.frc.team6135.robot.commands.teleoputils;
 
 import org.usfirst.frc.team6135.robot.Robot;
-import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalogAdjust;
+import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalogPID;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -33,10 +33,10 @@ public class EmergencySwitch extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	WristAnalogAdjust adjustCommand = (WristAnalogAdjust) Robot.wristSubsystem.getDefaultCommand();
-    	double requirement = adjustCommand.getAdjustOn() ? HOLD_REQUIREMENT_EMERGENCY : HOLD_REQUIREMENT_CANCEL;
+    	WristAnalogPID adjustCommand = (WristAnalogPID) Robot.wristSubsystem.getDefaultCommand();
+    	double requirement = adjustCommand.getEnabled() ? HOLD_REQUIREMENT_EMERGENCY : HOLD_REQUIREMENT_CANCEL;
     	if(timeSinceInitialized() > requirement) {
-    		adjustCommand.setAdjustOn(!adjustCommand.getAdjustOn());
+    		adjustCommand.setEnabled(!adjustCommand.getEnabled());
     		return true;
     	}
     	return false;
