@@ -4,7 +4,6 @@ import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
-import org.usfirst.frc.team6135.robot.commands.autoutils.AutoWrist;
 import org.usfirst.frc.team6135.robot.commands.autoutils.Delay;
 import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.commands.autoutils.RaiseElevator;

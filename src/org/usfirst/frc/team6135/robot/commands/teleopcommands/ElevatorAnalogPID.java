@@ -2,7 +2,6 @@ package org.usfirst.frc.team6135.robot.commands.teleopcommands;
 
 import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;
-import org.usfirst.frc.team6135.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
