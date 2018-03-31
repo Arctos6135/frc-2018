@@ -14,10 +14,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class ScaleCubeOppositeSide extends CommandGroup {
 	
-	public static final int DIRECTION_LEFT = 1;
-	public static final int DIRECTION_RIGHT = -1;
+	public static final int SIDE_LEFT = 1;
+	public static final int SIDE_RIGHT = -1;
 
-    public ScaleCubeOppositeSide(int direction) {
+    public ScaleCubeOppositeSide(int side) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -34,17 +34,7 @@ public class ScaleCubeOppositeSide extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_CENTER_DISTANCE_RAW-(5*12+4), RobotMap.Speeds.AUTO_SPEED));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurn(-85 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_LENGTH, RobotMap.Speeds.AUTO_SPEED));
-    	//addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_OFFSET, RobotMap.Speeds.AUTO_SPEED));
-    	//Delay for a short period of time for the robot to stabilize before shooting
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurn(85 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistanceEx((5*12+2), RobotMap.Speeds.AUTO_SPEED));
-    	//addSequential(new AutoIntake(2, -1.0));
+    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_OPPOSITE_DIST1, RobotMap.Speeds.AUTO_SPEED));
+    	
     }
 }

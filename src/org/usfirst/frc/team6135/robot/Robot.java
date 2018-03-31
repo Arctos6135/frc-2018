@@ -3,7 +3,7 @@ package org.usfirst.frc.team6135.robot;
 
 import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseLine;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromMiddle;
-import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSideOffset;
+import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
@@ -57,8 +57,8 @@ public class Robot extends IterativeRobot {
 	//They are the options that are shown in the auto menu
 	public static PlaceCubeFromMiddle placeCubeFromMiddle;
 	public static PlaceCubeSameSide placeCubeLeftSide;
-	public static PlaceCubeFromSideOffset placeCubeLeftSideOffset;
-	public static PlaceCubeFromSideOffset placeCubeRightSideOffset;
+	public static PlaceCubeFromSide placeCubeLeftSideOffset;
+	public static PlaceCubeFromSide placeCubeRightSideOffset;
 	public static PlaceCubeSameSide placeCubeRightSide;
 	public static VisionAuto visionAuto;
 	public static ScaleCubeSameSide scaleSameSideLeft, scaleSameSideRight;
@@ -102,10 +102,10 @@ public class Robot extends IterativeRobot {
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
 		placeCubeLeftSide = new PlaceCubeSameSide();
 		placeCubeRightSide = new PlaceCubeSameSide();
-		placeCubeLeftSideOffset = new PlaceCubeFromSideOffset(PlaceCubeFromSideOffset.DIRECTION_LEFT);
-		placeCubeRightSideOffset = new PlaceCubeFromSideOffset(PlaceCubeFromSideOffset.DIRECTION_RIGHT);
-		scaleSameSideLeft = new ScaleCubeSameSide(ScaleCubeSameSide.DIRECTION_LEFT);
-		scaleSameSideRight = new ScaleCubeSameSide(ScaleCubeSameSide.DIRECTION_RIGHT);
+		placeCubeLeftSideOffset = new PlaceCubeFromSide(PlaceCubeFromSide.SIDE_LEFT);
+		placeCubeRightSideOffset = new PlaceCubeFromSide(PlaceCubeFromSide.SIDE_RIGHT);
+		scaleSameSideLeft = new ScaleCubeSameSide(ScaleCubeSameSide.SIDE_LEFT);
+		scaleSameSideRight = new ScaleCubeSameSide(ScaleCubeSameSide.SIDE_RIGHT);
 		visionAuto = new VisionAuto(VisionAuto.DIRECTION_LEFT);
 		//chooser.addDefault("No Auto", null);
 		chooser.addDefault("Drive Past Baseline (Better to use one of the commands below)", new DrivePastBaseLine());
@@ -170,7 +170,7 @@ public class Robot extends IterativeRobot {
 							autonomousCommand.start();
 						}
 						else {
-							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.DIRECTION_LEFT);
+							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.SIDE_LEFT);
 							//(new DrivePastBaseLine()).start();
 						}
 					}
@@ -179,7 +179,7 @@ public class Robot extends IterativeRobot {
 							autonomousCommand.start();
 						}
 						else {
-							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.DIRECTION_RIGHT);
+							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.SIDE_RIGHT);
 							//(new DrivePastBaseLine()).start();
 						}
 					}

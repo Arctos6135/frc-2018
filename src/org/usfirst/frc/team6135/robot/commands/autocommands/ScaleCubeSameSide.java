@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class ScaleCubeSameSide extends CommandGroup {
 	
-	public static final int DIRECTION_LEFT = 1;
-	public static final int DIRECTION_RIGHT = -1;
+	public static final int SIDE_LEFT = 1;
+	public static final int SIDE_RIGHT = -1;
 
-    public ScaleCubeSameSide(int direction) {
+    public ScaleCubeSameSide(int side) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -37,7 +37,7 @@ public class ScaleCubeSameSide extends CommandGroup {
         // arm.z
     	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_CENTER_DISTANCE, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurn(-85 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));
+    	addSequential(new AutoTurn(-85 * side, RobotMap.Speeds.AUTO_TURN_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	//addSequential(new DriveStraightDistanceEx(-4, -RobotMap.Speeds.AUTO_SPEED));
     	//Delay for a short period of time for the robot to stablize before shooting
