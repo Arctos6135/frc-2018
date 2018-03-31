@@ -16,13 +16,10 @@ public class Brake extends Command {
 	public static final double SPEED_MULTIPLIER = 0.03;
 	public static final double MIN_SPEED = 0.0;
 	
-	final boolean brake;
-	
-    public Brake(boolean brake) {
+    public Brake() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
-    	this.brake = brake;
     }
 
     // Called just before this Command runs the first time
@@ -37,27 +34,25 @@ public class Brake extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(brake) {
-	    	double left = RobotMap.leftEncoder.getDistance();
-	    	double right = RobotMap.rightEncoder.getDistance();
-	    	double leftSpeed = 0, rightSpeed = 0;
-	    	if(Math.abs(left) > TOLERANCE) {
-	    		double error = Math.abs(left);
-	    		int sign = left < 0 ? -1 : 1;
-	    		leftSpeed = -error * sign * SPEED_MULTIPLIER;
-	    		leftSpeed = Math.abs(leftSpeed) > MIN_SPEED ? leftSpeed : MIN_SPEED*sign;
-	    	}
-	    	if(Math.abs(right) > TOLERANCE) {
-	    		double error = Math.abs(right);
-	    		int sign = right < 0 ? -1 : 1;
-	    		rightSpeed = -error * sign * SPEED_MULTIPLIER;
-	    		rightSpeed = Math.abs(rightSpeed) > MIN_SPEED ? rightSpeed : MIN_SPEED*sign;
-	    	}
-	    	leftSpeed = constrain(leftSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);
-	    	rightSpeed = constrain(rightSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);
-	    	
-	    	Robot.drive.setMotorsVBus(leftSpeed, rightSpeed);
+    	double left = RobotMap.leftEncoder.getDistance();
+    	double right = RobotMap.rightEncoder.getDistance();
+    	double leftSpeed = 0, rightSpeed = 0;
+    	if(Math.abs(left) > TOLERANCE) {
+    		double error = Math.abs(left);
+    		int sign = left < 0 ? -1 : 1;
+    		leftSpeed = -error * sign * SPEED_MULTIPLIER;
+    		leftSpeed = Math.abs(leftSpeed) > MIN_SPEED ? leftSpeed : MIN_SPEED*sign;
     	}
+    	if(Math.abs(right) > TOLERANCE) {
+    		double error = Math.abs(right);
+    		int sign = right < 0 ? -1 : 1;
+    		rightSpeed = -error * sign * SPEED_MULTIPLIER;
+    		rightSpeed = Math.abs(rightSpeed) > MIN_SPEED ? rightSpeed : MIN_SPEED*sign;
+    	}
+    	leftSpeed = constrain(leftSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);
+    	rightSpeed = constrain(rightSpeed, RobotMap.Speeds.DRIVE_SPEED, -RobotMap.Speeds.DRIVE_SPEED);
+    	
+    	Robot.drive.setMotorsVBus(leftSpeed, rightSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

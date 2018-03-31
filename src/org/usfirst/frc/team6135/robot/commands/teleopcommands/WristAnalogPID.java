@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 public class WristAnalogPID extends Command {
 	
 	static final double DEADZONE = 0.15;
+	
+	boolean pidEnabled = false;
 
     public WristAnalogPID() {
         // Use requires() here to declare subsystem dependencies
@@ -20,6 +22,13 @@ public class WristAnalogPID extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    }
+    
+    public boolean getEnabled() {
+    	return pidEnabled;
+    }
+    public void setEnabled(boolean b) {
+    	pidEnabled = b;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -33,7 +42,8 @@ public class WristAnalogPID extends Command {
     		//Set the speed
     		Robot.wristSubsystem.setRaw(joystickVal);
     	}
-    	else {
+    	//Do PID stuff only if adjustments are enabled
+    	else if(pidEnabled) {
     		//IMPORTANT: Since if the joystick was previously pushed, the PID would be enabled,
     		//this would only run if the joystick went from having input to not having input.
     		if(!Robot.wristSubsystem.isEnabled()) {
@@ -44,6 +54,12 @@ public class WristAnalogPID extends Command {
     			Robot.wristSubsystem.getPIDController().reset();
     			Robot.wristSubsystem.enable();
     		}
+    	}
+    	//Otherwise, just set the motor to 0
+    	else {
+    		if(Robot.wristSubsystem.isEnabled())
+    			Robot.wristSubsystem.disable();
+    		Robot.wristSubsystem.setRaw(0);
     	}
     }
 
