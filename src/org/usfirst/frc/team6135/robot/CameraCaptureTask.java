@@ -49,9 +49,9 @@ public class CameraCaptureTask extends TimerTask {
 			BufferedImage img = matToBufferedImage(m);
 			m.release();
 			LocalDateTime time = LocalDateTime.now();
-			//YYYY_MM_DD-HH_MM_SS-ID
-			StringBuilder name = new StringBuilder(time.getYear());
-			name.append("_")
+			//RIOCAPTURE_YYYY_MM_DD-HH_MM_SS-ID
+			StringBuilder name = new StringBuilder("RIOCAPTURE_");
+			name.append(time.getYear())
 			.append(time.getMonthValue())
 			.append("_")
 			.append(time.getDayOfMonth())
