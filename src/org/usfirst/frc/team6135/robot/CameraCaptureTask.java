@@ -3,7 +3,8 @@ package org.usfirst.frc.team6135.robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
@@ -37,8 +38,9 @@ public class CameraCaptureTask extends TimerTask {
 		return img;
 	}
 	
-	//A value incremented by each capture to ensure no two images have the same names.
-	static long identifier = 0x00;
+	//The format used for the date
+	//Year-Month-Day_Hour-Minute-Second_Millisecond
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS");
 	
 	@Override
 	public void run() {
@@ -48,23 +50,10 @@ public class CameraCaptureTask extends TimerTask {
 			Mat m = Robot.visionSubsystem.grabFrame();
 			BufferedImage img = matToBufferedImage(m);
 			m.release();
-			LocalDateTime time = LocalDateTime.now();
-			//RIOCAPTURE_YYYY_MM_DD-HH_MM_SS-ID
-			StringBuilder name = new StringBuilder("RIOCAPTURE_");
-			name.append(time.getYear())
-			.append(time.getMonthValue())
-			.append("_")
-			.append(time.getDayOfMonth())
-			.append("-")
-			.append(time.getHour())
-			.append("_")
-			.append(time.getMinute())
-			.append("_")
-			.append(time.getSecond())
-			.append("-")
-			.append(identifier ++)
-			.append(".jpg");
-			File out = new File(name.toString());
+			
+			Date time = new Date();
+			
+			File out = new File("RioCapture_" + dateFormat.format(time) + ".jpg");
 			try {
 				ImageIO.write(img, "jpg", out);
 			} 
