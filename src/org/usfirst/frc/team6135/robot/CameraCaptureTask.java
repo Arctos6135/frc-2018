@@ -42,11 +42,23 @@ public class CameraCaptureTask extends TimerTask {
 	//Year-Month-Day_Hour-Minute-Second_Millisecond
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS");
 	
+	boolean paused = false;
+
+	public void pause() {
+		paused = true;
+	}
+	public void resume() {
+		paused = false;
+	}
+	public boolean getPaused() {
+		return paused;
+	}
+	
 	@Override
 	public void run() {
 		//Only store images if the vision subsystem is in regular video capture mode
 		//When the mode is VISION it is likely that the camera is in use
-		if(Robot.visionSubsystem.getMode() == VisionSubsystem.Mode.VIDEO) {
+		if(!paused && (Robot.visionSubsystem.getMode() == VisionSubsystem.Mode.VIDEO)) {
 			Mat m = Robot.visionSubsystem.grabFrame();
 			BufferedImage img = matToBufferedImage(m);
 			m.release();

@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team6135.robot;
 
+import java.util.Timer;
+
 import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseLine;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSide;
@@ -67,7 +69,12 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
-	
+	//Camera recording timer task
+	CameraCaptureTask captureTask;
+	Timer captureTimer = new Timer();
+	//Capture FPS
+	static final int CAPTURE_FPS = 8;
+	static final int CAPTURE_PERIOD = 1000 / CAPTURE_FPS;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -120,7 +127,11 @@ public class Robot extends IterativeRobot {
 		//Display the chooser
 		SmartDashboard.putData("Auto mode", chooser);
 		
-		
+		//Camera capture is paused during disabled
+		captureTask = new CameraCaptureTask();
+		captureTask.pause();
+		//If camera capture is not desired, comment out this line
+		//captureTimer.schedule(captureTask, 1000, CAPTURE_PERIOD);
 	}
 
 	/**
@@ -130,6 +141,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
+		captureTask.pause();
 		//Set drivetrain's default so there's no more braking
 		Robot.drive.setDefaultCommand(new TeleopDrive());
 		//Disable the adjustments of the wrist
@@ -263,6 +275,8 @@ public class Robot extends IterativeRobot {
 		Robot.drive.setDefaultCommand(new BrakePID());
 		//Disable the wrist's adjustments
 		((WristAnalogPID) Robot.wristSubsystem.getDefaultCommand()).setEnabled(false);
+		
+		captureTask.resume();
 	}
 
 	/**
@@ -293,6 +307,8 @@ public class Robot extends IterativeRobot {
 		RobotMap.rightDriveTalon2.setNeutralMode(NeutralMode.Coast);
 		RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Coast);
 		RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Coast);
+		
+		captureTask.resume();
 	}
 
 	/**
