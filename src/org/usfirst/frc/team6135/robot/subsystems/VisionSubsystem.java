@@ -111,6 +111,15 @@ public class VisionSubsystem extends Subsystem {
 		return cameraMode;
 	}
 	/**
+	 * Retrieves a frame from the camera.
+	 * @return A frame from the camera
+	 */
+	public Mat grabFrame() {
+		Mat img = new Mat();
+		sink.grabFrame(img);
+		return img;
+	}
+	/**
 	 * Returns, in radians, the angle between the camera and the center of our alliance's switch
 	 */
 	@Deprecated
