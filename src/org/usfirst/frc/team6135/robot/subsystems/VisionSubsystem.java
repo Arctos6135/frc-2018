@@ -29,16 +29,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class VisionSubsystem extends Subsystem {
 	/**
-	 * Camera mode
+	 * Camera mode<br>
 	 * VISION mode has low exposure for better object detection, 
-	 * However VIDEO mode's high exposure gives a brighter picture, which is better for humans to view
+	 * However VIDEO mode's high exposure gives a brighter picture, which is better for humans to view.
 	 * Note that switching between the two modes takes time; the program should wait for approx. 1s to compensate.
 	 */
-	 public static enum Mode {
+	public static enum Mode {
     	VISION,
     	VIDEO,
     }
 	
+	Mode cameraMode;
+
 	//Initial brightness of the camera
 	public static int cameraInitBrightness;
 	//Colour filters
@@ -77,8 +79,8 @@ public class VisionSubsystem extends Subsystem {
 		//setDefaultCommand(new MySpecialCommand());
 	}
 	/**
-	 * Sets the mode of the camera
-	 * For more information on modes see the Mode enum
+	 * Sets the mode of the camera.
+	 * For more information on modes see the Mode enum.
 	 */
 	public void setMode(Mode mode) {
 		if(mode == Mode.VISION) {
@@ -99,6 +101,14 @@ public class VisionSubsystem extends Subsystem {
 				SmartDashboard.putString("VisionError", "Failed to set FPS");
 			}
 		}
+		cameraMode = mode;
+	}
+	/**
+	 * Retrieves the mode of the camera.
+	 * For more information on modes see the Mode enum.
+	 */
+	public Mode getMode() {
+		return cameraMode;
 	}
 	/**
 	 * Returns, in radians, the angle between the camera and the center of our alliance's switch
