@@ -6,6 +6,7 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.EmergencySwitch;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
 
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -65,6 +66,7 @@ public class OI {
 	 * 	Right Trigger: Intake In (Analog)
 	 * 	B Button: The Emergency Button (Hold 2s, changes behavior of the wrist, in case of gyro issues)
 	 * 	A Button: Gyro reset (Use only when wrist is flat, for if gyro drift gets too much)
+	 * 	Y Button: Raise elevator & wrist to shooting position
 	 */
 	
 	public static class Controls {
@@ -82,6 +84,7 @@ public class OI {
 		public static final int INTAKE_OUT = RobotMap.ControllerMap.LTRIGGER;
 		public static final int EMERGENCY = RobotMap.ControllerMap.BUTTON_B;
 		public static final int GYRO_RESET = RobotMap.ControllerMap.BUTTON_A;
+		public static final int SHOOTING_POSITION = RobotMap.ControllerMap.BUTTON_Y;
 	}
 	
 	public static Joystick driveController;
@@ -96,6 +99,7 @@ public class OI {
 	
 	public static JoystickButton emergencyButton;
 	public static JoystickButton gyroReset;
+	public static JoystickButton shootingPosition;
 	
 	public OI() {
 		//Port 0 is on the right of the programming laptop and port 1 is on the left.
@@ -110,6 +114,7 @@ public class OI {
 		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
 		emergencyButton = new JoystickButton(attachmentsController, Controls.EMERGENCY);
 		gyroReset = new JoystickButton(attachmentsController, Controls.GYRO_RESET);
+		shootingPosition = new JoystickButton(attachmentsController, Controls.SHOOTING_POSITION);
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
@@ -128,5 +133,6 @@ public class OI {
 		emergencyButton.whenPressed(emergencyCmd);
 		emergencyButton.whenReleased(new CancelOperation(emergencyCmd));
 		gyroReset.whenPressed(new ResetGyro());
+		shootingPosition.whenPressed(new ScalingPosition());
 	}
 }

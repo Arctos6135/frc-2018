@@ -13,6 +13,9 @@ public class ElevatorSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
+	public static final int DIRECTION_UP = -1;
+	public static final int DIRECTION_DOWN = 1;
+	
 	public void setSpeed(double speed) {
 		RobotMap.elevatorVictor.set(speed);
 	}

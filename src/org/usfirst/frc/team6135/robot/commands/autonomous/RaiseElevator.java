@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import org.usfirst.frc.team6135.robot.Robot;
+import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -15,7 +16,7 @@ public class RaiseElevator extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.elevatorSubsystem);
-    	this.speed = -speed;
+    	this.speed *= ElevatorSubsystem.DIRECTION_UP;
     }
 
     // Called just before this Command runs the first time

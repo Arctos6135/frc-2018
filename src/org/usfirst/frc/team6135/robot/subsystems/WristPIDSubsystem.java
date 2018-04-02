@@ -19,6 +19,10 @@ public class WristPIDSubsystem extends PIDSubsystem {
 	static final double ANGLE_MAX = 1.0;
 	static final double ANGLE_MIN = -80.0;
 	static final double TOLERANCE = 5;
+	
+	//The angle at the top and bottom of the wrist
+	public static final double ANGLE_TOP = ANGLE_MIN;
+	public static final double ANGLE_BOTTOM = ANGLE_MAX;
 
     // Initialize your subsystem here
     public WristPIDSubsystem() {
