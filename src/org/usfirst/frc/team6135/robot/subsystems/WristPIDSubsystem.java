@@ -4,6 +4,7 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalogPID;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  *
@@ -44,8 +45,12 @@ public class WristPIDSubsystem extends PIDSubsystem {
     	return this.getPIDController().isEnabled();
     }
     
-    public double getGyro() {
+    public double getAngle() {
     	return RobotMap.wristGyro.getAngle();
+    }
+    
+    public Gyro getGyroSensor() {
+    	return RobotMap.wristGyro;
     }
     
     public boolean notAtTop() {

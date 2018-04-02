@@ -5,6 +5,7 @@ import org.usfirst.frc.team6135.robot.commands.teleoputils.AutoCubeAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoputils.AutoSwitchAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoputils.EmergencySwitch;
 import org.usfirst.frc.team6135.robot.commands.teleoputils.GearShift;
+import org.usfirst.frc.team6135.robot.commands.teleoputils.ResetGyro;
 
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -63,6 +64,7 @@ public class OI {
 	 * 	Left Trigger: Intake Out (Analog)
 	 * 	Right Trigger: Intake In (Analog)
 	 * 	B Button: The Emergency Button (Hold 2s, changes behavior of the wrist, in case of gyro issues)
+	 * 	A Button: Gyro reset (Use only when wrist is flat, for if gyro drift gets too much)
 	 */
 	
 	public static class Controls {
@@ -79,6 +81,7 @@ public class OI {
 		public static final int INTAKE_IN = RobotMap.ControllerMap.RTRIGGER;
 		public static final int INTAKE_OUT = RobotMap.ControllerMap.LTRIGGER;
 		public static final int EMERGENCY = RobotMap.ControllerMap.BUTTON_B;
+		public static final int GYRO_RESET = RobotMap.ControllerMap.BUTTON_A;
 	}
 	
 	public static Joystick driveController;
@@ -92,6 +95,7 @@ public class OI {
 	public static JoystickButton cancelAlign;
 	
 	public static JoystickButton emergencyButton;
+	public static JoystickButton gyroReset;
 	
 	public OI() {
 		//Port 0 is on the right of the programming laptop and port 1 is on the left.
@@ -105,6 +109,7 @@ public class OI {
 		autoSwitchAlign = new JoystickButton(driveController, Controls.AUTO_SWITCH_ALIGN);
 		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
 		emergencyButton = new JoystickButton(attachmentsController, Controls.EMERGENCY);
+		gyroReset = new JoystickButton(attachmentsController, Controls.GYRO_RESET);
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
@@ -122,5 +127,6 @@ public class OI {
 		
 		emergencyButton.whenPressed(emergencyCmd);
 		emergencyButton.whenReleased(new CancelOperation(emergencyCmd));
+		gyroReset.whenPressed(new ResetGyro());
 	}
 }

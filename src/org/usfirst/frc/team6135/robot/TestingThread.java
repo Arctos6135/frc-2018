@@ -60,7 +60,7 @@ public class TestingThread implements Runnable {
 				
 				SmartDashboard.putNumber("LENCODER", RobotMap.leftEncoder.getDistance());
 				SmartDashboard.putNumber("RENCODER", RobotMap.rightEncoder.getDistance());
-				SmartDashboard.putNumber("GYRO", Robot.wristSubsystem.getGyro());
+				SmartDashboard.putNumber("GYRO", Robot.wristSubsystem.getAngle());
 			}
 			SmartDashboard.putString("ERROR", "Thread interrupted");
 		}
