@@ -7,10 +7,13 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.EmergencySwitch;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
+import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
+import org.usfirst.frc.team6135.robot.triggers.GyroLimitSwitch;
 
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -101,6 +104,8 @@ public class OI {
 	public static JoystickButton gyroReset;
 	public static JoystickButton shootingPosition;
 	
+	public static Trigger calibrateGyroTrigger;
+	
 	public OI() {
 		//Port 0 is on the right of the programming laptop and port 1 is on the left.
 		driveController = new Joystick(0);
@@ -134,5 +139,8 @@ public class OI {
 		emergencyButton.whenReleased(new CancelOperation(emergencyCmd));
 		gyroReset.whenPressed(new ResetGyro());
 		shootingPosition.whenPressed(new ScalingPosition());
+		
+		calibrateGyroTrigger = new GyroLimitSwitch();
+		calibrateGyroTrigger.whenActive(new ResetGyro(WristPIDSubsystem.LIMIT_SWITCH_ANGLE));
 	}
 }

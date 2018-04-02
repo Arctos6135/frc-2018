@@ -23,6 +23,19 @@ public class WristPIDSubsystem extends PIDSubsystem {
 	//The angle at the top and bottom of the wrist
 	public static final double ANGLE_TOP = ANGLE_MIN;
 	public static final double ANGLE_BOTTOM = ANGLE_MAX;
+	
+	//The angle of the wrist when it hits the limit switch
+	//Used in calibration via limit switch
+	public static final double LIMIT_SWITCH_ANGLE = -75.0;
+	
+	//This value is added to the angle when it is retrieved
+	//Used in calibration via limit switch
+	//A workaround since the gyro API can only reset to 0
+	double angleBias = 0;
+	
+	public void setAngleBias(double bias) {
+		angleBias = bias;
+	}
 
     // Initialize your subsystem here
     public WristPIDSubsystem() {
@@ -50,7 +63,7 @@ public class WristPIDSubsystem extends PIDSubsystem {
     }
     
     public double getAngle() {
-    	return RobotMap.wristGyro.getAngle();
+    	return RobotMap.wristGyro.getAngle() + angleBias;
     }
     
     public Gyro getGyroSensor() {
@@ -70,7 +83,7 @@ public class WristPIDSubsystem extends PIDSubsystem {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
-        return Math.max(-1.0, Math.min(1.0, RobotMap.wristGyro.getAngle()));
+        return Math.max(-1.0, Math.min(1.0, RobotMap.wristGyro.getAngle() + angleBias));
     }
 
     protected void usePIDOutput(double output) {
