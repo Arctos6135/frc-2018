@@ -70,14 +70,14 @@ public class WristAnalogPID extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.wristSubsystem.disable();
-    	Robot.wristSubsystem.setRaw(0);
+    	//Don't disable the PID, but change its setpoint to stop it from adjusting
+    	Robot.wristSubsystem.setSetpoint(Robot.wristSubsystem.getAngle());
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.wristSubsystem.disable();
-    	Robot.wristSubsystem.setRaw(0);
+    	//Don't disable the PID, but change its setpoint to stop it from adjusting
+    	Robot.wristSubsystem.setSetpoint(Robot.wristSubsystem.getAngle());
     }
 }
