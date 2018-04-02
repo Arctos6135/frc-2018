@@ -15,6 +15,7 @@ import org.usfirst.frc.team6135.robot.commands.defaultcommands.BrakePID;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.WristAnalogPID;
 import org.usfirst.frc.team6135.robot.misc.CameraCaptureTask;
+import org.usfirst.frc.team6135.robot.misc.ToggleCameraCapture;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
@@ -71,8 +72,8 @@ public class Robot extends IterativeRobot {
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
 	//Camera recording timer task
-	CameraCaptureTask captureTask;
-	Timer captureTimer = new Timer();
+	public static CameraCaptureTask captureTask;
+	public static Timer captureTimer = new Timer();
 	//Capture FPS
 	static final int CAPTURE_FPS = 8;
 	static final int CAPTURE_PERIOD = 1000 / CAPTURE_FPS;
@@ -151,9 +152,10 @@ public class Robot extends IterativeRobot {
 		captureTask = new CameraCaptureTask();
 		captureTask.pause();
 		//If camera capture is not desired, comment out this line
-		//captureTimer.schedule(captureTask, 1000, CAPTURE_PERIOD);
+		captureTimer.schedule(captureTask, 1000, CAPTURE_PERIOD);
 		
 		putTunables();
+		SmartDashboard.putData("Pause/Resume Camera Capture", new ToggleCameraCapture());
 	}
 
 	/**
