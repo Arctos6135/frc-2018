@@ -148,12 +148,13 @@ public class RobotMap {
     
     public static Encoder rightEncoder = new Encoder(2, 3, false, EncodingType.k4X);
     public static Encoder leftEncoder = new Encoder(0, 1, true, EncodingType.k4X);
-    public static Encoder elevatorEncoder = new Encoder(4, 5, false, EncodingType.k4X);
+    //Not using this
+    //public static Encoder elevatorEncoder = new Encoder(4, 5, false, EncodingType.k4X);
     
-    public static DigitalInput elevatorTopSwitch = new DigitalInput(6);
-    public static DigitalInput wristSwitch = new DigitalInput(7);
+    public static DigitalInput elevatorTopSwitch = new DigitalInput(4);
+    public static DigitalInput elevatorBottomSwitch = new DigitalInput(5);
+    public static DigitalInput wristSwitch = new DigitalInput(6);
     
-    //public static DigitalInput elevatorBottomSwitch = new DigitalInput(5);
     
     //This is the gyroscope that is mounted in the SPI port of the roboRIO
     //Use the ADXRS450_Gyro class instead of AnalogGyro

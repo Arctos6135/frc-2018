@@ -28,16 +28,14 @@ public class ElevatorAnalog extends Command {
     	final double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.ELEVATOR);
     	if(Math.abs(joystickVal) > DEADZONE) {
     		//Check if we are at the boundary
-    		/*if((joystickVal > 0 && !Robot.elevatorSubsystem.topReached()) ||
-    				(joystickVal < 0 && !Robot.elevatorSubsystem.bottomReached())) {
-    			RobotMap.elevatorVictor.set(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
-    		}*/
-    		if((joystickVal < 0 && Robot.elevatorSubsystem.notAtTop()) || joystickVal > 0) {
+    		/*if((joystickVal < 0 && Robot.elevatorSubsystem.notAtTop()) || joystickVal > 0) {
     			RobotMap.elevatorVictor.set(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
     		}
     		else {
     			RobotMap.elevatorVictor.set(0);
-    		}
+    		}*/
+    		//The limit switch checking has been moved to ElevatorSubsystem
+    		RobotMap.elevatorVictor.set(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
     	}
     	else {
     		RobotMap.elevatorVictor.set(0);

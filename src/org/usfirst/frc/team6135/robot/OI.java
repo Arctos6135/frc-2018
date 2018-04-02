@@ -5,6 +5,7 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoSwitchAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.EmergencySwitch;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.IntakingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
 
@@ -46,29 +47,34 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 	
-	/*
-	 * CONTROLS
+	/**
+	 * <b>CONTROLS</b><br><br>
+	 * 
 	 * Drive:
-	 * 	Left Analog Stick: Forwards/Backwards
-	 * 	Right Analog Stick: Left/Right
-	 * 	Left Bumper: Shift gear to slower configuration
-	 * 	Right Bumper: Shift gear to faster configuration
-	 * 	Y Button: Auto Power Cube align
-	 * 	X Button: Auto Switch align
+	 * <ul>
+	 * 	<li>Left Analog Stick: Forwards/Backwards</li>
+	 * 	<li>Right Analog Stick: Left/Right</li>
+	 * 	<li>Left Bumper: Shift gear to slower configuration</li>
+	 * 	<li>Right Bumper: Shift gear to faster configuration</li>
+	 * 	<li>Y Button: Auto Power Cube align</li>
+	 * 	<li>X Button: Auto Switch align
 	 * 		- Note: The robot will first attempt to locate the alliance colour, but if
-	 * 		the team switch cannot be found, it will ignore the colour and try to find any switch at all.
-	 * 	B Button: Cancel auto align (in case something goes terribly wrong)
-	 * 	XBOX Button: Enable rocket booster
+	 * 		the team switch cannot be found, it will ignore the colour and try to find any switch at all.</li>
+	 * 	<li>B Button: Cancel auto align (in case something goes terribly wrong)</li>
+	 * 	<li>XBOX Button: Enable rocket booster</li>
+	 * </ul>
 	 * Attachments:
-	 * 	Left Analog Stick: Elevator (Max. speed = 50%)
-	 * 	Right Analog Stick: Tilt Wrist (Max. speed = 30%, up/down)
-	 * 	Left Trigger: Intake Out (Analog)
-	 * 	Right Trigger: Intake In (Analog)
-	 * 	B Button: The Emergency Button (Hold 2s, changes behavior of the wrist, in case of gyro issues)
-	 * 	A Button: Gyro reset (Use only when wrist is flat, for if gyro drift gets too much)
-	 * 	Y Button: Raise elevator & wrist to shooting position
+	 * <ul>
+	 * 	<li>Left Analog Stick: Elevator</li>
+	 * 	<li>Right Analog Stick: Tilt Wrist</li>
+	 * 	<li>Left Trigger: Intake Out (Analog)</li>
+	 * 	<li>Right Trigger: Intake In (Analog)</li>
+	 * 	<li>B Button: The Emergency Button (Hold 2s, changes behavior of the wrist, in case of gyro issues)</li>
+	 * 	<li>A Button: Gyro reset (Use only if gyro drift gets too much, and wrist is flat.)</li>
+	 * 	<li>Y Button: Raise elevator & wrist to shooting position</li>
+	 * 	<li>X Button: Lower elevator & wrist to intaking position</li>
+	 * </ul>
 	 */
-	
 	public static class Controls {
 		public static final int FWD_REV = RobotMap.ControllerMap.LSTICK_Y_AXIS;
 		public static final int LEFT_RIGHT = RobotMap.ControllerMap.RSTICK_X_AXIS;
@@ -85,6 +91,7 @@ public class OI {
 		public static final int EMERGENCY = RobotMap.ControllerMap.BUTTON_B;
 		public static final int GYRO_RESET = RobotMap.ControllerMap.BUTTON_A;
 		public static final int SHOOTING_POSITION = RobotMap.ControllerMap.BUTTON_Y;
+		public static final int INTAKING_POSITION = RobotMap.ControllerMap.BUTTON_X;
 	}
 	
 	public static Joystick driveController;
@@ -100,6 +107,7 @@ public class OI {
 	public static JoystickButton emergencyButton;
 	public static JoystickButton gyroReset;
 	public static JoystickButton shootingPosition;
+	public static JoystickButton intakingPosition;
 	
 	public OI() {
 		//Port 0 is on the right of the programming laptop and port 1 is on the left.
@@ -115,6 +123,7 @@ public class OI {
 		emergencyButton = new JoystickButton(attachmentsController, Controls.EMERGENCY);
 		gyroReset = new JoystickButton(attachmentsController, Controls.GYRO_RESET);
 		shootingPosition = new JoystickButton(attachmentsController, Controls.SHOOTING_POSITION);
+		intakingPosition = new JoystickButton(attachmentsController, Controls.INTAKING_POSITION);
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
@@ -134,5 +143,6 @@ public class OI {
 		emergencyButton.whenReleased(new CancelOperation(emergencyCmd));
 		gyroReset.whenPressed(new ResetGyro());
 		shootingPosition.whenPressed(new ScalingPosition());
+		intakingPosition.whenPressed(new IntakingPosition());
 	}
 }
