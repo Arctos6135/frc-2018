@@ -14,6 +14,7 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceE
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.BrakePID;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.WristAnalogPID;
+import org.usfirst.frc.team6135.robot.misc.CameraCaptureTask;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;

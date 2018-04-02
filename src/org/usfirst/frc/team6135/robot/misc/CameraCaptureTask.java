@@ -1,4 +1,4 @@
-package org.usfirst.frc.team6135.robot;
+package org.usfirst.frc.team6135.robot.misc;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,7 +10,10 @@ import java.util.TimerTask;
 import javax.imageio.ImageIO;
 
 import org.opencv.core.Mat;
+import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This TimerTask peroidically captures frames from the camera of {@code VisionSubsystem} 
@@ -46,9 +49,11 @@ public class CameraCaptureTask extends TimerTask {
 
 	public void pause() {
 		paused = true;
+		SmartDashboard.putBoolean("Camera is Recording", false);
 	}
 	public void resume() {
 		paused = false;
+		SmartDashboard.putBoolean("Camera is Recording", true);
 	}
 	public boolean getPaused() {
 		return paused;

@@ -1,4 +1,7 @@
-package org.usfirst.frc.team6135.robot;
+package org.usfirst.frc.team6135.robot.misc;
+
+import org.usfirst.frc.team6135.robot.Robot;
+import org.usfirst.frc.team6135.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
