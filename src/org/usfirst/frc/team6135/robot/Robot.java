@@ -76,6 +76,25 @@ public class Robot extends IterativeRobot {
 	static final int CAPTURE_FPS = 8;
 	static final int CAPTURE_PERIOD = 1000 / CAPTURE_FPS;
 	
+	void putTunables() {
+		//Output these values to the SmartDashboard for tuning
+		SmartDashboard.putNumber("Wrist kP", WristPIDSubsystem.kP);
+		SmartDashboard.putNumber("Wrist kI", WristPIDSubsystem.kI);
+		SmartDashboard.putNumber("Wrist kD", WristPIDSubsystem.kD);
+		SmartDashboard.putNumber("Brake kP", BrakePID.kP);
+		SmartDashboard.putNumber("Brake kI", BrakePID.kI);
+		SmartDashboard.putNumber("Brake kD", BrakePID.kD);
+	}
+	void updateTunables() {
+		//Read the tunable values and overwrite them
+		WristPIDSubsystem.kP = SmartDashboard.getNumber("Wrist kP", WristPIDSubsystem.kP);
+		WristPIDSubsystem.kI = SmartDashboard.getNumber("Wrist kI", WristPIDSubsystem.kI);
+		WristPIDSubsystem.kD = SmartDashboard.getNumber("Wrist kD", WristPIDSubsystem.kD);
+		BrakePID.kP = SmartDashboard.getNumber("Brake kP", BrakePID.kP);
+		BrakePID.kI = SmartDashboard.getNumber("Brake kI", BrakePID.kI);
+		BrakePID.kD = SmartDashboard.getNumber("Brake kD", BrakePID.kD);
+	}
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -132,6 +151,8 @@ public class Robot extends IterativeRobot {
 		captureTask.pause();
 		//If camera capture is not desired, comment out this line
 		//captureTimer.schedule(captureTask, 1000, CAPTURE_PERIOD);
+		
+		putTunables();
 	}
 
 	/**
@@ -277,6 +298,8 @@ public class Robot extends IterativeRobot {
 		((WristAnalogPID) Robot.wristSubsystem.getDefaultCommand()).setEnabled(false);
 		
 		captureTask.resume();
+		
+		updateTunables();
 	}
 
 	/**
@@ -309,6 +332,8 @@ public class Robot extends IterativeRobot {
 		RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Coast);
 		
 		captureTask.resume();
+		
+		updateTunables();
 	}
 
 	/**

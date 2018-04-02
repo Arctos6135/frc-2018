@@ -17,9 +17,9 @@ import edu.wpi.first.wpilibj.command.Command;
 public class BrakePID extends Command {
 	
 	//To be tuned later
-	public static final double kP = 0;
-	public static final double kI = 0;
-	public static final double kD = 0;
+	public static double kP = 0;
+	public static double kI = 0;
+	public static double kD = 0;
 	
 	public static final double TOLERANCE = 0.5;
 	

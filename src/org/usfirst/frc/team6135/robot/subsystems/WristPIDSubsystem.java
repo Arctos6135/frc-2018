@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
 public class WristPIDSubsystem extends PIDSubsystem {
 	
 	//Tune later
-	public static final double kP = 0;
-	public static final double kI = 0;
-	public static final double kD = 0;
+	public static double kP = 0;
+	public static double kI = 0;
+	public static double kD = 0;
 	
 	static final double ANGLE_MAX = 1.0;
 	static final double ANGLE_MIN = -80.0;
