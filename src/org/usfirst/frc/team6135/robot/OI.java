@@ -1,11 +1,11 @@
 package org.usfirst.frc.team6135.robot;
 
-import org.usfirst.frc.team6135.robot.commands.CancelOperation;
-import org.usfirst.frc.team6135.robot.commands.teleoputils.AutoCubeAlign;
-import org.usfirst.frc.team6135.robot.commands.teleoputils.AutoSwitchAlign;
-import org.usfirst.frc.team6135.robot.commands.teleoputils.EmergencySwitch;
-import org.usfirst.frc.team6135.robot.commands.teleoputils.GearShift;
-import org.usfirst.frc.team6135.robot.commands.teleoputils.ResetGyro;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoSwitchAlign;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.EmergencySwitch;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
 
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;

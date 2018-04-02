@@ -1,7 +1,7 @@
 package org.usfirst.frc.team6135.robot.subsystems;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.commands.teleopcommands.WristAnalogPID;
+import org.usfirst.frc.team6135.robot.commands.defaultcommands.WristAnalogPID;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;

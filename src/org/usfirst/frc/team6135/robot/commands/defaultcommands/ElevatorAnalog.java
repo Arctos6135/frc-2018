@@ -1,4 +1,4 @@
-package org.usfirst.frc.team6135.robot.commands.teleopcommands;
+package org.usfirst.frc.team6135.robot.commands.defaultcommands;
 
 import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;

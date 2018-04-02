@@ -1,4 +1,4 @@
-package org.usfirst.frc.team6135.robot.commands.teleoputils;
+package org.usfirst.frc.team6135.robot.commands.teleoperated;
 
 import org.usfirst.frc.team6135.robot.Robot;
 

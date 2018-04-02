@@ -1,10 +1,10 @@
 package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.commands.autoutils.AutoIntake;
-import org.usfirst.frc.team6135.robot.commands.autoutils.AutoTurn;
-import org.usfirst.frc.team6135.robot.commands.autoutils.Delay;
-import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autonomous.Delay;
+import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceEx;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

@@ -1,9 +1,9 @@
 package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.commands.autoutils.AutoIntake;
-import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
-import org.usfirst.frc.team6135.robot.commands.autoutils.RaiseElevator;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
+import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceEx;
+import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

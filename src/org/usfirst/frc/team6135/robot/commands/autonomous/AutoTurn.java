@@ -1,4 +1,4 @@
-package org.usfirst.frc.team6135.robot.commands.autoutils;
+package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import static org.usfirst.frc.team6135.robot.RobotMap.leftEncoder;
 import static org.usfirst.frc.team6135.robot.RobotMap.rightEncoder;

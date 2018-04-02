@@ -1,7 +1,7 @@
 package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.commands.autoutils.DriveStraightDistanceEx;
+import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceEx;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
