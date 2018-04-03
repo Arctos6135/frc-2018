@@ -168,8 +168,6 @@ public class Robot extends IterativeRobot {
 		captureTask.pause();
 		//Set drivetrain's default so there's no more braking
 		Robot.drive.setDefaultCommand(new TeleopDrive());
-		//Disable the adjustments of the wrist
-		((WristAnalogPID) Robot.wristSubsystem.getDefaultCommand()).setEnabled(false);
 	}
 
 	@Override
@@ -297,8 +295,6 @@ public class Robot extends IterativeRobot {
 		RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Brake);
 		//Set the drivetrain's default command to enable braking
 		Robot.drive.setDefaultCommand(new BrakePID());
-		//Disable the wrist's adjustments
-		((WristAnalogPID) Robot.wristSubsystem.getDefaultCommand()).setEnabled(false);
 		
 		captureTask.resume();
 		
@@ -325,8 +321,6 @@ public class Robot extends IterativeRobot {
 		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
 		//Set the drivetrain's default command to disable braking
 		Robot.drive.setDefaultCommand(new TeleopDrive());
-		//Enable the wrist's PID adjustments
-		((WristAnalogPID) Robot.wristSubsystem.getDefaultCommand()).setEnabled(true);
 		RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Coast);
 		RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Coast);
 		RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Coast);
