@@ -6,6 +6,8 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autonomous.Delay;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
+import org.usfirst.frc.team6135.robot.commands.autonomous.SetWrist;
+import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -49,6 +51,7 @@ public class PlaceCubeFromMiddleBackup extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
     	addSequential(new DriveStraightDistanceEx(DISTANCE_Y / 2, RobotMap.Speeds.AUTO_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED));

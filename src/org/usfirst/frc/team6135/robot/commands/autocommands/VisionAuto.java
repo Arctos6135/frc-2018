@@ -7,6 +7,7 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autonomous.Delay;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceEx;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
+import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
 import org.usfirst.frc.team6135.robot.vision.VisionException;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -74,6 +75,7 @@ public class VisionAuto extends InstantCommand {
     	double yDist = Math.abs(Math.cos(theta2) * s);
     	
     	Command delay = new Delay(RobotMap.AUTO_DELAY);
+    	Robot.wristSubsystem.setSetpoint(WristPIDSubsystem.ANGLE_BOTTOM);
     	execCmds(new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED), delay,
     			new DriveStraightDistanceEx(xDist, RobotMap.Speeds.AUTO_SPEED), delay,
     			new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED), delay,
