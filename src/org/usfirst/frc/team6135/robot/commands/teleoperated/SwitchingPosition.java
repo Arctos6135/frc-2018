@@ -8,15 +8,15 @@ import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *	Lowers the elevator and wrist to the bottom, into the position for intaking cubes.
+ *	Raises the elevator to its max height and lowers the wrist for a place cubes into switch position.
  */
-public class IntakingPosition extends Command {
+public class SwitchingPosition extends Command {
 
-    public IntakingPosition() {
+    public SwitchingPosition() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.elevatorSubsystem);
     	requires(Robot.wristSubsystem);
+    	requires(Robot.elevatorSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -24,20 +24,21 @@ public class IntakingPosition extends Command {
     	if(!Robot.wristSubsystem.isEnabled())
     		Robot.wristSubsystem.enable();
     	Robot.wristSubsystem.setSetpoint(WristPIDSubsystem.ANGLE_BOTTOM);
-    	//Note: The speed may have to be adjusted since the wrist may be slower
-    	Robot.elevatorSubsystem.setSpeed(RobotMap.Speeds.AUTO_ELEVATOR_SPEED * ElevatorSubsystem.DIRECTION_DOWN);
+    	Robot.elevatorSubsystem.setSpeed(RobotMap.Speeds.AUTO_ELEVATOR_SPEED * ElevatorSubsystem.DIRECTION_UP);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(!Robot.elevatorSubsystem.notAtBottom())
+    	//Stop the elevator if it reached the top
+    	if(!Robot.elevatorSubsystem.notAtTop())
     		Robot.elevatorSubsystem.setSpeed(0);
+    	//No need to stop the wrist since the subsystem code takes care of that
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	//Finish when elevator is at bottom and wrist is "on target" with our setpoint of bottom
-        return !Robot.elevatorSubsystem.notAtBottom() && Robot.wristSubsystem.onTarget();
+        return !Robot.elevatorSubsystem.notAtTop() && Robot.wristSubsystem.onTarget();
     }
 
     // Called once after isFinished returns true

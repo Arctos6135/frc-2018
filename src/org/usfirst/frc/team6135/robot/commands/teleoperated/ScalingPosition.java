@@ -45,8 +45,6 @@ public class ScalingPosition extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	Robot.elevatorSubsystem.setSpeed(0);
-    	//Don't disable the PID, but change its setpoint to stop it from adjusting
-    	Robot.wristSubsystem.setSetpoint(Robot.wristSubsystem.getAngle());
     }
 
     // Called when another command which requires one or more of the same

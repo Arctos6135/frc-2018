@@ -8,14 +8,12 @@ import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *	Hard-Coded Command Group that simply drives past the base line. 
- *	Note even though only 1 command is needed a CommandGroup is used 
- *	so that any extra steps can be implemented later.
+ *	Hard-Coded Command Group that simply drives past the baseline. 
  *	The path of the robot has to be clear.
  */
-public class DrivePastBaseLine extends CommandGroup {
+public class DrivePastBaseline extends CommandGroup {
 
-    public DrivePastBaseLine() {
+    public DrivePastBaseline() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

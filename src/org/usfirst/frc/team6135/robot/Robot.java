@@ -3,7 +3,7 @@ package org.usfirst.frc.team6135.robot;
 
 import java.util.Timer;
 
-import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseLine;
+import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseline;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeSameSide;
@@ -135,7 +135,7 @@ public class Robot extends IterativeRobot {
 		scaleSameSideRight = new ScaleCubeSameSide(ScaleCubeSameSide.SIDE_RIGHT);
 		visionAuto = new VisionAuto(VisionAuto.DIRECTION_LEFT);
 		//chooser.addDefault("No Auto", null);
-		chooser.addDefault("Drive Past Baseline (Better to use one of the commands below)", new DrivePastBaseLine());
+		chooser.addDefault("Drive Past Baseline (Better to use one of the commands below)", new DrivePastBaseline());
 		chooser.addObject("Place Cube from left side", placeCubeLeftSideOffset);
 		chooser.addObject("Place Cube from right side", placeCubeRightSideOffset);
 		chooser.addObject("Place Cube (Aligned with switch): Left", placeCubeLeftSide);
@@ -239,7 +239,7 @@ public class Robot extends IterativeRobot {
 							autonomousCommand.start();
 						}
 						else if(autonomousCommand == placeCubeRightSideOffset) {
-							(new DrivePastBaseLine()).start();
+							(new DrivePastBaseline()).start();
 						}
 						else if(autonomousCommand == visionAuto) {
 							(new VisionAuto(VisionAuto.DIRECTION_LEFT)).start();
@@ -262,7 +262,7 @@ public class Robot extends IterativeRobot {
 							autonomousCommand.start();
 						}
 						else if(autonomousCommand == placeCubeLeftSideOffset) {
-							(new DrivePastBaseLine()).start();
+							(new DrivePastBaseline()).start();
 						}
 						else if(autonomousCommand == visionAuto) {
 							(new VisionAuto(VisionAuto.DIRECTION_RIGHT)).start();
