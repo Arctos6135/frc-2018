@@ -9,6 +9,7 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.IntakingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.SwitchingPosition;
+import org.usfirst.frc.team6135.robot.triggers.MotorCurrentMonitor;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -157,5 +158,9 @@ public class OI {
 			}
 		};
 		resetGyro.whenActive(new ResetGyro());
+		
+		//whenActive() is already called by the constructor
+		@SuppressWarnings("unused")
+		Trigger motorCurrentMonitor = new MotorCurrentMonitor();
 	}
 }

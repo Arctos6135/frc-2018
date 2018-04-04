@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.VictorSP;
 
 
@@ -168,6 +169,8 @@ public class RobotMap {
     //This is the gyroscope that is mounted on the wrist to detect its angle
     //Due to the current design, wrist angle has to be constantly maintained
     public static ADXRS450_Gyro wristGyro = new ADXRS450_Gyro();
+    
+    public static PowerDistributionPanel PDP = new PowerDistributionPanel();
 	
 	public static void init() {
 		//Set back motors to follow the front motors
