@@ -2,9 +2,9 @@ package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
-import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.Delay;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceEx;
+import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -35,13 +35,13 @@ public class ScaleCubeOppositeSide extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_OPPOSITE_DIST1 - RobotMap.ROBOT_LENGTH / 2, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SCALE_OPPOSITE_DIST1 - RobotMap.ROBOT_LENGTH / 2));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurn(-85 * side, RobotMap.Speeds.AUTO_TURN_SPEED));
+    	addSequential(new AutoTurnPID(-90 * side));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_OPPOSITE_DIST2 - RobotMap.ROBOT_WIDTH / 2, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SCALE_OPPOSITE_DIST2 - RobotMap.ROBOT_WIDTH / 2));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurn(85 * side, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new AutoTurnPID(90 * side));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	//ROBOT_LENGTH / 2 is going to be similar to SCALE_OPPOSITE_DIST3 so probably no point in driving
     	//addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_OPPOSITE_DIST3 - RobotMap.ROBOT_LENGTH / 2, RobotMap.Speeds.AUTO_SPEED));

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceEx;
+import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.SetWrist;
 import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
 
@@ -31,6 +31,6 @@ public class DrivePastBaseline extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.BASELINE_DISTANCE, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.BASELINE_DISTANCE));
     }
 }

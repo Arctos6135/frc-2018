@@ -3,9 +3,9 @@ package org.usfirst.frc.team6135.robot.commands.autocommands;
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
-import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.Delay;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceEx;
+import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
 import org.usfirst.frc.team6135.robot.vision.VisionException;
@@ -60,7 +60,7 @@ public class VisionAuto extends InstantCommand {
 			(new PlaceCubeFromMiddle(direction)).start();
 			return;
 		}
-    	Command moveForwardCommand = new DriveStraightDistanceEx(RobotMap.ArenaDimensions.VISION_SAMPLING_DISTANCE, RobotMap.Speeds.AUTO_SPEED);
+    	Command moveForwardCommand = new DriveStraightDistancePID(RobotMap.ArenaDimensions.VISION_SAMPLING_DISTANCE);
     	d = RobotMap.ArenaDimensions.VISION_SAMPLING_DISTANCE;
     	execCmds(moveForwardCommand);
     	try {
@@ -76,12 +76,12 @@ public class VisionAuto extends InstantCommand {
     	
     	Command delay = new Delay(RobotMap.AUTO_DELAY);
     	Robot.wristSubsystem.setSetpoint(WristPIDSubsystem.ANGLE_BOTTOM);
-    	execCmds(new AutoTurn(90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED), delay,
-    			new DriveStraightDistanceEx(xDist, RobotMap.Speeds.AUTO_SPEED), delay,
-    			new AutoTurn(-90 * direction, RobotMap.Speeds.AUTO_TURN_SPEED), delay,
-    			new DriveStraightDistanceEx(yDist, RobotMap.Speeds.AUTO_SPEED),
+    	execCmds(new AutoTurnPID(90 * direction), delay,
+    			new DriveStraightDistancePID(xDist), delay,
+    			new AutoTurnPID(-90 * direction), delay,
+    			new DriveStraightDistancePID(yDist),
     			new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED),
-    			new DriveStraightDistanceEx(RobotMap.INTAKE_LENGTH, RobotMap.Speeds.AUTO_SPEED),
+    			new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH),
     			new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }

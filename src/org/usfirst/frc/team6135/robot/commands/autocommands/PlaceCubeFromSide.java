@@ -2,9 +2,9 @@ package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
-import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.Delay;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceEx;
+import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.SetWrist;
 import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
@@ -49,15 +49,14 @@ public class PlaceCubeFromSide extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_CENTER_DISTANCE - RobotMap.ROBOT_LENGTH / 2, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_CENTER_DISTANCE - RobotMap.ROBOT_LENGTH / 2));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	
-    	addSequential(new AutoTurn(-85 * side, RobotMap.Speeds.AUTO_TURN_SPEED));
+    	addSequential(new AutoTurnPID(-90 * side));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_EDGE_OFFSET, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_EDGE_OFFSET));
     	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistanceEx(RobotMap.INTAKE_LENGTH, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH));
     	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }

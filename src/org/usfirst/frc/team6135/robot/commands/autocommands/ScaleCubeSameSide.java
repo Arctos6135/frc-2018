@@ -2,9 +2,9 @@ package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
-import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.Delay;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceEx;
+import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -35,9 +35,9 @@ public class ScaleCubeSameSide extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.z
-    	addSequential(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SCALE_CENTER_DISTANCE, RobotMap.Speeds.AUTO_SPEED));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SCALE_CENTER_DISTANCE));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurn(-85 * side, RobotMap.Speeds.AUTO_TURN_SPEED));
+    	addSequential(new AutoTurnPID(-90 * side));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	//addSequential(new DriveStraightDistanceEx(-4, -RobotMap.Speeds.AUTO_SPEED));
     	//Delay for a short period of time for the robot to stablize before shooting
