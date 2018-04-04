@@ -24,25 +24,6 @@ public class BrakePID extends Command {
 	public static final double TOLERANCE = 0.5;
 	
 	PIDController leftPID, rightPID;
-	
-	//Since CTRE Phoenix's motor controllers do not implement PIDOutput,
-	//this wrapper class is created
-	static class PIDMotorController implements PIDOutput {
-		
-		BaseMotorController controller;
-		
-		public PIDMotorController(BaseMotorController c) {
-			controller = c;
-		}
-		
-		@Override
-		public void pidWrite(double val) {
-			controller.set(ControlMode.PercentOutput, val);
-		}
-	}
-	
-	static final PIDMotorController LEFT_CONTROLLER = new PIDMotorController(RobotMap.leftDriveTalon1);
-	static final PIDMotorController RIGHT_CONTROLLER = new PIDMotorController(RobotMap.rightDriveTalon1);
 
     public BrakePID() {
         // Use requires() here to declare subsystem dependencies
@@ -55,8 +36,8 @@ public class BrakePID extends Command {
     	RobotMap.leftEncoder.reset();
     	RobotMap.rightEncoder.reset();
     	
-    	leftPID = new PIDController(kP, kI, kD, RobotMap.leftEncoder, LEFT_CONTROLLER);
-    	rightPID = new PIDController(kP, kI, kD, RobotMap.rightEncoder, RIGHT_CONTROLLER);
+    	leftPID = new PIDController(kP, kI, kD, RobotMap.leftEncoder, RobotMap.leftDrivePIDMotor);
+    	rightPID = new PIDController(kP, kI, kD, RobotMap.rightEncoder, RobotMap.rightDrivePIDMotor);
     	
     	leftPID.setOutputRange(-1.0, 1.0);
     	rightPID.setOutputRange(-1.0, 1.0);

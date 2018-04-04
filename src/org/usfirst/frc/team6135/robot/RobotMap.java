@@ -1,5 +1,7 @@
 package org.usfirst.frc.team6135.robot;
 
+import org.usfirst.frc.team6135.robot.misc.PIDMotorController;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -139,6 +141,9 @@ public class RobotMap {
     public static VictorSPX leftDriveVictor = new VictorSPX(5);
     public static VictorSPX rightDriveVictor = new VictorSPX(6);
     
+    public static PIDMotorController leftDrivePIDMotor = new PIDMotorController(leftDriveTalon1);
+    public static PIDMotorController rightDrivePIDMotor = new PIDMotorController(rightDriveTalon1);
+    
     public static DoubleSolenoid gearshiftSolenoid = new DoubleSolenoid(0, 1);
     
     public static VictorSP elevatorVictor = new VictorSP(7);
@@ -178,7 +183,6 @@ public class RobotMap {
 		
 		leftEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 		rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
-		elevatorEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 		
 		intakeRight.setInverted(false);
 		intakeLeft.setInverted(true);
