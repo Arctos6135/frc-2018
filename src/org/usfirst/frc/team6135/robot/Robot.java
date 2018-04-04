@@ -10,7 +10,8 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceEx;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
+import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.BrakePID;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.CameraCaptureTask;
@@ -85,6 +86,12 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Brake kP", BrakePID.kP);
 		SmartDashboard.putNumber("Brake kI", BrakePID.kI);
 		SmartDashboard.putNumber("Brake kD", BrakePID.kD);
+		SmartDashboard.putNumber("Drive kP", DriveStraightDistancePID.kP);
+		SmartDashboard.putNumber("Drive kI", DriveStraightDistancePID.kI);
+		SmartDashboard.putNumber("Drive kD", DriveStraightDistancePID.kD);
+		SmartDashboard.putNumber("Turn kP", AutoTurnPID.kP);
+		SmartDashboard.putNumber("Turn kI", AutoTurnPID.kI);
+		SmartDashboard.putNumber("Turn kD", AutoTurnPID.kD);
 	}
 	void updateTunables() {
 		//Read the tunable values and overwrite them
@@ -94,6 +101,12 @@ public class Robot extends IterativeRobot {
 		BrakePID.kP = SmartDashboard.getNumber("Brake kP", BrakePID.kP);
 		BrakePID.kI = SmartDashboard.getNumber("Brake kI", BrakePID.kI);
 		BrakePID.kD = SmartDashboard.getNumber("Brake kD", BrakePID.kD);
+		DriveStraightDistancePID.kP = SmartDashboard.getNumber("Drive kP", DriveStraightDistancePID.kP);
+		DriveStraightDistancePID.kI = SmartDashboard.getNumber("Drive kI", DriveStraightDistancePID.kI);
+		DriveStraightDistancePID.kD = SmartDashboard.getNumber("Drive kD", DriveStraightDistancePID.kD);
+		AutoTurnPID.kP = SmartDashboard.getNumber("Turn kP", AutoTurnPID.kP);
+		AutoTurnPID.kI = SmartDashboard.getNumber("Turn kI", AutoTurnPID.kI);
+		AutoTurnPID.kD = SmartDashboard.getNumber("Turn kD", AutoTurnPID.kD);
 	}
 	
 	/**
@@ -234,7 +247,8 @@ public class Robot extends IterativeRobot {
 						else if(autonomousCommand == placeCubeRightSide) {
 							//If command is to place a cube from the right, give up placing the cube and
 							//instead drive past the baseline
-							(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_DISTANCE, RobotMap.Speeds.AUTO_SPEED)).start();					}
+							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
+						}
 						else if(autonomousCommand == placeCubeLeftSideOffset) {
 							autonomousCommand.start();
 						}
@@ -256,7 +270,7 @@ public class Robot extends IterativeRobot {
 							autonomousCommand.start();
 						}
 						else if(autonomousCommand == placeCubeLeftSide) {
-							(new DriveStraightDistanceEx(RobotMap.ArenaDimensions.SWITCH_DISTANCE, RobotMap.Speeds.AUTO_SPEED)).start();
+							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
 						}
 						else if(autonomousCommand == placeCubeRightSideOffset) {
 							autonomousCommand.start();
