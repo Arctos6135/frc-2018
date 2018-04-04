@@ -86,6 +86,12 @@ public class RobotMap {
 		public static final double SCALE_OPPOSITE_DIST2 = 42.0 + SCALE_LENGTH - (1.5 * 12);
 		//Distance the robot travels to get into the right position for a shot
 		public static final double SCALE_OPPOSITE_DIST3 = 3.0 * 12 - SHOOTING_DISTANCE;
+		//Dimension of the Power Cube
+		public static final double POWER_CUBE_SIZE = 13.0;
+		//How much the robot drives past the switch until it begins to turn around to intake
+		//the second cube
+		public static final double SIDE_CUBE_PICKUP_DIST = 5.0 * 12;
+		public static final double HALF_SWITCH_DEPTH = 2.0 * 12 + 4.0;
 	}
 	
 	//+7in for the bumpers
