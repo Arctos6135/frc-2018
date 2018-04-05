@@ -4,9 +4,12 @@ package org.usfirst.frc.team6135.robot;
 import java.util.Timer;
 
 import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseline;
+import org.usfirst.frc.team6135.robot.commands.autocommands.MultiCubeAligned;
+import org.usfirst.frc.team6135.robot.commands.autocommands.MultiCubeFromMiddle;
+import org.usfirst.frc.team6135.robot.commands.autocommands.MultiCubeFromSide;
+import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeAligned;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSide;
-import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeAligned;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
@@ -60,11 +63,12 @@ public class Robot extends IterativeRobot {
 	//These commands are combined with the alliance colour and switch location and used later
 	//They are the options that are shown in the auto menu
 	public static PlaceCubeFromMiddle placeCubeFromMiddle;
-	public static PlaceCubeAligned placeCubeLeftSide;
-	public static PlaceCubeFromSide placeCubeLeftSideOffset;
-	public static PlaceCubeFromSide placeCubeRightSideOffset;
-	public static PlaceCubeAligned placeCubeRightSide;
+	public static PlaceCubeAligned placeCubeLeftSide, placeCubeRightSide;
+	public static PlaceCubeFromSide placeCubeLeftSideOffset, placeCubeRightSideOffset;
 	public static VisionAuto visionAuto;
+	public static MultiCubeFromSide multiCubeLeftSide, multiCubeRightSide;
+	public static MultiCubeAligned multiCubeLeftAligned, multiCubeRightAligned;
+	public static MultiCubeFromMiddle multiCubeFromMiddle;
 	public static ScaleCubeSameSide scaleSameSideLeft, scaleSameSideRight;
 	
 	//Autonomous command chooser
@@ -141,7 +145,8 @@ public class Robot extends IterativeRobot {
         //Add commands into the autonomous command chooser
         chooser.addObject("DriveStraightDistancePID", new DriveStraightDistancePID(60));
         chooser.addObject("AutoTurnPID", new AutoTurnPID(90));
-		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
+        //Direction doesn't matter
+		placeCubeFromMiddle = new PlaceCubeFromMiddle(1);
 		placeCubeLeftSide = new PlaceCubeAligned();
 		placeCubeRightSide = new PlaceCubeAligned();
 		placeCubeLeftSideOffset = new PlaceCubeFromSide(PlaceCubeFromSide.SIDE_LEFT);
@@ -149,6 +154,12 @@ public class Robot extends IterativeRobot {
 		scaleSameSideLeft = new ScaleCubeSameSide(ScaleCubeSameSide.SIDE_LEFT);
 		scaleSameSideRight = new ScaleCubeSameSide(ScaleCubeSameSide.SIDE_RIGHT);
 		visionAuto = new VisionAuto(VisionAuto.DIRECTION_LEFT);
+		multiCubeLeftSide = new MultiCubeFromSide(MultiCubeFromSide.SIDE_LEFT);
+		multiCubeRightSide = new MultiCubeFromSide(MultiCubeFromSide.SIDE_RIGHT);
+		multiCubeLeftAligned = new MultiCubeAligned(MultiCubeAligned.SIDE_LEFT);
+		multiCubeRightAligned = new MultiCubeAligned(MultiCubeAligned.SIDE_RIGHT);
+		//Direction doesn't matter
+		multiCubeFromMiddle = new MultiCubeFromMiddle(1);
 		//chooser.addDefault("No Auto", null);
 		chooser.addDefault("Drive Past Baseline (Better to use one of the commands below)", new DrivePastBaseline());
 		chooser.addObject("Place Cube from left side", placeCubeLeftSideOffset);
@@ -158,6 +169,11 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Place Cube: Middle", placeCubeFromMiddle);
 		chooser.addObject("Shoot Cube into Scale: Left", scaleSameSideLeft);
 		chooser.addObject("Shoot Cube into Scale: Right", scaleSameSideRight);
+		chooser.addObject("Multi-Cube from left side", multiCubeLeftSide);
+		chooser.addObject("Multi-Cube from right side", multiCubeRightSide);
+		chooser.addObject("Multi-Cube (Aligned with switch): Left", multiCubeLeftAligned);
+		chooser.addObject("Multi-Cube (Aligned with switch): Right", multiCubeRightAligned);
+		chooser.addObject("Multi-Cube from middle", multiCubeFromMiddle);
 		//chooser.addObject("Place Cube With Vision: Middle", visionAuto);
 		//Display the chooser
 		SmartDashboard.putData("Auto mode", chooser);
@@ -242,23 +258,25 @@ public class Robot extends IterativeRobot {
 							(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT)).start();
 						}
 						//Use == to check if they're the exact same object
-						else if(autonomousCommand == placeCubeLeftSide) {
-							//If command is to place a cube from the left side, start the command
-							autonomousCommand.start();
-						}
 						else if(autonomousCommand == placeCubeRightSide) {
 							//If command is to place a cube from the right, give up placing the cube and
 							//instead drive past the baseline
 							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
-						}
-						else if(autonomousCommand == placeCubeLeftSideOffset) {
-							autonomousCommand.start();
 						}
 						else if(autonomousCommand == placeCubeRightSideOffset) {
 							(new DrivePastBaseline()).start();
 						}
 						else if(autonomousCommand == visionAuto) {
 							(new VisionAuto(VisionAuto.DIRECTION_LEFT)).start();
+						}
+						else if(autonomousCommand == multiCubeRightSide) {
+							(new DrivePastBaseline()).start();
+						}
+						else if(autonomousCommand == multiCubeRightAligned) {
+							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
+						}
+						else if(autonomousCommand == multiCubeFromMiddle) {
+							(new MultiCubeFromMiddle(MultiCubeFromMiddle.DIRECTION_LEFT)).start();
 						}
 						else {
 							autonomousCommand.start();
@@ -268,20 +286,23 @@ public class Robot extends IterativeRobot {
 						if(autonomousCommand == placeCubeFromMiddle) {
 							(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_RIGHT)).start();
 						}
-						else if(autonomousCommand == placeCubeRightSide) {
-							autonomousCommand.start();
-						}
 						else if(autonomousCommand == placeCubeLeftSide) {
 							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
-						}
-						else if(autonomousCommand == placeCubeRightSideOffset) {
-							autonomousCommand.start();
 						}
 						else if(autonomousCommand == placeCubeLeftSideOffset) {
 							(new DrivePastBaseline()).start();
 						}
 						else if(autonomousCommand == visionAuto) {
 							(new VisionAuto(VisionAuto.DIRECTION_RIGHT)).start();
+						}
+						else if(autonomousCommand == multiCubeLeftSide) {
+							(new DrivePastBaseline()).start();
+						}
+						else if(autonomousCommand == multiCubeRightAligned) {
+							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
+						}
+						else if(autonomousCommand == multiCubeFromMiddle) {
+							(new MultiCubeFromMiddle(MultiCubeFromMiddle.DIRECTION_RIGHT)).start();
 						}
 						else {
 							autonomousCommand.start();
