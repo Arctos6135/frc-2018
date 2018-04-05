@@ -1,9 +1,13 @@
 package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
+import org.usfirst.frc.team6135.robot.commands.autonomous.Delay;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
+import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.IntakingPosition;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.OperateIntake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -33,12 +37,28 @@ public class MultiCubeSameSide extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addSequential(new PlaceCubeFromSide(side));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	//Back up a bit so we can turn and put the intake down
-    	addSequential(new DriveStraightDistancePID(-RobotMap.INTAKE_LENGTH - 6.0));
+    	addSequential(new DriveStraightDistancePID(-RobotMap.INTAKE_LENGTH + -6.0));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addParallel(new IntakingPosition());
     	addSequential(new AutoTurnPID(90 * side));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	//Get behind the cube
     	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SIDE_CUBE_PICKUP_DIST + RobotMap.ArenaDimensions.HALF_SWITCH_DEPTH));
-    	
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	addSequential(new AutoTurnPID(-90 * side));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH + 6.0 + RobotMap.ROBOT_LENGTH));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	addSequential(new AutoTurnPID(-90 * side));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	//Pick up the cube
+    	addParallel(new OperateIntake(0.9));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SIDE_CUBE_PICKUP_DIST));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
+    	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH));
+    	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }
