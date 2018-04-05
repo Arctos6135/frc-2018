@@ -12,14 +12,15 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.OperateIntake;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *
+ *	A autonomous command that puts two cubes in the switch if provided that the Robot lines up
+ *	with the alliance switch.
  */
-public class MultiCubeFromSide extends CommandGroup {
+public class MultiCubeAligned extends CommandGroup {
 	
 	public static final int SIDE_LEFT = 1;
 	public static final int SIDE_RIGHT = -1;
 
-    public MultiCubeFromSide(int side) {
+    public MultiCubeAligned(int side) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -36,28 +37,24 @@ public class MultiCubeFromSide extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new PlaceCubeFromSide(side));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	//Back up a bit so we can turn and put the intake down
-    	addSequential(new DriveStraightDistancePID(-RobotMap.INTAKE_LENGTH + -6.0));
+    	addSequential(new PlaceCubeAligned());
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addParallel(new IntakingPosition());
-    	addSequential(new AutoTurnPID(90 * side));
+    	addSequential(new DriveStraightDistancePID(-(RobotMap.ArenaDimensions.ALIGNED_CUBE_PICKUP_BACK - RobotMap.ROBOT_LENGTH / 2)));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	//Get behind the cube
-    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SIDE_CUBE_PICKUP_DIST + RobotMap.ArenaDimensions.HALF_SWITCH_DEPTH));
+    	addSequential(new AutoTurnPID(-45 * side));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurnPID(-90 * side));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH + 6.0 + RobotMap.ROBOT_LENGTH));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurnPID(-90 * side));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	//Pick up the cube
     	addParallel(new OperateIntake(0.9));
-    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SIDE_CUBE_PICKUP_DIST));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.ALIGNED_CUBE_PICKUP_DIST));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	//Run it at a low speed here to prevent the cube from falling out
+    	addParallel(new OperateIntake(0.4));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.ALIGNED_CUBE_PICKUP_DIST));
+    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	addSequential(new AutoTurnPID(45 * side));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addParallel(new OperateIntake(0.0));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.ALIGNED_CUBE_PICKUP_BACK - RobotMap.ROBOT_LENGTH / 2));
     	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH));
     	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));

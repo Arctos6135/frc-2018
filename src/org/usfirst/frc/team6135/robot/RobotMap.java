@@ -93,6 +93,10 @@ public class RobotMap {
 		//the second cube
 		public static final double SIDE_CUBE_PICKUP_DIST = 5.0 * 12;
 		public static final double HALF_SWITCH_DEPTH = 2.0 * 12 + 4.0;
+		//How much the robot backs up after placing the cube to go for another one
+		public static final double ALIGNED_CUBE_PICKUP_BACK = 7.0 * 12 + 3.0;
+		//How much the robot drives forward after backing up and turning to reach the cube
+		public static final double ALIGNED_CUBE_PICKUP_DIST = 76.5;
 	}
 	
 	//+7in for the bumpers
