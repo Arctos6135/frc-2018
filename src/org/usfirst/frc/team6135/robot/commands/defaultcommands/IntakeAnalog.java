@@ -2,6 +2,7 @@ package org.usfirst.frc.team6135.robot.commands.defaultcommands;
 
 import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;
+import org.usfirst.frc.team6135.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -40,11 +41,11 @@ public class IntakeAnalog extends Command {
     	final double ltVal = Math.abs(OI.attachmentsController.getRawAxis(OI.Controls.INTAKE_OUT));
     	final double rtVal = Math.abs(OI.attachmentsController.getRawAxis(OI.Controls.INTAKE_IN));
     	if(ltVal <= DEADZONE && rtVal > DEADZONE) {
-    		Robot.intakeSubsystem.setSpeed(constrain(rtVal));
+    		Robot.intakeSubsystem.setSpeed(constrain(rtVal) * RobotMap.Speeds.INTAKE_SPEED);
     	}
     	else if(ltVal > DEADZONE && rtVal <= DEADZONE) {
     		//Set to negative of LT since here we want to reverse the intakeSubsystem
-    		Robot.intakeSubsystem.setSpeed(-constrain(ltVal));
+    		Robot.intakeSubsystem.setSpeed(-constrain(ltVal) * RobotMap.Speeds.INTAKE_SPEED);
     	}
     	else {
     		//Driver messed up - Both LT and RT are pressed
