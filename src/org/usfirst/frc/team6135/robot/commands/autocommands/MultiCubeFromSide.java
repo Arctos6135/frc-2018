@@ -14,12 +14,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class MultiCubeSameSide extends CommandGroup {
+public class MultiCubeFromSide extends CommandGroup {
 	
 	public static final int SIDE_LEFT = 1;
 	public static final int SIDE_RIGHT = -1;
 
-    public MultiCubeSameSide(int side) {
+    public MultiCubeFromSide(int side) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

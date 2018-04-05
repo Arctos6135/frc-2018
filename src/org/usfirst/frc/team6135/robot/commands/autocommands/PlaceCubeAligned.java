@@ -24,9 +24,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *		   |
  *		 Robot
  */
-public class PlaceCubeSameSide extends CommandGroup {
+public class PlaceCubeAligned extends CommandGroup {
 
-    public PlaceCubeSameSide() {
+    public PlaceCubeAligned() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

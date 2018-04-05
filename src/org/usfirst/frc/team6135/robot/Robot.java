@@ -6,7 +6,7 @@ import java.util.Timer;
 import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseline;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSide;
-import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeSameSide;
+import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeAligned;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
@@ -60,10 +60,10 @@ public class Robot extends IterativeRobot {
 	//These commands are combined with the alliance colour and switch location and used later
 	//They are the options that are shown in the auto menu
 	public static PlaceCubeFromMiddle placeCubeFromMiddle;
-	public static PlaceCubeSameSide placeCubeLeftSide;
+	public static PlaceCubeAligned placeCubeLeftSide;
 	public static PlaceCubeFromSide placeCubeLeftSideOffset;
 	public static PlaceCubeFromSide placeCubeRightSideOffset;
-	public static PlaceCubeSameSide placeCubeRightSide;
+	public static PlaceCubeAligned placeCubeRightSide;
 	public static VisionAuto visionAuto;
 	public static ScaleCubeSameSide scaleSameSideLeft, scaleSameSideRight;
 	
@@ -142,8 +142,8 @@ public class Robot extends IterativeRobot {
         chooser.addObject("DriveStraightDistancePID", new DriveStraightDistancePID(60));
         chooser.addObject("AutoTurnPID", new AutoTurnPID(90));
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT);
-		placeCubeLeftSide = new PlaceCubeSameSide();
-		placeCubeRightSide = new PlaceCubeSameSide();
+		placeCubeLeftSide = new PlaceCubeAligned();
+		placeCubeRightSide = new PlaceCubeAligned();
 		placeCubeLeftSideOffset = new PlaceCubeFromSide(PlaceCubeFromSide.SIDE_LEFT);
 		placeCubeRightSideOffset = new PlaceCubeFromSide(PlaceCubeFromSide.SIDE_RIGHT);
 		scaleSameSideLeft = new ScaleCubeSameSide(ScaleCubeSameSide.SIDE_LEFT);
