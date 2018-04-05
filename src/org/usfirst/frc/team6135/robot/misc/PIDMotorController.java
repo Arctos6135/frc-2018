@@ -14,13 +14,17 @@ public class PIDMotorController implements PIDOutput {
 
 	IMotorController controller;
 	
-	public PIDMotorController(IMotorController c) {
+	boolean reversed;
+	
+	public PIDMotorController(IMotorController c, boolean reverse) {
 		controller = c;
+		reversed = reverse;
 	}
 	
 	@Override
 	public void pidWrite(double output) {
-		controller.set(ControlMode.PercentOutput, output);
+		double val = reversed ? -output : output;
+		controller.set(ControlMode.PercentOutput, val);
 	}
 
 }

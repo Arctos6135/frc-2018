@@ -16,9 +16,9 @@ public class AutoTurnPID extends Command {
 	public static final double DISTANCE_PER_DEGREE = (ROBOT_DIAM*Math.PI)/360;
 
 	//To be tuned later
-	public static double kP = 0;
-	public static double kI = 0;
-	public static double kD = 0;
+	public static double kP = 0.02;
+	public static double kI = 0.001;
+	public static double kD = 0.016;
 	
 	public static final double TOLERANCE = 1.0;
 	
@@ -76,6 +76,8 @@ public class AutoTurnPID extends Command {
     protected void end() {
     	leftPID.disable();
     	rightPID.disable();
+    	leftPID.free();
+    	rightPID.free();
     }
 
     // Called when another command which requires one or more of the same
@@ -83,5 +85,7 @@ public class AutoTurnPID extends Command {
     protected void interrupted() {
     	leftPID.disable();
     	rightPID.disable();
+    	leftPID.free();
+    	rightPID.free();
     }
 }

@@ -153,8 +153,8 @@ public class RobotMap {
     public static VictorSPX leftDriveVictor = new VictorSPX(5);
     public static VictorSPX rightDriveVictor = new VictorSPX(6);
     
-    public static PIDMotorController leftDrivePIDMotor = new PIDMotorController(leftDriveTalon1);
-    public static PIDMotorController rightDrivePIDMotor = new PIDMotorController(rightDriveTalon1);
+    public static PIDMotorController leftDrivePIDMotor = new PIDMotorController(leftDriveTalon1, false);
+    public static PIDMotorController rightDrivePIDMotor = new PIDMotorController(rightDriveTalon1, true);
     
     public static DoubleSolenoid gearshiftSolenoid = new DoubleSolenoid(0, 1);
     

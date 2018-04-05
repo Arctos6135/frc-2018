@@ -5,6 +5,7 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	Uses PIDs to drive forward or backwards a straight distance.
@@ -12,9 +13,9 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveStraightDistancePID extends Command {
 	
 	//To be tuned later
-	public static double kP = 0;
-	public static double kI = 0;
-	public static double kD = 0;
+	public static double kP = 0.015;
+	public static double kI = 0.002;
+	public static double kD = 0.4;
 	
 	public static final double TOLERANCE = 1.0;
 	
@@ -45,6 +46,7 @@ public class DriveStraightDistancePID extends Command {
     	
     	leftPID.setSetpoint(distance);
     	rightPID.setSetpoint(distance);
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -53,6 +55,8 @@ public class DriveStraightDistancePID extends Command {
     		leftPID.enable();
     	if(!rightPID.isEnabled())
     		rightPID.enable();
+    	SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
+    	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -65,6 +69,8 @@ public class DriveStraightDistancePID extends Command {
     protected void end() {
     	leftPID.disable();
     	rightPID.disable();
+    	leftPID.free();
+    	rightPID.free();
     }
 
     // Called when another command which requires one or more of the same
@@ -72,5 +78,7 @@ public class DriveStraightDistancePID extends Command {
     protected void interrupted() {
     	leftPID.disable();
     	rightPID.disable();
+    	leftPID.free();
+    	rightPID.free();
     }
 }
