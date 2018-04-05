@@ -6,6 +6,7 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	Constantly checks the PDP for the current pulled by the motors.
@@ -17,7 +18,7 @@ public class MotorCurrentMonitor extends Trigger {
 	long exceededAt = System.currentTimeMillis();
 	
 	public static final int[] PORTS = new int[] {
-			0, 0, 0, 0, 0, 0,
+			1, 2, 3, 12, 13, 14,
 	};
 	
 	public MotorCurrentMonitor() {
@@ -31,6 +32,10 @@ public class MotorCurrentMonitor extends Trigger {
 	}
 	
     public boolean get() {
+    	SmartDashboard.putNumber("PDP Channel 1 Current", RobotMap.PDP.getCurrent(1));
+    	SmartDashboard.putNumber("PDP Channel 12 Current", RobotMap.PDP.getCurrent(12));
+    	SmartDashboard.putNumber("PDP Channel 2 Current", RobotMap.PDP.getCurrent(2));
+    	SmartDashboard.putNumber("PDP Channel 13 Current", RobotMap.PDP.getCurrent(13));
     	if(!DriverStation.getInstance().isAutonomous())
     		return false;
     	
