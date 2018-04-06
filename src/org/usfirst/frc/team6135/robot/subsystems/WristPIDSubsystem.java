@@ -24,6 +24,13 @@ public class WristPIDSubsystem extends PIDSubsystem {
 	//The angle at the top and bottom of the wrist
 	public static final double ANGLE_TOP = ANGLE_MIN;
 	public static final double ANGLE_BOTTOM = 0;
+	
+	public static final int DIRECTION_DOWN = 1;
+	public static final int DIRECITON_UP = -1;
+	
+	static int sign(double n) {
+		return n > 0 ? 1 : -1;
+	}
 
     // Initialize your subsystem here
     public WristPIDSubsystem() {
@@ -42,8 +49,15 @@ public class WristPIDSubsystem extends PIDSubsystem {
     
     public void setRaw(double speed) {
     	//If the speed is to go down, or there is still room to go up
-    	if(speed < 0 || notAtTop())
+    	if(notAtTop()) {
     		RobotMap.wristVictor.set(speed);
+    	}
+    	else {
+    		if(sign(speed) == DIRECTION_DOWN)
+    			RobotMap.wristVictor.set(speed);
+    		else
+    			RobotMap.wristVictor.set(0);
+    	}
     }
     
     public boolean isEnabled() {
@@ -77,10 +91,19 @@ public class WristPIDSubsystem extends PIDSubsystem {
     protected void usePIDOutput(double output) {
         // Use output to drive your system, like a motor
         // e.g. yourMotor.set(output);
-    	//Might need to be reversed
-    	//If the speed is to go down, or there is still room to go up
-    	SmartDashboard.putNumber("Wrist PID", -output);
-    	if(-output < 0 || notAtTop())
-    		RobotMap.wristVictor.set(-output);
+    	// Since the gyro reading decreases (Gets more negative) when the wrist raises,
+    	// And the wrist is reversed, the output does not have to be reversed
+    	SmartDashboard.putNumber("Wrist PID Output", output);
+    	SmartDashboard.putNumber("Wrist PID Error", getPIDController().getError());
+    	
+    	if(notAtTop()) {
+    		RobotMap.wristVictor.set(output);
+    	}
+    	else {
+    		if(sign(output) == DIRECTION_DOWN)
+    			RobotMap.wristVictor.set(output);
+    		else
+    			RobotMap.wristVictor.set(0);
+    	}
     }
 }
