@@ -35,10 +35,10 @@ public class ElevatorAnalog extends Command {
     			RobotMap.elevatorVictor.set(0);
     		}*/
     		//The limit switch checking has been moved to ElevatorSubsystem
-    		RobotMap.elevatorVictor.set(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
+    		Robot.elevatorSubsystem.setSpeed(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
     	}
     	else {
-    		RobotMap.elevatorVictor.set(0);
+    		Robot.elevatorSubsystem.setSpeed(0);
     	}
     }
 
@@ -49,12 +49,12 @@ public class ElevatorAnalog extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	RobotMap.elevatorVictor.set(0);
+    	Robot.elevatorSubsystem.setSpeed(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	RobotMap.elevatorVictor.set(0);
+    	Robot.elevatorSubsystem.setSpeed(0);
     }
 }

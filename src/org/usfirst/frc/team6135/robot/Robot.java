@@ -143,8 +143,8 @@ public class Robot extends IterativeRobot {
         //(new Thread(new TestingThread())).start();
 
         //Add commands into the autonomous command chooser
-        chooser.addObject("DriveStraightDistancePID", new DriveStraightDistancePID(60));
-        chooser.addObject("AutoTurnPID", new AutoTurnPID(90));
+        //chooser.addObject("DriveStraightDistancePID", new DriveStraightDistancePID(60));
+        //chooser.addObject("AutoTurnPID", new AutoTurnPID(90));
         //Direction doesn't matter
 		placeCubeFromMiddle = new PlaceCubeFromMiddle(1);
 		placeCubeLeftSide = new PlaceCubeAligned();
