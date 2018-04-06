@@ -85,7 +85,8 @@ public class WristPIDSubsystem extends PIDSubsystem {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
-        return Math.max(-1.0, Math.min(1.0, RobotMap.wristGyro.getAngle()));
+    	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
+        return RobotMap.wristGyro.getAngle();
     }
 
     protected void usePIDOutput(double output) {
@@ -93,8 +94,6 @@ public class WristPIDSubsystem extends PIDSubsystem {
         // e.g. yourMotor.set(output);
     	// Since the gyro reading decreases (Gets more negative) when the wrist raises,
     	// And the wrist is reversed, the output does not have to be reversed
-    	SmartDashboard.putNumber("Wrist PID Output", output);
-    	SmartDashboard.putNumber("Wrist PID Error", getPIDController().getError());
     	
     	if(notAtTop()) {
     		RobotMap.wristVictor.set(output);
