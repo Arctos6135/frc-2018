@@ -2,6 +2,7 @@ package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
+import org.usfirst.frc.team6135.robot.misc.RampedPIDMotorController;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
@@ -34,8 +35,8 @@ public class DriveStraightDistancePID extends Command {
     	RobotMap.leftEncoder.reset();
     	RobotMap.rightEncoder.reset();
     	
-    	leftPID = new PIDController(kP, kI, kD, RobotMap.leftEncoder, RobotMap.leftDrivePIDMotor);
-    	rightPID = new PIDController(kP, kI, kD, RobotMap.rightEncoder, RobotMap.rightDrivePIDMotor);
+    	leftPID = new PIDController(kP, kI, kD, RobotMap.leftEncoder, new RampedPIDMotorController(RobotMap.leftDrivePIDMotor, 0.1, leftPID));
+    	rightPID = new PIDController(kP, kI, kD, RobotMap.rightEncoder, new RampedPIDMotorController(RobotMap.rightDrivePIDMotor, 0.1, rightPID));
     	
     	leftPID.setOutputRange(-1.0, 1.0);
     	rightPID.setOutputRange(-1.0, 1.0);
