@@ -4,6 +4,7 @@ import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -26,7 +27,8 @@ public class WristAnalogPID extends Command {
     protected void execute() {
     	double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.WRIST);
     	//Check if joystick is pushed
-    	if(joystickVal > DEADZONE) {
+    	
+    	if(Math.abs(joystickVal) > DEADZONE) {
     		//Disable the PID so that we can freely move the motor
     		if(Robot.wristSubsystem.isEnabled())
     			Robot.wristSubsystem.disable();
@@ -44,7 +46,9 @@ public class WristAnalogPID extends Command {
     			Robot.wristSubsystem.getPIDController().reset();
     			Robot.wristSubsystem.enable();
     		}
+    		Robot.wristSubsystem.enable();
     	}
+    	SmartDashboard.putBoolean("Enabled", Robot.wristSubsystem.isEnabled());
     }
 
     // Make this return true when this Command no longer needs to run execute()

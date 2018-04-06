@@ -5,6 +5,7 @@ import org.usfirst.frc.team6135.robot.commands.defaultcommands.WristAnalogPID;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -78,6 +79,7 @@ public class WristPIDSubsystem extends PIDSubsystem {
         // e.g. yourMotor.set(output);
     	//Might need to be reversed
     	//If the speed is to go down, or there is still room to go up
+    	SmartDashboard.putNumber("Wrist PID", -output);
     	if(-output < 0 || notAtTop())
     		RobotMap.wristVictor.set(-output);
     }

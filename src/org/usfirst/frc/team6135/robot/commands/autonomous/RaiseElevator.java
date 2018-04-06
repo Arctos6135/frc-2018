@@ -1,9 +1,11 @@
 package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import org.usfirst.frc.team6135.robot.Robot;
+import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	Raises the elevator all the way to the top until it hits the limit switch.
@@ -25,11 +27,13 @@ public class RaiseElevator extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevatorSubsystem.setSpeed(speed);
+    	SmartDashboard.putNumber("AUTO ELEVATOR SPEED", speed);
+    	RobotMap.elevatorVictor.setSpeed(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	SmartDashboard.putBoolean("SWITCH VALUE AUTO", Robot.elevatorSubsystem.notAtTop());
         return !Robot.elevatorSubsystem.notAtTop();
     }
 
