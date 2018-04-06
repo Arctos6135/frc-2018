@@ -23,17 +23,18 @@ public class RaiseElevator extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	RobotMap.elevatorVictor.set(speed);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	SmartDashboard.putNumber("AUTO ELEVATOR SPEED", speed);
+    	SmartDashboard.putBoolean("SWITCH VALUE AUTO", Robot.elevatorSubsystem.notAtTop());
     	RobotMap.elevatorVictor.setSpeed(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	SmartDashboard.putBoolean("SWITCH VALUE AUTO", Robot.elevatorSubsystem.notAtTop());
         return !Robot.elevatorSubsystem.notAtTop();
     }
 

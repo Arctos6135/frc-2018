@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *	Hard-Coded Command Group that places a cube on the switch when the robot is in the middle.
- *	Fail-safe alternative to vision
+ *	Direction indicates the side of the field the alliance's switch colour is on.
  *
  *	   ------------------------------------------
  *	   |		|						|		|
@@ -21,20 +21,22 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *	   |		|						|		|
  *	   ------------------------------------------
  *	 		^								^
- *			|-------------------------------|
- *		   				   |
+ *			|                               |
+ *		   	<-------	   			-------->
+ *		   			<-------------->
  *		 				 Robot
- *						   |
  */
-public class PlaceCubeFromMiddleBackup extends CommandGroup {
+public class PlaceCubeFromMiddleDiagonal extends CommandGroup {
 	
-	static double DISTANCE_Y = RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH;
+	static final double DISTANCE_Y = (RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH-RobotMap.ROBOT_LENGTH/2)/2;
+	static final double DISTANCE_X = RobotMap.ArenaDimensions.SWITCH_SIZE / 2;
+	static final double ANGLE_START = Math.toDegrees(Math.atan(DISTANCE_X/DISTANCE_Y));
+	static final double ANGLE_END = 90-Math.toDegrees(Math.atan(DISTANCE_Y/DISTANCE_X));
 	
 	public static final int DIRECTION_LEFT = 1;
 	public static final int DIRECTION_RIGHT = -1;
 	
-    public PlaceCubeFromMiddleBackup(int direction, double distanceRan) {
-    	DISTANCE_Y -= distanceRan;
+    public PlaceCubeFromMiddleDiagonal(int direction) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -52,15 +54,14 @@ public class PlaceCubeFromMiddleBackup extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
-    	addSequential(new DriveStraightDistancePID(DISTANCE_Y / 2));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ROBOT_LENGTH/2));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurnPID(90 * direction));
+    	addSequential(new AutoTurnPID(-ANGLE_START * direction));
+    	addSequential(new DriveStraightDistancePID(Math.sqrt(DISTANCE_Y*DISTANCE_Y+DISTANCE_X*DISTANCE_X)));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 - (1.0 * 12)));
+    	addSequential(new AutoTurnPID(ANGLE_END * direction));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new AutoTurnPID(-90 * direction));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistancePID(DISTANCE_Y / 2));
+    	addSequential(new DriveStraightDistancePID(DISTANCE_Y));
     	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH));
     	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
