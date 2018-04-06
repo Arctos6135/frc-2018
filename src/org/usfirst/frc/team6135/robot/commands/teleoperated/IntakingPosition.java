@@ -51,5 +51,7 @@ public class IntakingPosition extends Command {
     	Robot.elevatorSubsystem.setSpeed(0);
     	//Don't disable the PID, but change its setpoint to stop it from adjusting
     	Robot.wristSubsystem.setSetpoint(Robot.wristSubsystem.getAngle());
+    	Robot.wristSubsystem.getPIDController().reset();
+    	Robot.wristSubsystem.enable();
     }
 }

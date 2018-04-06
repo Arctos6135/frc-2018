@@ -60,6 +60,7 @@ public class WristAnalogPID extends Command {
     protected void end() {
     	//Don't disable the PID, but change its setpoint to stop it from adjusting
     	Robot.wristSubsystem.setSetpoint(Robot.wristSubsystem.getAngle());
+    	Robot.wristSubsystem.getPIDController().reset();
     	Robot.wristSubsystem.enable();
     }
 
@@ -68,6 +69,7 @@ public class WristAnalogPID extends Command {
     protected void interrupted() {
     	//Don't disable the PID, but change its setpoint to stop it from adjusting
     	Robot.wristSubsystem.setSetpoint(Robot.wristSubsystem.getAngle());
+    	Robot.wristSubsystem.getPIDController().reset();
     	Robot.wristSubsystem.enable();
     }
 }
