@@ -52,12 +52,9 @@ public class RampedPIDMotorController implements PIDOutput {
 
 	@Override
 	public void pidWrite(double output) {
+		pidController.setOutputRange(Math.max(-1, output - rampBand), Math.min(1, output + rampBand));
 		if(reversed)
 			output = -output;
-		pidController.setOutputRange(Math.max(-1, output - rampBand), Math.min(1, output + rampBand));
-		SmartDashboard.putNumber("Drive PID output", output);
-		SmartDashboard.putNumber("Drive PID range", Math.max(-1, output - rampBand));
-		SmartDashboard.putNumber("Drive PID range2", Math.min(1, output + rampBand));
 		this.motorController.set(ControlMode.PercentOutput, output);
 	}
 
