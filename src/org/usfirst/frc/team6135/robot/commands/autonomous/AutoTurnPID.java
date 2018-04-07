@@ -45,8 +45,8 @@ public class AutoTurnPID extends Command {
     	RobotMap.leftEncoder.reset();
     	RobotMap.rightEncoder.reset();
     	
-    	leftPID = new PIDController(kP, kI, kD, RobotMap.leftEncoder, RobotMap.leftDrivePIDMotor);
-    	rightPID = new PIDController(kP, kI, kD, RobotMap.rightEncoder, RobotMap.rightDrivePIDMotor);
+    	leftPID = new PIDController(kP, kI, kD, RobotMap.leftEncoder, RobotMap.leftDrivePIDMotorUnramped);
+    	rightPID = new PIDController(kP, kI, kD, RobotMap.rightEncoder, RobotMap.rightDrivePIDMotorUnramped);
     	
     	leftPID.setOutputRange(-1.0, 1.0);
     	rightPID.setOutputRange(-1.0, 1.0);

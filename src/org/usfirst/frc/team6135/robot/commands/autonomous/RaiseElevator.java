@@ -18,6 +18,7 @@ public class RaiseElevator extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.elevatorSubsystem);
+    	this.speed = speed;
     	this.speed *= ElevatorSubsystem.DIRECTION_UP;
     }
 
@@ -28,8 +29,6 @@ public class RaiseElevator extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	SmartDashboard.putNumber("AUTO ELEVATOR SPEED", speed);
-    	SmartDashboard.putBoolean("SWITCH VALUE AUTO", Robot.elevatorSubsystem.notAtTop());
     	RobotMap.elevatorVictor.setSpeed(speed);
     }
 

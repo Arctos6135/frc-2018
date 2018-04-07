@@ -15,6 +15,7 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
+import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.BrakePID;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.CameraCaptureTask;
@@ -343,6 +344,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+
+    	SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
+    	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
 	}
 
 	@Override
@@ -375,6 +379,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+
+    	SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
+    	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
 	}
 
 	/**

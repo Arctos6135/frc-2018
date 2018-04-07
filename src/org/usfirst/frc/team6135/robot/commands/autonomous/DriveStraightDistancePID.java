@@ -14,8 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveStraightDistancePID extends Command {
 	
 	//To be tuned later
-	public static double kP = 0.015;
-	public static double kI = 0.002;
+	//0.015 0.002 0.4
+	public static double kP = 0.02;
+	public static double kI = 0.02;
 	public static double kD = 0.4;
 	
 	public static final double TOLERANCE = 1.0;
@@ -35,11 +36,14 @@ public class DriveStraightDistancePID extends Command {
     	RobotMap.leftEncoder.reset();
     	RobotMap.rightEncoder.reset();
 
-    	leftPID = new PIDController(kP, kI, kD, RobotMap.leftEncoder, RobotMap.leftDrivePIDMotor.setPIDController(leftPID));
-    	rightPID = new PIDController(kP, kI, kD, RobotMap.rightEncoder, RobotMap.rightDrivePIDMotor.setPIDController(rightPID));
+    	leftPID = new PIDController(kP, kI, kD, RobotMap.leftEncoder, RobotMap.leftDrivePIDMotor);
+    	rightPID = new PIDController(kP, kI, kD, RobotMap.rightEncoder, RobotMap.rightDrivePIDMotor);
     	
     	leftPID.setOutputRange(-1.0, 1.0);
     	rightPID.setOutputRange(-1.0, 1.0);
+    	
+    	RobotMap.leftDrivePIDMotor.setPIDController(leftPID);
+    	RobotMap.rightDrivePIDMotor.setPIDController(rightPID);
     	
     	leftPID.setContinuous(false);
     	rightPID.setContinuous(false);
@@ -57,8 +61,6 @@ public class DriveStraightDistancePID extends Command {
     		leftPID.enable();
     	if(!rightPID.isEnabled())
     		rightPID.enable();
-    	SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
-    	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
     }
 
     // Make this return true when this Command no longer needs to run execute()

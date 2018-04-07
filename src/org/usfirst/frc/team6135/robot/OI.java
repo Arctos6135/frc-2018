@@ -10,7 +10,8 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.SwitchingPosition;
 import org.usfirst.frc.team6135.robot.triggers.MotorCurrentMonitor;
-
+import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
+import org.usfirst.frc.team6135.robot.triggers.GyroLimitSwitch;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
@@ -114,6 +115,8 @@ public class OI {
 	public static JoystickButton intakingPosition;
 	public static JoystickButton switchingPosition;
 	
+	public static Trigger calibrateGyroTrigger;
+	
 	public OI() {
 		//Port 0 is on the right of the programming laptop and port 1 is on the left.
 		driveController = new XboxController(0);
@@ -162,5 +165,8 @@ public class OI {
 		//whenActive() is already called by the constructor
 		@SuppressWarnings("unused")
 		Trigger motorCurrentMonitor = new MotorCurrentMonitor();
+		
+		calibrateGyroTrigger = new GyroLimitSwitch();
+		calibrateGyroTrigger.whenActive(new ResetGyro(WristPIDSubsystem.LIMIT_SWITCH_ANGLE));
 	}
 }
