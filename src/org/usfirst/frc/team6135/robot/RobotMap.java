@@ -168,7 +168,7 @@ public class RobotMap {
     //Not using this
     //public static Encoder elevatorEncoder = new Encoder(4, 5, false, EncodingType.k4X);
     
-    public static DigitalInput elevatorTopSwitch = new DigitalInput(4);
+    public static DigitalInput elevatorTopSwitch = new DigitalInput(9);
     public static DigitalInput elevatorBottomSwitch = new DigitalInput(5);
     public static DigitalInput wristSwitch = new DigitalInput(6);
     

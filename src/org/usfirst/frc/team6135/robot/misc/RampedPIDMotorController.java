@@ -1,9 +1,13 @@
 package org.usfirst.frc.team6135.robot.misc;
 
+import java.util.Arrays;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Since CTRE Phoenix's TalonSRXes and VictorSPXes don't implement PIDOutput, a wrapper class is created.<br>
@@ -43,7 +47,7 @@ public class RampedPIDMotorController implements PIDOutput {
 	
 	public void setPIDController(PIDController pc) {
 		pidController = pc;
-		pidController.setInputRange(Math.max(-1, 0 - rampBand), Math.min(1, 0 + rampBand));
+		pidController.setOutputRange(Math.max(-1, 0 - rampBand), Math.min(1, 0 + rampBand));
 	}
 
 	@Override
@@ -51,6 +55,10 @@ public class RampedPIDMotorController implements PIDOutput {
 		if(reversed)
 			output = -output;
 		pidController.setOutputRange(Math.max(-1, output - rampBand), Math.min(1, output + rampBand));
+		SmartDashboard.putNumber("Drive PID output", output);
+		SmartDashboard.putNumber("Drive PID range", Math.max(-1, output - rampBand));
+		SmartDashboard.putNumber("Drive PID range2", Math.min(1, output + rampBand));
+		this.motorController.set(ControlMode.PercentOutput, output);
 	}
 
 }
