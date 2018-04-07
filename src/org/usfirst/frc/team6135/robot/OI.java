@@ -167,6 +167,6 @@ public class OI {
 		Trigger motorCurrentMonitor = new MotorCurrentMonitor();
 		
 		calibrateGyroTrigger = new GyroLimitSwitch();
-		calibrateGyroTrigger.whenActive(new ResetGyro(WristPIDSubsystem.LIMIT_SWITCH_ANGLE));
+		//calibrateGyroTrigger.whenActive(new ResetGyro(WristPIDSubsystem.LIMIT_SWITCH_ANGLE));
 	}
 }

@@ -70,6 +70,7 @@ public class WristPIDSubsystem extends PIDSubsystem {
     		else
     			RobotMap.wristVictor.set(0);
     	}
+    	SmartDashboard.putBoolean("WRIST LIMIT SWITCH", RobotMap.wristSwitch.get());
     }
     
     public boolean isEnabled() {
@@ -85,7 +86,7 @@ public class WristPIDSubsystem extends PIDSubsystem {
     }
     
     public boolean notAtTop() {
-    	return RobotMap.elevatorTopSwitch.get();
+    	return RobotMap.wristSwitch.get();
     }
 
     public void initDefaultCommand() {

@@ -55,7 +55,7 @@ public class PlaceCubeFromMiddle extends CommandGroup {
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurnPID(90 * direction));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 - (1.0 * 12)));
+    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_SIZE / 2));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurnPID(-90 * direction));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));

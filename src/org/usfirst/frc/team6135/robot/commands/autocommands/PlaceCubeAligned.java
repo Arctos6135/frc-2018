@@ -43,7 +43,7 @@ public class PlaceCubeAligned extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
+    	//addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
     	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH));
     	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH));

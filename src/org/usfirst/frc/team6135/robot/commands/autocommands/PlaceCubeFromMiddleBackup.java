@@ -51,7 +51,7 @@ public class PlaceCubeFromMiddleBackup extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
+    	//addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
     	addSequential(new DriveStraightDistancePID(DISTANCE_Y / 2));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurnPID(90 * direction));

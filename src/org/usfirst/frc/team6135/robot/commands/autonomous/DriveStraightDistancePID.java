@@ -1,12 +1,10 @@
 package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import org.usfirst.frc.team6135.robot.Robot;
-import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.misc.RampedPIDMotorController;
+import org.usfirst.frc.team6135.robot.RobotMap; 
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	Uses PIDs to drive forward or backwards a straight distance.
@@ -17,7 +15,7 @@ public class DriveStraightDistancePID extends Command {
 	//0.015 0.002 0.4
 	public static double kP = 0.02;
 	public static double kI = 0.02;
-	public static double kD = 0.25;
+	public static double kD = 0.3;
 	
 	public static final double TOLERANCE = 1.0;
 	
