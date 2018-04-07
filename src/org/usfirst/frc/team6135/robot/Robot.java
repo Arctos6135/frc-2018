@@ -204,6 +204,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+
+    	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
 	}
 
 	/**
@@ -347,6 +349,8 @@ public class Robot extends IterativeRobot {
 
     	SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
     	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
+
+    	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
 	}
 
 	@Override
@@ -382,6 +386,8 @@ public class Robot extends IterativeRobot {
 
     	SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
     	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
+
+    	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
 	}
 
 	/**
