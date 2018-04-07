@@ -4,7 +4,6 @@ import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -48,7 +47,6 @@ public class WristAnalogPID extends Command {
     		}
     		Robot.wristSubsystem.enable();
     	}
-    	SmartDashboard.putBoolean("Enabled", Robot.wristSubsystem.isEnabled());
     }
 
     // Make this return true when this Command no longer needs to run execute()
