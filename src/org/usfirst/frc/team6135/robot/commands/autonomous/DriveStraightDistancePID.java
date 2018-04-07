@@ -34,18 +34,12 @@ public class DriveStraightDistancePID extends Command {
     protected void initialize() {
     	RobotMap.leftEncoder.reset();
     	RobotMap.rightEncoder.reset();
-    	
-    	RampedPIDMotorController leftMotor = new RampedPIDMotorController(RobotMap.leftDriveTalon1, 0.1, false);
-    	RampedPIDMotorController rightMotor = new RampedPIDMotorController(RobotMap.rightDriveTalon1, 0.1, true);
-    	
-    	leftPID = new PIDController(kP, kI, kD, RobotMap.leftEncoder, leftMotor);
-    	rightPID = new PIDController(kP, kI, kD, RobotMap.rightEncoder, rightMotor);
+
+    	leftPID = new PIDController(kP, kI, kD, RobotMap.leftEncoder, RobotMap.leftDrivePIDMotor.setPIDController(leftPID));
+    	rightPID = new PIDController(kP, kI, kD, RobotMap.rightEncoder, RobotMap.rightDrivePIDMotor.setPIDController(rightPID));
     	
     	leftPID.setOutputRange(-1.0, 1.0);
     	rightPID.setOutputRange(-1.0, 1.0);
-    	
-    	leftMotor.setPIDController(leftPID);
-    	rightMotor.setPIDController(rightPID);
     	
     	leftPID.setContinuous(false);
     	rightPID.setContinuous(false);

@@ -42,9 +42,16 @@ public class RampedPIDMotorController implements PIDOutput {
 		setPIDController(pidController);
 	}
 	
-	public void setPIDController(PIDController pc) {
+	/**
+	 * Sets the {@code PIDController} that uses this {@code RampedPIDMotorController}.
+	 * The output range of the controller is constantly adjusted to provide ramping for the motors.
+	 * @param pc - The {@code PIDController} that uses this instace of {@code RampedPIDMotorController}
+	 * @return The controller, for easy chaining.
+	 */
+	public RampedPIDMotorController setPIDController(PIDController pc) {
 		pidController = pc;
 		pidController.setOutputRange(Math.max(-1, 0 - rampBand), Math.min(1, 0 + rampBand));
+		return this;
 	}
 
 	@Override
