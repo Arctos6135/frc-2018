@@ -17,7 +17,7 @@ public class DriveStraightDistancePID extends Command {
 	//0.015 0.002 0.4
 	public static double kP = 0.02;
 	public static double kI = 0.02;
-	public static double kD = 0.4;
+	public static double kD = 0.25;
 	
 	public static final double TOLERANCE = 1.0;
 	
