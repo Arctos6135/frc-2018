@@ -70,7 +70,6 @@ public class WristPIDSubsystem extends PIDSubsystem {
     		else
     			RobotMap.wristVictor.set(0);
     	}
-    	SmartDashboard.putBoolean("WRIST LIMIT SWITCH", RobotMap.wristSwitch.get());
     }
     
     public boolean isEnabled() {
@@ -99,7 +98,6 @@ public class WristPIDSubsystem extends PIDSubsystem {
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
 
-    	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
         return RobotMap.wristGyro.getAngle();
     }
 
@@ -108,8 +106,7 @@ public class WristPIDSubsystem extends PIDSubsystem {
         // e.g. yourMotor.set(output);
     	// Since the gyro reading decreases (Gets more negative) when the wrist raises,
     	// And the wrist is reversed, the output does not have to be reversed
-    	//SmartDashboard.putNumber("WRIST SPEED", output);
-    	//SmartDashboard.putNumber("WRIST ERROR", getPIDController().getError());
+    	SmartDashboard.putNumber("Wrist output", output);
     	if(notAtTop()) {
     		RobotMap.wristVictor.set(output);
     	}

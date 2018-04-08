@@ -192,6 +192,19 @@ public class Robot extends IterativeRobot {
 		putTunables();
 		//SmartDashboard.putData("Pause/Resume Camera Capture", new ToggleCameraCapture());
 	}
+	
+	/**
+	 * This function is called periodically during all robot modes.
+	 * Code that needs to be run regardless of mode, such as the printing of information,
+	 * can be put here.
+	 */
+	@Override
+	public void robotPeriodic() {
+		SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
+    	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
+
+    	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
+	}
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -354,11 +367,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-
-    	SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
-    	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
-
-    	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
 	}
 
 	@Override
@@ -391,11 +399,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-
-    	SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
-    	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
-
-    	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
 	}
 
 	/**
