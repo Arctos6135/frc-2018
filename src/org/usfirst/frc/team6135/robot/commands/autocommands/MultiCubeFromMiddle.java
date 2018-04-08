@@ -8,7 +8,6 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceP
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerWrist;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.IntakingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.OperateIntake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
