@@ -5,10 +5,7 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoSwitchAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.EmergencySwitch;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.IntakingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.SwitchingPosition;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -70,9 +67,6 @@ public class OI {
 	 * 	<li>Right Analog Stick: Tilt Wrist</li>
 	 * 	<li>Left Trigger: Intake Out (Analog)</li>
 	 * 	<li>Right Trigger: Intake In (Analog)</li>
-	 * 	<li>X Button: Raise elevator & wrist to place cube in switch position</li>
-	 * 	<li>Y Button: Raise elevator & wrist to shooting position</li>
-	 * 	<li>A Button: Lower elevator & wrist to intaking position</li>
 	 * 	<li>B Button: The Emergency Button (Hold 2s, changes behavior of the wrist, in case of gyro issues)</li>
 	 * 	<li>Start Button: Gyro reset (Use only if gyro drift gets too much, and wrist is flat.)</li>
 	 * </ul>
@@ -90,9 +84,6 @@ public class OI {
 		public static final int WRIST = RobotMap.ControllerMap.RSTICK_Y_AXIS;
 		public static final int INTAKE_IN = RobotMap.ControllerMap.RTRIGGER;
 		public static final int INTAKE_OUT = RobotMap.ControllerMap.LTRIGGER;
-		public static final int INTAKING_POSITION = RobotMap.ControllerMap.BUTTON_A;
-		public static final int SHOOTING_POSITION = RobotMap.ControllerMap.BUTTON_Y;
-		public static final int SWITCHING_POSITION = RobotMap.ControllerMap.BUTTON_X;
 		public static final int EMERGENCY = RobotMap.ControllerMap.BUTTON_B;
 		//Note: No button is defined here for Gyro Reset since it requires the Start Button,
 		//which has no mapping. An anonymous class extending Trigger is used instead.
@@ -109,9 +100,6 @@ public class OI {
 	public static JoystickButton cancelAlign;
 	
 	public static JoystickButton emergencyButton;
-	public static JoystickButton shootingPosition;
-	public static JoystickButton intakingPosition;
-	public static JoystickButton switchingPosition;
 	
 	//public static Trigger calibrateGyroTrigger;
 	
@@ -127,9 +115,6 @@ public class OI {
 		autoSwitchAlign = new JoystickButton(driveController, Controls.AUTO_SWITCH_ALIGN);
 		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
 		emergencyButton = new JoystickButton(attachmentsController, Controls.EMERGENCY);
-		shootingPosition = new JoystickButton(attachmentsController, Controls.SHOOTING_POSITION);
-		intakingPosition = new JoystickButton(attachmentsController, Controls.INTAKING_POSITION);
-		switchingPosition = new JoystickButton(attachmentsController, Controls.SWITCHING_POSITION);
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
@@ -147,9 +132,6 @@ public class OI {
 		
 		emergencyButton.whenPressed(emergencyCmd);
 		emergencyButton.whenReleased(new CancelOperation(emergencyCmd));
-		shootingPosition.whenPressed(new ScalingPosition());
-		intakingPosition.whenPressed(new IntakingPosition());
-		switchingPosition.whenPressed(new SwitchingPosition());
 		
 		//A trigger has to be used instead since there's no mapping for the start and back buttons
 		Trigger resetGyro = new Trigger() {
