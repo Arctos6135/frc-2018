@@ -106,7 +106,7 @@ public class OI {
 	public static JoystickButton autoSwitchAlign;
 	public static JoystickButton cancelAlign;
 	
-	public static JoystickButton emergencyButton;
+	//public static JoystickButton emergencyButton;
 	
 	//public static Trigger calibrateGyroTrigger;
 	
@@ -121,7 +121,7 @@ public class OI {
 		autoCubeAlign = new JoystickButton(driveController, Controls.AUTO_CUBE_ALIGN);
 		autoSwitchAlign = new JoystickButton(driveController, Controls.AUTO_SWITCH_ALIGN);
 		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
-		emergencyButton = new JoystickButton(attachmentsController, Controls.EMERGENCY);
+		//emergencyButton = new JoystickButton(attachmentsController, Controls.EMERGENCY);
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
@@ -133,10 +133,10 @@ public class OI {
 		autoSwitchAlign.whenPressed(autoSwitchAlignCmd);
 		cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd, autoSwitchAlignCmd));
 		
-		Command emergencyCmd = new EmergencySwitch();
+		//Command emergencyCmd = new EmergencySwitch();
 		
-		emergencyButton.whenPressed(emergencyCmd);
-		emergencyButton.whenReleased(new CancelOperation(emergencyCmd));
+		//emergencyButton.whenPressed(emergencyCmd);
+		//emergencyButton.whenReleased(new CancelOperation(emergencyCmd));
 		
 		//A trigger has to be used instead since there's no mapping for the start and back buttons
 		Trigger resetGyro = new Trigger() {
