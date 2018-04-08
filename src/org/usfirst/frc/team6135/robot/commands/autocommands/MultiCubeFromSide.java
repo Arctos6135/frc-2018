@@ -5,6 +5,8 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.Delay;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
+import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
+import org.usfirst.frc.team6135.robot.commands.autonomous.LowerWrist;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.IntakingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.OperateIntake;
@@ -41,7 +43,8 @@ public class MultiCubeFromSide extends CommandGroup {
     	//Back up a bit so we can turn and put the intake down
     	addSequential(new DriveStraightDistancePID(-RobotMap.INTAKE_LENGTH + -6.0));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addParallel(new IntakingPosition());
+    	addParallel(new LowerElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
+    	addParallel(new LowerWrist(RobotMap.AUTO_WRIST_TIME));
     	addSequential(new AutoTurnPID(90 * side));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	//Get behind the cube

@@ -108,7 +108,8 @@ public class WristPIDSubsystem extends PIDSubsystem {
         // e.g. yourMotor.set(output);
     	// Since the gyro reading decreases (Gets more negative) when the wrist raises,
     	// And the wrist is reversed, the output does not have to be reversed
-    	
+    	//SmartDashboard.putNumber("WRIST SPEED", output);
+    	//SmartDashboard.putNumber("WRIST ERROR", getPIDController().getError());
     	if(notAtTop()) {
     		RobotMap.wristVictor.set(output);
     	}

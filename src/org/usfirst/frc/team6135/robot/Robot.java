@@ -187,10 +187,10 @@ public class Robot extends IterativeRobot {
 		captureTask = new CameraCaptureTask();
 		captureTask.pause();
 		//If camera capture is not desired, comment out this line
-		captureTimer.schedule(captureTask, 1000, CAPTURE_PERIOD);
+		//captureTimer.schedule(captureTask, 1000, CAPTURE_PERIOD);
 		
 		putTunables();
-		SmartDashboard.putData("Pause/Resume Camera Capture", new ToggleCameraCapture());
+		//SmartDashboard.putData("Pause/Resume Camera Capture", new ToggleCameraCapture());
 	}
 
 	/**
@@ -239,7 +239,7 @@ public class Robot extends IterativeRobot {
 							autonomousCommand.start();
 						}
 						else {
-							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.SIDE_LEFT);
+							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.SIDE_LEFT).start();
 							//(new DrivePastBaseLine()).start();
 						}
 					}
@@ -248,7 +248,7 @@ public class Robot extends IterativeRobot {
 							autonomousCommand.start();
 						}
 						else {
-							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.SIDE_RIGHT);
+							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.SIDE_RIGHT).start();
 							//(new DrivePastBaseLine()).start();
 						}
 					}

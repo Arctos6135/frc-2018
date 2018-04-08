@@ -5,6 +5,8 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.Delay;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
+import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
+import org.usfirst.frc.team6135.robot.commands.autonomous.LowerWrist;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.IntakingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.OperateIntake;
@@ -39,7 +41,8 @@ public class MultiCubeAligned extends CommandGroup {
         // arm.
     	addSequential(new PlaceCubeAligned());
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addParallel(new IntakingPosition());
+    	addParallel(new LowerElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
+    	addParallel(new LowerWrist(RobotMap.AUTO_WRIST_TIME));
     	addSequential(new DriveStraightDistancePID(-(RobotMap.ArenaDimensions.ALIGNED_CUBE_PICKUP_BACK - RobotMap.ROBOT_LENGTH / 2)));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurnPID(-45 * side));

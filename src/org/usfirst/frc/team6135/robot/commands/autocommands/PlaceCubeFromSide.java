@@ -49,13 +49,14 @@ public class PlaceCubeFromSide extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	//addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
+    	//addSequential(new Delay(6500));
     	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_CENTER_DISTANCE - RobotMap.ROBOT_LENGTH / 2));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurnPID(-90 * side));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	//addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_EDGE_OFFSET));
     	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	//addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH));
     	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }

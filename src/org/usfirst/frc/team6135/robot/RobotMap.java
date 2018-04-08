@@ -113,7 +113,7 @@ public class RobotMap {
 	
 	public static final double AUTO_INTAKE_TIME = 1.5;
 	
-	public static final double AUTO_WRIST_TIME = 3;
+	public static final double AUTO_WRIST_TIME = 2;//3
 	/**
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */

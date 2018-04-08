@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PlaceCubeFromMiddleDiagonal extends CommandGroup {
 	
 	static final double DISTANCE_Y = (RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH-RobotMap.ROBOT_LENGTH/2)/2;
-	static final double DISTANCE_X = RobotMap.ArenaDimensions.SWITCH_SIZE / 2;
+	static double DISTANCE_X = RobotMap.ArenaDimensions.SWITCH_SIZE / 2;
 	static final double ANGLE_START = Math.toDegrees(Math.atan(DISTANCE_X/DISTANCE_Y));
 	
 	public static final int DIRECTION_LEFT = 1;
@@ -53,13 +53,13 @@ public class PlaceCubeFromMiddleDiagonal extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	//addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
+    	double distance_x = DISTANCE_X + ((direction == DIRECTION_LEFT)?6:0);
     	addSequential(new DriveStraightDistancePID(RobotMap.ROBOT_LENGTH/2));
     	//addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurnPID(ANGLE_START * direction));
-    	addSequential(new DriveStraightDistancePID(Math.sqrt(DISTANCE_Y*DISTANCE_Y+DISTANCE_X*DISTANCE_X)));
+    	addSequential(new DriveStraightDistancePID(Math.sqrt(DISTANCE_Y*DISTANCE_Y+distance_x*distance_x)));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurnPID(-ANGLE_START * direction));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new DriveStraightDistancePID(DISTANCE_Y));
     	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH));
