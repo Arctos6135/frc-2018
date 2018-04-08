@@ -38,7 +38,7 @@ public class MultiCubeFromMiddle extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new PlaceCubeFromMiddle(direction));
+    	addSequential(new PlaceCubeFromMiddleDiagonal(direction));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addParallel(new LowerElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addParallel(new LowerWrist(RobotMap.AUTO_WRIST_TIME));

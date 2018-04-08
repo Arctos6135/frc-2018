@@ -168,7 +168,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Place Cube from right side", placeCubeRightSideOffset);
 		chooser.addObject("Place Cube (Aligned with switch): Left", placeCubeLeftSide);
 		chooser.addObject("Place Cube (Aligned with switch): Right", placeCubeRightSide);
-		chooser.addObject("Place Cube: Middle", placeCubeFromMiddle);
+		//chooser.addObject("Place Cube: Middle", placeCubeFromMiddle);
 		chooser.addObject("Place Cube From Middle (FASTER)", placeCubeFromMiddleFast);
 		chooser.addObject("Shoot Cube into Scale: Left", scaleSameSideLeft);
 		chooser.addObject("Shoot Cube into Scale: Right", scaleSameSideRight);
