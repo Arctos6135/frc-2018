@@ -1,16 +1,21 @@
 package org.usfirst.frc.team6135.robot;
 
+import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
+import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
+import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoSwitchAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.EmergencySwitch;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
+import org.usfirst.frc.team6135.robot.triggers.POVTrigger;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -69,6 +74,8 @@ public class OI {
 	 * 	<li>Right Trigger: Intake In (Analog)</li>
 	 * 	<li>B Button: The Emergency Button (Hold 2s, changes behavior of the wrist, in case of gyro issues)</li>
 	 * 	<li>Start Button: Gyro reset (Use only if gyro drift gets too much, and wrist is flat.)</li>
+	 * 	<li>D-Pad Up: Raise the elevator to the top</li>
+	 * 	<li>D-Pad Down: Lower the elevator to the bottom</li>
 	 * </ul>
 	 */
 	public static class Controls {
@@ -85,8 +92,8 @@ public class OI {
 		public static final int INTAKE_IN = RobotMap.ControllerMap.RTRIGGER;
 		public static final int INTAKE_OUT = RobotMap.ControllerMap.LTRIGGER;
 		public static final int EMERGENCY = RobotMap.ControllerMap.BUTTON_B;
-		//Note: No button is defined here for Gyro Reset since it requires the Start Button,
-		//which has no mapping. An anonymous class extending Trigger is used instead.
+		//Note: Some buttons such as the Start button and the D-Pad do not have mappings.
+		//Triggers are created for them to read their states and process them.
 	}
 	
 	public static XboxController driveController;
@@ -118,8 +125,6 @@ public class OI {
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
-		//gearShiftFast.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));
-		//gearShiftSlow.whenReleased(new GearShift(GearShift.GEAR_STOPSHIFT));
 		
 		Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_TURN_SPEED); 
 		Command autoSwitchAlignCmd = new AutoSwitchAlign(RobotMap.Speeds.AUTO_TURN_SPEED);
@@ -141,6 +146,33 @@ public class OI {
 			}
 		};
 		resetGyro.whenActive(new ResetGyro());
+		
+		//Triggers for the D-Pad controls
+		POVTrigger raiseElevator = new POVTrigger(attachmentsController, 0);
+		POVTrigger lowerElevator = new POVTrigger(attachmentsController, 180);
+		
+		Command elevatorUp = new RaiseElevator(1.0);
+		Command elevatorDown = new LowerElevator(1.0);
+		
+		raiseElevator.whenActive(elevatorUp);
+		lowerElevator.whenActive(elevatorDown);
+		
+		Trigger cancelElevatorMovement = new Trigger() {
+			@Override
+			public boolean get() {
+				return Math.abs(attachmentsController.getRawAxis(Controls.ELEVATOR)) > ElevatorAnalog.DEADZONE;
+			}
+		};
+		
+		cancelElevatorMovement.whenActive(new InstantCommand() {
+			@Override
+			protected void initialize() {
+				if(elevatorUp.isRunning() && !elevatorUp.isCanceled())
+					elevatorUp.cancel();
+				else if(elevatorDown.isRunning() && !elevatorDown.isCanceled())
+					elevatorDown.cancel();
+			}
+		});
 		
 		//whenActive() is already called by the constructor
 		//@SuppressWarnings("unused")

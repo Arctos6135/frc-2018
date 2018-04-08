@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ElevatorAnalog extends Command {
 	
-	static final double DEADZONE = 0.15;
+	public static final double DEADZONE = 0.15;
 
     public ElevatorAnalog() {
         // Use requires() here to declare subsystem dependencies
