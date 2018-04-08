@@ -16,11 +16,9 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
-import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.BrakePID;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.CameraCaptureTask;
-import org.usfirst.frc.team6135.robot.misc.ToggleCameraCapture;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
@@ -204,6 +202,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
 
     	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
+    	
+    	SmartDashboard.putBoolean("Wrist PID is enabled", Robot.wristSubsystem.isEnabled());
 	}
 
 	/**
