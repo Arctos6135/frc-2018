@@ -304,6 +304,10 @@ public class Robot extends IterativeRobot {
 
     	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
     	SmartDashboard.putBoolean("Wrist PID is enabled", Robot.wristSubsystem.isEnabled());
+    	
+    	SmartDashboard.putBoolean("Elevator Top Switch", Robot.elevatorSubsystem.notAtTop());
+    	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
+    	SmartDashboard.putBoolean("Wrist Switch", Robot.wristSubsystem.notAtTop());
 	}
 
 	/**
