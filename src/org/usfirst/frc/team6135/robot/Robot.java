@@ -638,16 +638,25 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		//If a name is specified, don't record
-		if(recordingString == null)
-			recording = false;
 		if(recording) {
 			try{
-				if(recorder == null)
-					recorder = new AutoRecord(recordingString);
-				recorder.record();
-				doneRecording = false;
-			
+				//Dynamic recording, so we dont have to enable/disable teleop
+				if(doneRecording) {
+					String autoRecordingName;
+					if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", null)) != null)
+						recordingString = CSV_FILE_PREFIX + autoRecordingName + ".csv";
+					else
+						recordingString = null;
+				}
+				//If recordingString is not null, then start recording
+				if(recordingString != null) {
+					if(recorder == null)
+						recorder = new AutoRecord(recordingString);
+					recorder.record();
+					doneRecording = false;
+				} else {
+					recording = false;
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 				recording = false;
@@ -656,6 +665,8 @@ public class Robot extends IterativeRobot {
 			if(!doneRecording) {
 				try {
 					recorder.end();
+					//Set to null, to allow for dynamic recording
+					recorder = null;
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
