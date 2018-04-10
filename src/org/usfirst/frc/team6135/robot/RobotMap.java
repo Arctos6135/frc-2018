@@ -59,7 +59,7 @@ public class RobotMap {
 	public static class ArenaDimensions {
 		//12.0 feet
 		//Actual auto line is 10 feet from the alliance wall, but an extra 2ft is added just in case
-		public static final double BASELINE_DISTANCE = 12.0 * 12;
+		public static final double BASELINE_DISTANCE = 10.0 * 12;
 		//Minus 28 inches since 14ft is to the middle of the switch
 		public static final double SWITCH_DISTANCE = 14.0 * 12 - 28 - 4;
 		public static final double VISION_SAMPLING_DISTANCE = SWITCH_DISTANCE / 4;
@@ -137,8 +137,8 @@ public class RobotMap {
 	public static final double DRIVE_ENCODER_PPR = 2048;
 	public static final double DISTANCE_PER_PULSE = WHEEL_CIRCUMFRENCE/DRIVE_ENCODER_PPR;
 	
-	public static final int CAMERA_WIDTH = 640;
-	public static final int CAMERA_HEIGHT = 360;
+	public static final int CAMERA_WIDTH = 320;
+	public static final int CAMERA_HEIGHT = 240;
 	public static final double CAMERA_FOV = 61.0;
 	public static final int CAMERA_CENTER = CAMERA_WIDTH / 2;
 	public static final double CAMERA_FOCAL_LEN = CAMERA_WIDTH / (2 * Math.tan(Math.toRadians(CAMERA_FOV / 2)));

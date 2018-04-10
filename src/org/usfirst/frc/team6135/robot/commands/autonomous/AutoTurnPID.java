@@ -2,7 +2,6 @@ package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.misc.RampedPIDMotorController;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
@@ -18,10 +17,10 @@ public class AutoTurnPID extends Command {
 
 	//To be tuned later
 	public static double kP = 0.02;
-	public static double kI = 0.001;
+	public static double kI = 0.0015;
 	public static double kD = 0.016;
 	
-	public static final double TOLERANCE = 1.0;
+	public static final double TOLERANCE = 3.0;
 	
 	PIDController leftPID, rightPID;
 	double leftDistance, rightDistance;
