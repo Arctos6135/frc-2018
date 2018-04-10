@@ -33,6 +33,8 @@ public class AutoRecord {
 			long time = (System.currentTimeMillis()-startTime);
 			double leftOutput = RobotMap.leftDriveTalon1.getMotorOutputPercent();
 			double rightOutput = RobotMap.rightDriveTalon1.getMotorOutputPercent();
+			double intakeLeftOutput = RobotMap.intakeLeft.get();
+			double intakeRightOutput = RobotMap.intakeRight.get();
 			double elevatorOutput = RobotMap.elevatorVictor.get();
 			double wristOutput = RobotMap.wristVictor.get();
 			
@@ -42,6 +44,8 @@ public class AutoRecord {
 			
 			writer.append("," + leftOutput);
 			writer.append("," + rightOutput);
+			writer.append("," + intakeLeftOutput);
+			writer.append("," + intakeRightOutput);
 			writer.append("," + elevatorOutput);
 			/*
 			 * THE LAST ENTRY OF THINGS YOU RECORD NEEDS TO HAVE A DELIMITER CONCATENATED TO 
@@ -57,6 +61,8 @@ public class AutoRecord {
 				flipped.append("," + rightOutput);
 				flipped.append("," + leftOutput);
 				flipped.append("," + elevatorOutput);
+				flipped.append("," + intakeLeftOutput);
+				flipped.append("," + intakeRightOutput);
 				flipped.append("," + wristOutput + "\n");
 			}
 		}
@@ -67,6 +73,10 @@ public class AutoRecord {
 		if(writer !=null){
 			writer.flush();
 			writer.close();
+		}
+		if(flipped != null) {
+			flipped.flush();
+			flipped.close();
 		}
 	}
 	
