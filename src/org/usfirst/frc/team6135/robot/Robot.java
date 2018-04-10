@@ -140,11 +140,14 @@ public class Robot extends IterativeRobot {
 	public static final String MULTI_MIDDLE_LEFT = "NLM";
 	public static final String MULTI_MIDDLE_RIGHT = "NLM";
 	
+	public static final String CUSTOM = "$CUSTOM";
+	
 	//Toggle using recorded autos
 	//Must be changed in code
 	//Playback
 	public static boolean useRecordedAutos = true;
 	public static String selectedAuto = null;
+	public static String customAutoFileName = null;
 	
 	//Recording
 	public static String recordingString;
@@ -170,6 +173,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Turn kD", AutoTurnPID.kD);
 		
 		SmartDashboard.putString("Auto Recording Save Name", null);
+		SmartDashboard.putString("Auto Playback File Name", null);
 	}
 	void updateTunables() {
 		//Read the tunable values and overwrite them
@@ -191,6 +195,12 @@ public class Robot extends IterativeRobot {
 			recordingString = CSV_FILE_PREFIX + autoRecordingName + ".csv";
 		else
 			recordingString = null;
+		
+		String autoPlaybackName;
+		if((autoPlaybackName = SmartDashboard.getString("Auto Playback File Name", null)) != null)
+			customAutoFileName = CSV_FILE_PREFIX + autoPlaybackName + ".csv";
+		else
+			customAutoFileName = null;
 	}
 	
 	/**
@@ -290,6 +300,7 @@ public class Robot extends IterativeRobot {
 		recordedAutoChooser.addObject("Multi-Cube (Aligned with switch): Left", MULTI_ALIGNED_LEFT);
 		recordedAutoChooser.addObject("Multi-Cube (Aligned with switch): Right", MULTI_ALIGNED_RIGHT);
 		recordedAutoChooser.addObject("Multi-Cube from middle", MULTI_MIDDLE);
+		recordedAutoChooser.addObject("Custom File", CUSTOM);
 		
 		SmartDashboard.putData("Auto mode (Recorded)", recordedAutoChooser);
 	}
@@ -384,6 +395,11 @@ public class Robot extends IterativeRobot {
 	}
 	public void setUpMacroAutos(String macroAuto) {
 		if(macroAuto != null) {
+			//If a the "Custom" option is chosen, the auto to run is just the one given in the text box
+			if(macroAuto.equals(CUSTOM)) {
+				selectedAuto = customAutoFileName;
+				return;
+			}
 			gameData = DriverStation.getInstance().getGameSpecificMessage().toUpperCase();
 			if(gameData.length() > 0){
 				//Depending on which side the alliance switch is on, some commands need to change
