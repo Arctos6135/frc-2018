@@ -106,6 +106,10 @@ public class AutoPlayback {
 		}
 	}
 	
+	public boolean finished() {
+		return playbackFinished;
+	}
+	
 	public void end() throws IOException {
 		//Stop everything
 		RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, 0);

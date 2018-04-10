@@ -169,7 +169,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Turn kI", AutoTurnPID.kI);
 		SmartDashboard.putNumber("Turn kD", AutoTurnPID.kD);
 		
-		SmartDashboard.putString("Auto Recording", null);
+		SmartDashboard.putString("Auto Recording Save Name", null);
 	}
 	void updateTunables() {
 		//Read the tunable values and overwrite them
@@ -186,7 +186,11 @@ public class Robot extends IterativeRobot {
 		AutoTurnPID.kI = SmartDashboard.getNumber("Turn kI", AutoTurnPID.kI);
 		AutoTurnPID.kD = SmartDashboard.getNumber("Turn kD", AutoTurnPID.kD);
 		
-		recordingString = CSV_FILE_PREFIX + SmartDashboard.getString("Auto Recording", null) + ".csv";
+		String autoRecordingName;
+		if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", null)) != null)
+			recordingString = CSV_FILE_PREFIX + autoRecordingName + ".csv";
+		else
+			recordingString = null;
 	}
 	
 	/**
@@ -202,9 +206,6 @@ public class Robot extends IterativeRobot {
 		gearShiftSubsystem = new GearShiftSubsystem();
 		elevatorSubsystem = new ElevatorSubsystem();
 		wristSubsystem = new WristPIDSubsystem();
-		//Already done
-		//RobotMap.wristGyro.calibrate();
-		//wristSubsystem.START_TIME = System.currentTimeMillis();
 		
 		//Get the team's colour and station number
 		station = DriverStation.getInstance().getLocation();
@@ -569,7 +570,7 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		if(useRecordedAutos) {
 			try {
-				if (player != null){
+				if (player != null && !player.finished()){
 					player.play();
 				}
 			} catch (IOException e) {
@@ -621,14 +622,14 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		//If a name is specified, don't record
+		if(recordingString == null)
+			recording = false;
 		if(recording) {
 			try{
-				if(recorder != null){
-					recorder.record();
-				} else {
+				if(recorder == null)
 					recorder = new AutoRecord(recordingString);
-					recorder.record();
-				}
+				recorder.record();
 				doneRecording = false;
 			
 			} catch (IOException e) {

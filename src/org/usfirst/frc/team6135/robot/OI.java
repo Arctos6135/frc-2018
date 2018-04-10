@@ -6,7 +6,6 @@ import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoSwitchAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.EmergencySwitch;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ToggleRecording;
@@ -65,6 +64,7 @@ public class OI {
 	 * 		the team switch cannot be found, it will ignore the colour and try to find any switch at all.</li>
 	 * 	<li>Y Button: Auto Power Cube align</li>
 	 * 	<li>B Button: Cancel auto align (in case something goes terribly wrong)</li>
+	 * 	<li>A Button: Start/Stop autonomous recording</li>
 	 * 	<li>XBOX Button: Enable rocket booster</li>
 	 * </ul>
 	 * Attachments:
@@ -115,7 +115,6 @@ public class OI {
 	//public static Trigger calibrateGyroTrigger;
 	
 	public OI() {
-		//Port 0 is on the right of the programming laptop and port 1 is on the left.
 		driveController = new XboxController(0);
 		attachmentsController = new XboxController(1);
 		
