@@ -68,6 +68,7 @@ public class VisionSubsystem extends Subsystem {
 		cameraInitBrightness = camera.getBrightness();
 		//Set resolution
 		camera.setResolution(RobotMap.CAMERA_WIDTH, RobotMap.CAMERA_HEIGHT);
+		camera.setFPS(15);
 		//Get our sink, the source of our pictures
 		sink = CameraServer.getInstance().getVideo();
 		//Create a source, used to stream half-processed pictures
@@ -91,13 +92,15 @@ public class VisionSubsystem extends Subsystem {
 			/*camera.setBrightness(25);
 			camera.setExposureManual(5);
 			camera.setExposureHoldCurrent();*/
-			camera.setFPS(8);
+			camera.setFPS(15);
+			camera.setResolution(320, 240);
 		}
 		else {
 			sink.setEnabled(false);
 			camera.setBrightness(cameraInitBrightness);
 			camera.setExposureManual(35);
-			if(!camera.setFPS(24)) {
+			camera.setResolution(320, 240);
+			if(!camera.setFPS(15)) {
 				SmartDashboard.putString("VisionError", "Failed to set FPS");
 			}
 		}

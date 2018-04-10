@@ -168,7 +168,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Place Cube from right side", placeCubeRightSideOffset);
 		chooser.addObject("Place Cube (Aligned with switch): Left", placeCubeLeftSide);
 		chooser.addObject("Place Cube (Aligned with switch): Right", placeCubeRightSide);
-		//chooser.addObject("Place Cube: Middle", placeCubeFromMiddle);
+		chooser.addObject("Place Cube: Middle", placeCubeFromMiddle);
 		chooser.addObject("Place Cube From Middle (FASTER)", placeCubeFromMiddleFast);
 		chooser.addObject("Shoot Cube into Scale: Left", scaleSameSideLeft);
 		chooser.addObject("Shoot Cube into Scale: Right", scaleSameSideRight);
@@ -204,6 +204,10 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
     	
     	SmartDashboard.putBoolean("Wrist PID is enabled", Robot.wristSubsystem.isEnabled());
+    	
+    	SmartDashboard.putBoolean("Elevator Top Switch", Robot.elevatorSubsystem.notAtTop());
+    	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
+    	SmartDashboard.putBoolean("Wrist Switch", Robot.wristSubsystem.notAtTop());
 	}
 
 	/**
