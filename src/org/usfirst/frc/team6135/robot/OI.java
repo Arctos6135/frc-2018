@@ -9,6 +9,7 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.EmergencySwitch;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.ToggleRecording;
 import org.usfirst.frc.team6135.robot.triggers.POVTrigger;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -86,6 +87,7 @@ public class OI {
 		public static final int AUTO_CUBE_ALIGN = RobotMap.ControllerMap.BUTTON_Y;
 		public static final int AUTO_SWITCH_ALIGN = RobotMap.ControllerMap.BUTTON_X;
 		public static final int CANCEL_ALIGN = RobotMap.ControllerMap.BUTTON_B;
+		public static final int RECORD_AUTO = RobotMap.ControllerMap.BUTTON_A;
 		
 		public static final int ELEVATOR = RobotMap.ControllerMap.LSTICK_Y_AXIS;
 		public static final int WRIST = RobotMap.ControllerMap.RSTICK_Y_AXIS;
@@ -106,6 +108,8 @@ public class OI {
 	public static JoystickButton autoSwitchAlign;
 	public static JoystickButton cancelAlign;
 	
+	public static JoystickButton recordAuto;
+	
 	//public static JoystickButton emergencyButton;
 	
 	//public static Trigger calibrateGyroTrigger;
@@ -121,7 +125,10 @@ public class OI {
 		autoCubeAlign = new JoystickButton(driveController, Controls.AUTO_CUBE_ALIGN);
 		autoSwitchAlign = new JoystickButton(driveController, Controls.AUTO_SWITCH_ALIGN);
 		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
+		recordAuto = new JoystickButton(driveController, Controls.RECORD_AUTO);
 		//emergencyButton = new JoystickButton(attachmentsController, Controls.EMERGENCY);
+		
+		recordAuto.whenPressed(new ToggleRecording());
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
