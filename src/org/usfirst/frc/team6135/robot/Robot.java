@@ -625,12 +625,13 @@ public class Robot extends IterativeRobot {
 		if(recording) {
 			try{
 				//Dynamic recording, so we dont have to enable/disable teleop
-				String autoRecordingName;
-				if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", null)) != null)
-					recordingString = CSV_FILE_PREFIX + autoRecordingName + ".csv";
-				else
-					recordingString = null;
-				
+				if(doneRecording) {
+					String autoRecordingName;
+					if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", null)) != null)
+						recordingString = CSV_FILE_PREFIX + autoRecordingName + ".csv";
+					else
+						recordingString = null;
+				}
 				//If recordingString is not null, then start recording
 				if(recordingString != null) {
 					if(recorder == null)
