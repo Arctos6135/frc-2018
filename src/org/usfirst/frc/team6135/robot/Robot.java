@@ -93,19 +93,19 @@ public class Robot extends IterativeRobot {
 	 */
 	
 	//Prefix for recorded autos
-	public static final String CSV_FILE_PREFIX = "auto";
+	public static final String CSV_FILE_PREFIX = "/home/lvuser/auto";
 
 	/* Recorded auto ids
 	 * 
 	 * Default: Baseline
 	 * 
 	 * Structure:
-	 * prefix + side + direction + (optional)suffixes
+	 * prefix + (optional) direction + side + (optional)suffixes
 	 * 
 	 * Prefixes:
 	 * s = Switch
 	 * S = scale
-	 * MT = multi
+	 * N = multi-cube
 	 * 
 	 * Side:
 	 * L/R = left/right side or direction
@@ -120,24 +120,25 @@ public class Robot extends IterativeRobot {
 	
 	public static final String SWITCH_LEFT = "sL"; //Record
 	public static final String SWITCH_RIGHT = "sR"; //Record
-	public static final String SWITCH_ALIGNED_LEFT = "sLA"; //Record
-	public static final String SWITCH_ALIGNED_RIGHT = "sRA"; //Record
+	public static final String SWITCH_ALIGNED_LEFT = "sLA";
+	public static final String SWITCH_ALIGNED_RIGHT = "sRA";
+	public static final String SWITCH_ALIGNED = "sA"; //Record
 	public static final String SWITCH_MIDDLE = "sM";
-	public static final String SWITCH_MIDDLE_LEFT = "sML"; //Record
-	public static final String SWITCH_MIDDLE_RIGHT = "sMR"; //Record
+	public static final String SWITCH_MIDDLE_LEFT = "sLM"; //Record
+	public static final String SWITCH_MIDDLE_RIGHT = "sRM"; //Record
 	
 	public static final String SCALE_LEFT = "SL"; //Record
 	public static final String SCALE_LEFT_OPPOSITE = "SLO"; //Record
 	public static final String SCALE_RIGHT = "SR"; //Record
 	public static final String SCALE_RIGHT_OPPOSITE = "SRO"; //Record
 	
-	public static final String MULTI_LEFT = "MTL";
-	public static final String MULTI_RIGHT = "MTR";
-	public static final String MULTI_ALIGNED_LEFT = "MTLA";
-	public static final String MULTI_ALIGNED_RIGHT = "MTRA";
-	public static final String MULTI_MIDDLE = "MTM";
-	public static final String MULTI_MIDDLE_LEFT = "MTML";
-	public static final String MULTI_MIDDLE_RIGHT = "MTMR";
+	public static final String MULTI_LEFT = "NL";
+	public static final String MULTI_RIGHT = "NR";
+	public static final String MULTI_ALIGNED_LEFT = "NLA";
+	public static final String MULTI_ALIGNED_RIGHT = "NRA";
+	public static final String MULTI_MIDDLE = "NM";
+	public static final String MULTI_MIDDLE_LEFT = "NLM";
+	public static final String MULTI_MIDDLE_RIGHT = "NLM";
 	
 	//Toggle using recorded autos
 	//Must be changed in code
@@ -185,7 +186,7 @@ public class Robot extends IterativeRobot {
 		AutoTurnPID.kI = SmartDashboard.getNumber("Turn kI", AutoTurnPID.kI);
 		AutoTurnPID.kD = SmartDashboard.getNumber("Turn kD", AutoTurnPID.kD);
 		
-		recordingString = SmartDashboard.getString("Auto Recording", null);
+		recordingString = CSV_FILE_PREFIX + SmartDashboard.getString("Auto Recording", null) + ".csv";
 	}
 	
 	/**
@@ -382,85 +383,75 @@ public class Robot extends IterativeRobot {
 			if(gameData.length() > 0){
 				//Depending on which side the alliance switch is on, some commands need to change
 				//Check if command is a scale command
-				if(macroAuto.equals("B")) {
+				if(macroAuto.equals(BASELINE)) {
 					new DrivePastBaseline().start();
 					useRecordedAutos = false;
 				} else if(macroAuto.startsWith("S")) {
 					//Check the second character of the game data for the direction of the alliance scale
 					if(gameData.charAt(1) == 'L') {
 						if(macroAuto.charAt(1) == 'L') {
-							selectedAuto = CSV_FILE_PREFIX + SCALE_LEFT;
+							selectedAuto = CSV_FILE_PREFIX + SCALE_LEFT + ".csv";
 						} else {
-							selectedAuto = CSV_FILE_PREFIX + SCALE_LEFT_OPPOSITE;
+							selectedAuto = CSV_FILE_PREFIX + SCALE_LEFT_OPPOSITE + ".csv";
 						}
 					} else {
 						if(macroAuto.charAt(1) == 'R') {
-							selectedAuto = CSV_FILE_PREFIX + SCALE_RIGHT;
+							selectedAuto = CSV_FILE_PREFIX + SCALE_RIGHT + ".csv";
 						} else {
-							selectedAuto = CSV_FILE_PREFIX + SCALE_RIGHT_OPPOSITE;
+							selectedAuto = CSV_FILE_PREFIX + SCALE_RIGHT_OPPOSITE + ".csv";
 						}
 					}
-				}
-				else {
+				} else {
 					//Check the first character of the game data for the direction of the alliance switch
 					
 					if(gameData.charAt(0) == 'L'){
 						//If the alliance switch is on the left side
 						if(macroAuto.equals(SWITCH_MIDDLE)) {
-							selectedAuto = CSV_FILE_PREFIX + SWITCH_MIDDLE_LEFT;
-						}
-						else if(macroAuto.equals(SWITCH_ALIGNED_RIGHT)) {
+							selectedAuto = CSV_FILE_PREFIX + SWITCH_MIDDLE_LEFT + ".csv";
+						} else if(macroAuto.equals(SWITCH_ALIGNED_RIGHT)) {
 							//If command is to place a cube from the right, give up placing the cube and
 							//instead drive past the baseline
 							new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE).start();
 							useRecordedAutos = false;
-						}
-						else if(macroAuto.equals(SWITCH_RIGHT)) {
+						} else if(macroAuto.equals(SWITCH_RIGHT)) {
 							new DrivePastBaseline().start();
 							useRecordedAutos = false;
-						}
-						else if(macroAuto.equals(MULTI_RIGHT)) {
+						} else if(macroAuto.equals(SWITCH_ALIGNED_LEFT)) {
+							selectedAuto = CSV_FILE_PREFIX + SWITCH_ALIGNED + ".csv";
+						} else if(macroAuto.equals(MULTI_RIGHT)) {
 							(new DrivePastBaseline()).start();
 							useRecordedAutos = false;
-						}
-						else if(macroAuto.equals(MULTI_ALIGNED_RIGHT)) {
+						} else if(macroAuto.equals(MULTI_ALIGNED_RIGHT)) {
 							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
 							useRecordedAutos = false;
+						} else if(macroAuto.equals(MULTI_MIDDLE)) {
+							selectedAuto = CSV_FILE_PREFIX + MULTI_MIDDLE_LEFT + ".csv";
+						} else {
+							selectedAuto = CSV_FILE_PREFIX + macroAuto + ".csv";
 						}
-						else if(macroAuto.equals(MULTI_MIDDLE)) {
-							selectedAuto = CSV_FILE_PREFIX + MULTI_MIDDLE_LEFT;
-						}
-						else {
-							selectedAuto = CSV_FILE_PREFIX + macroAuto;
-						}
-					} 
-					else {
+					} else {
 						if(macroAuto.equals(SWITCH_MIDDLE)) {
-							selectedAuto = CSV_FILE_PREFIX + SWITCH_MIDDLE_RIGHT;
-						}
-						else if(macroAuto.equals(SWITCH_ALIGNED_LEFT)) {
+							selectedAuto = CSV_FILE_PREFIX + SWITCH_MIDDLE_RIGHT + ".csv";
+						} else if(macroAuto.equals(SWITCH_ALIGNED_LEFT)) {
 							//If command is to place a cube from the right, give up placing the cube and
 							//instead drive past the baseline
 							new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE).start();
 							useRecordedAutos = false;
-						}
-						else if(macroAuto.equals(SWITCH_LEFT)) {
+						} else if(macroAuto.equals(SWITCH_ALIGNED_RIGHT)) {
+							selectedAuto = CSV_FILE_PREFIX + SWITCH_ALIGNED + ".csv";
+						} else if(macroAuto.equals(SWITCH_LEFT)) {
 							new DrivePastBaseline().start();
 							useRecordedAutos = false;
-						}
-						else if(macroAuto.equals(MULTI_LEFT)) {
+						} else if(macroAuto.equals(MULTI_LEFT)) {
 							(new DrivePastBaseline()).start();
 							useRecordedAutos = false;
-						}
-						else if(macroAuto.equals(MULTI_ALIGNED_LEFT)) {
+						} else if(macroAuto.equals(MULTI_ALIGNED_LEFT)) {
 							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
 							useRecordedAutos = false;
-						}
-						else if(macroAuto.equals(MULTI_MIDDLE)) {
-							selectedAuto = CSV_FILE_PREFIX + MULTI_MIDDLE_RIGHT;
-						}
-						else {
-							selectedAuto = CSV_FILE_PREFIX + macroAuto;
+						} else if(macroAuto.equals(MULTI_MIDDLE)) {
+							selectedAuto = CSV_FILE_PREFIX + MULTI_MIDDLE_RIGHT + ".csv";
+						} else {
+							selectedAuto = CSV_FILE_PREFIX + macroAuto + ".csv";
 						}
 					}
 				}
