@@ -44,9 +44,9 @@ public class AutoRecord {
 			
 			writer.append("," + leftOutput);
 			writer.append("," + rightOutput);
+			writer.append("," + elevatorOutput);
 			writer.append("," + intakeLeftOutput);
 			writer.append("," + intakeRightOutput);
-			writer.append("," + elevatorOutput);
 			/*
 			 * THE LAST ENTRY OF THINGS YOU RECORD NEEDS TO HAVE A DELIMITER CONCATENATED TO 
 			 * THE STRING AT THE END. OTHERWISE GIVES NOSUCHELEMENTEXCEPTION
