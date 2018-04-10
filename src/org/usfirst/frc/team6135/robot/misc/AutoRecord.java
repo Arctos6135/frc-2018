@@ -34,24 +34,23 @@ public class AutoRecord {
 			double leftOutput = RobotMap.leftDriveTalon1.getMotorOutputPercent();
 			double rightOutput = RobotMap.rightDriveTalon1.getMotorOutputPercent();
 			double elevatorOutput = RobotMap.elevatorVictor.get();
+			double leftIntakeOutput = RobotMap.intakeLeft.get();
+			double rightIntakeOutput = RobotMap.intakeRight.get();
 			double wristOutput = RobotMap.wristVictor.get();
 			
 			writer.append("" + time);
 			
-			//drive motors + elevator
+			//drive motors + elevator + intake
 			
 			writer.append("," + leftOutput);
 			writer.append("," + rightOutput);
 			writer.append("," + elevatorOutput);
-			/*
-			 * THE LAST ENTRY OF THINGS YOU RECORD NEEDS TO HAVE A DELIMITER CONCATENATED TO 
-			 * THE STRING AT THE END. OTHERWISE GIVES NOSUCHELEMENTEXCEPTION
-			 */ 
-			writer.append("," + wristOutput + "\n");
-			/*
-			 * CAREFUL. KEEP THE LAST THING YOU RECORD BETWEEN THESE TWO COMMENTS AS A
-			 * REMINDER TO APPEND THE DELIMITER
-			 */
+			writer.append("," + leftIntakeOutput);
+			writer.append("," + rightIntakeOutput);
+			writer.append("," + wristOutput);
+
+			writer.append("\n");
+			
 			if(flipped != null) {
 				flipped.append("" + time);
 				flipped.append("," + rightOutput);
