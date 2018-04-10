@@ -586,6 +586,17 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+		
+		if(useRecordedAutos) {
+			if(player != null) {
+				try {
+					player.end();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
 		//Set the drivetrain's default command to disable braking

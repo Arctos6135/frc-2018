@@ -33,9 +33,9 @@ public class AutoRecord {
 			long time = (System.currentTimeMillis()-startTime);
 			double leftOutput = RobotMap.leftDriveTalon1.getMotorOutputPercent();
 			double rightOutput = RobotMap.rightDriveTalon1.getMotorOutputPercent();
+			double intakeLeftOutput = RobotMap.intakeLeft.get();
+			double intakeRightOutput = RobotMap.intakeRight.get();
 			double elevatorOutput = RobotMap.elevatorVictor.get();
-			double leftIntakeOutput = RobotMap.intakeLeft.get();
-			double rightIntakeOutput = RobotMap.intakeRight.get();
 			double wristOutput = RobotMap.wristVictor.get();
 			
 			writer.append("" + time);
@@ -45,17 +45,24 @@ public class AutoRecord {
 			writer.append("," + leftOutput);
 			writer.append("," + rightOutput);
 			writer.append("," + elevatorOutput);
-			writer.append("," + leftIntakeOutput);
-			writer.append("," + rightIntakeOutput);
-			writer.append("," + wristOutput);
-
-			writer.append("\n");
-			
+			writer.append("," + intakeLeftOutput);
+			writer.append("," + intakeRightOutput);
+			/*
+			 * THE LAST ENTRY OF THINGS YOU RECORD NEEDS TO HAVE A DELIMITER CONCATENATED TO 
+			 * THE STRING AT THE END. OTHERWISE GIVES NOSUCHELEMENTEXCEPTION
+			 */ 
+			writer.append("," + wristOutput + "\n");
+			/*
+			 * CAREFUL. KEEP THE LAST THING YOU RECORD BETWEEN THESE TWO COMMENTS AS A
+			 * REMINDER TO APPEND THE DELIMITER
+			 */
 			if(flipped != null) {
 				flipped.append("" + time);
 				flipped.append("," + rightOutput);
 				flipped.append("," + leftOutput);
 				flipped.append("," + elevatorOutput);
+				flipped.append("," + intakeLeftOutput);
+				flipped.append("," + intakeRightOutput);
 				flipped.append("," + wristOutput + "\n");
 			}
 		}
@@ -63,9 +70,13 @@ public class AutoRecord {
 	
 	//this method closes the writer and makes sure that all the data you recorded makes it into the file
 	public void end() throws IOException{
-		if(writer !=null){
+		if(writer != null){
 			writer.flush();
 			writer.close();
+		}
+		if(flipped != null) {
+			flipped.flush();
+			flipped.close();
 		}
 	}
 	
