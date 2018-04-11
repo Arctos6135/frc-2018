@@ -11,7 +11,10 @@ public class AutoRecord {
 	FileWriter flipped;
 	long startTime;
 	
-	public AutoRecord(String auto) throws IOException{
+	public AutoRecord(String auto) throws IOException {
+		this(auto, true);
+	}
+	public AutoRecord(String auto, boolean createFlipped) throws IOException{
 		if(auto != null) {
 			//record the time we started recording
 			startTime = System.currentTimeMillis();
@@ -19,10 +22,12 @@ public class AutoRecord {
 			//put the filesystem location you are supposed to write to as a string 
 			//as the argument in this method, it is /home/lvuser/[auto].csv
 			writer = new FileWriter(auto);
-			if(auto.length() >= 19) {
-				String flippedAuto = auto.substring(0, 18) + (auto.charAt(18) == 'L'?'R':'L');
-				if(auto.length() > 19)flippedAuto += auto.substring(19);
-				flipped = new FileWriter(flippedAuto);
+			if(createFlipped) {
+				if(auto.length() >= 19) {
+					String flippedAuto = auto.substring(0, 18) + (auto.charAt(18) == 'L'?'R':'L');
+					if(auto.length() > 19)flippedAuto += auto.substring(19);
+					flipped = new FileWriter(flippedAuto);
+				}
 			}
 		}
 	}
