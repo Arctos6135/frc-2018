@@ -1,5 +1,6 @@
 package org.usfirst.frc.team6135.robot.misc;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -7,8 +8,8 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 
 public class AutoRecord {
 	//this object writes values into the file we specify
-	FileWriter writer;
-	FileWriter flipped;
+	BufferedWriter writer;
+	BufferedWriter flipped;
 	long startTime;
 	
 	public AutoRecord(String auto) throws IOException {
@@ -21,12 +22,12 @@ public class AutoRecord {
 			
 			//put the filesystem location you are supposed to write to as a string 
 			//as the argument in this method, it is /home/lvuser/[auto].csv
-			writer = new FileWriter(auto);
+			writer = new BufferedWriter(new FileWriter(auto));
 			if(createFlipped) {
 				if(auto.length() >= 19 && auto.charAt(18) != 'M') {
 					String flippedAuto = auto.substring(0, 18) + (auto.charAt(18) == 'L'?'R':'L');
 					if(auto.length() > 19) flippedAuto += auto.substring(19);
-					flipped = new FileWriter(flippedAuto);
+					flipped = new BufferedWriter(new FileWriter(flippedAuto));
 				}
 			}
 		}
