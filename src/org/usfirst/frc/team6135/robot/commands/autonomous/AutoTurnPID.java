@@ -17,7 +17,8 @@ public class AutoTurnPID extends Command {
 
 	//To be tuned later
 	public static double kP = 0.02;
-	public static double kI = 0.0015;
+	
+	public static double kI = 0.0018;
 	public static double kD = 0.016;
 	
 	public static final double TOLERANCE = 3.0;

@@ -2,58 +2,57 @@ package org.usfirst.frc.team6135.robot.commands.teleoperated;
 
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
+import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	Raises both the elevator and the wrist to their maximum for shooting cubes into the scale.
  *	Requires wrist to have PID and limit switch.
  */
 public class ScalingPosition extends Command {
+	
+	RaiseElevator raiseElevator;
 
     public ScalingPosition() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.elevatorSubsystem);
     	requires(Robot.wristSubsystem);
+    	raiseElevator = new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if(!Robot.wristSubsystem.isEnabled())
-    		Robot.wristSubsystem.enable();
-    	Robot.wristSubsystem.setSetpoint(WristPIDSubsystem.ANGLE_TOP);
-    	Robot.elevatorSubsystem.setSpeed(RobotMap.Speeds.AUTO_ELEVATOR_SPEED * ElevatorSubsystem.DIRECTION_UP);
+    	raiseElevator.start();
+    	Robot.wristSubsystem.disable();
+    	Robot.wristSubsystem.setRaw(-1.0);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Stop the elevator if it reached the top
-    	if(!Robot.elevatorSubsystem.notAtTop())
-    		Robot.elevatorSubsystem.setSpeed(0);
-    	//No need to stop the wrist since the subsystem code takes care of that
+    	//Limit switch handling is in the subsystem
+    	if(Robot.wristSubsystem.notAtTop())
+    		RobotMap.wristVictor.set(-1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	//End this command only if elevator and wrist have activated their limit switches
-        return !Robot.elevatorSubsystem.notAtTop() && !Robot.wristSubsystem.notAtTop();
+        return (raiseElevator.isCompleted() && !Robot.wristSubsystem.notAtTop());
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	Robot.elevatorSubsystem.setSpeed(0);
+    	Robot.wristSubsystem.setRaw(0);
+    	Robot.wristSubsystem.enable();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.elevatorSubsystem.setSpeed(0);
-    	//Don't disable the PID, but change its setpoint to stop it from adjusting
-    	Robot.wristSubsystem.setSetpoint(Robot.wristSubsystem.getAngle());
-    	Robot.wristSubsystem.getPIDController().reset();
-    	Robot.wristSubsystem.enable();
+    	end();
     }
 }

@@ -26,11 +26,11 @@ public class ResetGyro extends InstantCommand {
 
     // Called once when the command executes
     protected void initialize() {
-    	Gyro gyro = Robot.wristSubsystem.getGyroSensor();
-    	if(gyro != null){
-    		gyro.reset();
-    		Robot.wristSubsystem.setAngleBias(bias);
-    	}
+    	//Gyro gyro = Robot.wristSubsystem.getGyroSensor();
+    	//if(gyro != null){
+    		//gyro.reset();
+    		//Robot.wristSubsystem.setAngleBias(bias);
+    	//}
     }
 
 }

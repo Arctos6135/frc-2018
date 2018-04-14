@@ -10,6 +10,8 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class AutoPlayback {
 	
 	//Read from a BufferedReader since it's faster
@@ -26,7 +28,7 @@ public class AutoPlayback {
 	//The time the current line is supposed to execute at
 	long currentLineTime;
 	
-	public AutoPlayback(String name) throws FileNotFoundException {
+	public AutoPlayback(String name) throws Exception{
 		//Create our reader
 		reader = new BufferedReader(new InputStreamReader(new FileInputStream(name)));
 		//Set our start time to the current time
@@ -54,7 +56,8 @@ public class AutoPlayback {
 			double t_delta = currentLineTime - (System.currentTimeMillis() - startTime);
 			
 			//If we are off by 10 milliseconds in both directions or less, run the line
-			if(Math.abs(t_delta) <= 10) {
+			//Math.abs(t_delta) <= 10
+			if(t_delta <= 0) {
 				//Set the motors one by one in the exact order we stored them
 				//Start at index 1 since index 0 is the time
 				RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, Double.parseDouble(currentLine[1]));
@@ -77,7 +80,8 @@ public class AutoPlayback {
 				}
 			}
 			//Otherwise if we are behind for more than 10 milliseconds, skip it
-			else if(t_delta < -10) {
+			/*
+			else if(t_delta < -20) {
 				//Loop until we get to the correct time
 				while(true) {
 					//Move on to the next line
@@ -99,9 +103,10 @@ public class AutoPlayback {
 						break;
 					}
 				}
-			}
+			}*/
 		}
 		else if(playbackFinished) {
+			SmartDashboard.putBoolean("Recorded auto playback ended", playbackFinished);
 			end();
 		}
 	}

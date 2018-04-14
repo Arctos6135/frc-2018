@@ -32,7 +32,6 @@ public class DrivePastBaseline extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	//addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
-    	addSequential(new Delay(10000));
     	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.BASELINE_DISTANCE));
     }
 }

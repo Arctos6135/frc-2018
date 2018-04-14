@@ -51,7 +51,7 @@ public class PlaceCubeFromMiddleDiagonal extends CommandGroup {
         // would require.
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
-        // arm.
+        // arm
     	//addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
     	double distance_x = DISTANCE_X + ((direction == DIRECTION_LEFT)?6:0);
     	addSequential(new DriveStraightDistancePID(RobotMap.ROBOT_LENGTH/2));
@@ -60,8 +60,8 @@ public class PlaceCubeFromMiddleDiagonal extends CommandGroup {
     	addSequential(new DriveStraightDistancePID(Math.sqrt(DISTANCE_Y*DISTANCE_Y+distance_x*distance_x)));
     	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurnPID(-ANGLE_START * direction));
+    	addParallel(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addSequential(new DriveStraightDistancePID(DISTANCE_Y));
-    	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH));
     	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }

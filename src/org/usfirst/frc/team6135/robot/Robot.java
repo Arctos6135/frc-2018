@@ -1,7 +1,6 @@
 
 package org.usfirst.frc.team6135.robot;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Timer;
 
@@ -145,7 +144,7 @@ public class Robot extends IterativeRobot {
 	//Toggle using recorded autos
 	//Must be changed in code
 	//Playback
-	public static boolean useRecordedAutos = true;
+	public static boolean useRecordedAutos = false;
 	public static String selectedAuto = null;
 	public static String customAutoFileName = null;
 	
@@ -159,9 +158,9 @@ public class Robot extends IterativeRobot {
 	
 	void putTunables() {
 		//Output these values to the SmartDashboard for tuning
-		SmartDashboard.putNumber("Wrist kP", WristPIDSubsystem.kP);
-		SmartDashboard.putNumber("Wrist kI", WristPIDSubsystem.kI);
-		SmartDashboard.putNumber("Wrist kD", WristPIDSubsystem.kD);
+		//SmartDashboard.putNumber("Wrist kP", WristPIDSubsystem.kP);
+		//SmartDashboard.putNumber("Wrist kI", WristPIDSubsystem.kI);
+		//SmartDashboard.putNumber("Wrist kD", WristPIDSubsystem.kD);
 		SmartDashboard.putNumber("Brake kP", BrakePID.kP);
 		SmartDashboard.putNumber("Brake kI", BrakePID.kI);
 		SmartDashboard.putNumber("Brake kD", BrakePID.kD);
@@ -172,14 +171,14 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Turn kI", AutoTurnPID.kI);
 		SmartDashboard.putNumber("Turn kD", AutoTurnPID.kD);
 		
-		SmartDashboard.putString("Auto Recording Save Name", null);
-		SmartDashboard.putString("Auto Playback File Name", null);
+		SmartDashboard.putString("Auto Recording Save Name", "");
+		SmartDashboard.putString("Auto Playback File Name", "");
 	}
 	void updateTunables() {
 		//Read the tunable values and overwrite them
-		WristPIDSubsystem.kP = SmartDashboard.getNumber("Wrist kP", WristPIDSubsystem.kP);
-		WristPIDSubsystem.kI = SmartDashboard.getNumber("Wrist kI", WristPIDSubsystem.kI);
-		WristPIDSubsystem.kD = SmartDashboard.getNumber("Wrist kD", WristPIDSubsystem.kD);
+		//WristPIDSubsystem.kP = SmartDashboard.getNumber("Wrist kP", WristPIDSubsystem.kP);
+		//WristPIDSubsystem.kI = SmartDashboard.getNumber("Wrist kI", WristPIDSubsystem.kI);
+		//WristPIDSubsystem.kD = SmartDashboard.getNumber("Wrist kD", WristPIDSubsystem.kD);
 		BrakePID.kP = SmartDashboard.getNumber("Brake kP", BrakePID.kP);
 		BrakePID.kI = SmartDashboard.getNumber("Brake kI", BrakePID.kI);
 		BrakePID.kD = SmartDashboard.getNumber("Brake kD", BrakePID.kD);
@@ -191,13 +190,13 @@ public class Robot extends IterativeRobot {
 		AutoTurnPID.kD = SmartDashboard.getNumber("Turn kD", AutoTurnPID.kD);
 		
 		String autoRecordingName;
-		if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", null)) != null)
+		if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", "")).length() > 0)
 			recordingString = CSV_FILE_PREFIX + autoRecordingName + ".csv";
 		else
 			recordingString = null;
 		
 		String autoPlaybackName;
-		if((autoPlaybackName = SmartDashboard.getString("Auto Playback File Name", null)) != null)
+		if((autoPlaybackName = SmartDashboard.getString("Auto Playback File Name", "")).length() > 0)
 			customAutoFileName = CSV_FILE_PREFIX + autoPlaybackName + ".csv";
 		else
 			customAutoFileName = null;
@@ -272,8 +271,8 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Place Cube from right side", placeCubeRightSideOffset);
 		chooser.addObject("Place Cube (Aligned with switch): Left", placeCubeLeftSide);
 		chooser.addObject("Place Cube (Aligned with switch): Right", placeCubeRightSide);
-		chooser.addObject("Place Cube: Middle", placeCubeFromMiddle);
-		chooser.addObject("Place Cube From Middle (FASTER)", placeCubeFromMiddleFast);
+		chooser.addObject("Place Cube: Middle", placeCubeFromMiddleFast);
+		//chooser.addObject("Place Cube From Middle (FASTER)", placeCubeFromMiddleFast);
 		chooser.addObject("Shoot Cube into Scale: Left", scaleSameSideLeft);
 		chooser.addObject("Shoot Cube into Scale: Right", scaleSameSideRight);
 		chooser.addObject("Multi-Cube from left side", multiCubeLeftSide);
@@ -314,12 +313,14 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
     	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
 
-    	SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
+    	//SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
     	SmartDashboard.putBoolean("Wrist PID is enabled", Robot.wristSubsystem.isEnabled());
     	
     	SmartDashboard.putBoolean("Elevator Top Switch", Robot.elevatorSubsystem.notAtTop());
     	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
     	SmartDashboard.putBoolean("Wrist Switch", Robot.wristSubsystem.notAtTop());
+    	
+    	SmartDashboard.putNumber("Wrist speed", RobotMap.wristVictor.get());
 	}
 
 	/**
@@ -361,13 +362,26 @@ public class Robot extends IterativeRobot {
 			if(useRecordedAutos) {
 				try {
 		    		 player = new AutoPlayback(selectedAuto);
-				} catch (FileNotFoundException e){
+				} catch (Exception e){
 					e.printStackTrace();
 				}
+				RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Coast);
+				RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Coast);
+				RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Coast);
+				RobotMap.rightDriveTalon2.setNeutralMode(NeutralMode.Coast);
+				RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Coast);
+				RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Coast);
 			}
 		} else {
 			autonomousCommand = chooser.getSelected();
 			runSetAutos(autonomousCommand);
+			//Set motors to be in brake mode
+			RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Brake);
+			RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Brake);
+			RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Brake);
+			RobotMap.rightDriveTalon2.setNeutralMode(NeutralMode.Brake);
+			RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Brake);
+			RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Brake);
 		}
 
 		/*
@@ -379,13 +393,7 @@ public class Robot extends IterativeRobot {
 
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
-		//Set motors to be in brake mode
-		RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Brake);
-		RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Brake);
-		RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Brake);
-		RobotMap.rightDriveTalon2.setNeutralMode(NeutralMode.Brake);
-		RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Brake);
-		RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Brake);
+		
 		//Set the drivetrain's default command to enable braking
 		Robot.drive.setDefaultCommand(new BrakePID());
 		
@@ -654,6 +662,7 @@ public class Robot extends IterativeRobot {
 						recorder = new AutoRecord(recordingString);
 					recorder.record();
 					doneRecording = false;
+					SmartDashboard.putString("Recording file name", recordingString);
 				} else {
 					recording = false;
 				}

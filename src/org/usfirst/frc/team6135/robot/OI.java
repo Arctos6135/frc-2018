@@ -1,13 +1,15 @@
 package org.usfirst.frc.team6135.robot;
 
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoSwitchAlign;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.PrecisionToggle;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ToggleRecording;
 import org.usfirst.frc.team6135.robot.triggers.POVTrigger;
 
@@ -85,7 +87,7 @@ public class OI {
 		public static final int SLOW_GEAR = RobotMap.ControllerMap.LBUMPER;
 		public static final int FAST_GEAR = RobotMap.ControllerMap.RBUMPER;
 		public static final int AUTO_CUBE_ALIGN = RobotMap.ControllerMap.BUTTON_Y;
-		public static final int AUTO_SWITCH_ALIGN = RobotMap.ControllerMap.BUTTON_X;
+		public static final int AUTO_SWITCH_ALIGN = RobotMap.ControllerMap.BUTTON_X; //Precision toggle
 		public static final int CANCEL_ALIGN = RobotMap.ControllerMap.BUTTON_B;
 		public static final int RECORD_AUTO = RobotMap.ControllerMap.BUTTON_A;
 		
@@ -94,6 +96,7 @@ public class OI {
 		public static final int INTAKE_IN = RobotMap.ControllerMap.RTRIGGER;
 		public static final int INTAKE_OUT = RobotMap.ControllerMap.LTRIGGER;
 		public static final int EMERGENCY = RobotMap.ControllerMap.BUTTON_B;
+		public static final int SCALE_POSITION = RobotMap.ControllerMap.BUTTON_Y;
 		//Note: Some buttons such as the Start button and the D-Pad do not have mappings.
 		//Triggers are created for them to read their states and process them.
 	}
@@ -110,13 +113,17 @@ public class OI {
 	
 	public static JoystickButton recordAuto;
 	
+	public static JoystickButton scalePosition;
+	
 	//public static JoystickButton emergencyButton;
 	
 	//public static Trigger calibrateGyroTrigger;
 	
 	public OI() {
-		driveController = new XboxController(0);
-		attachmentsController = new XboxController(1);
+		driveController = new XboxController(1);
+		attachmentsController = new XboxController(0);
+		
+		new JoystickButton(attachmentsController, RobotMap.ControllerMap.LBUMPER).whenPressed(new AutoIntake(1.5, -1.0));
 		
 		//Fast gear = right bumper
 		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
@@ -125,19 +132,23 @@ public class OI {
 		autoSwitchAlign = new JoystickButton(driveController, Controls.AUTO_SWITCH_ALIGN);
 		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
 		recordAuto = new JoystickButton(driveController, Controls.RECORD_AUTO);
+		scalePosition = new JoystickButton(attachmentsController, Controls.SCALE_POSITION);
 		//emergencyButton = new JoystickButton(attachmentsController, Controls.EMERGENCY);
 		
 		recordAuto.whenPressed(new ToggleRecording());
 		
-		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
+		gearShiftFast.whenPressed(new PrecisionToggle());
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
+		
+		scalePosition.whenPressed(new ScalingPosition());
 		
 		Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_TURN_SPEED); 
 		Command autoSwitchAlignCmd = new AutoSwitchAlign(RobotMap.Speeds.AUTO_TURN_SPEED);
 		
-		autoCubeAlign.whenPressed(autoCubeAlignCmd);
-		autoSwitchAlign.whenPressed(autoSwitchAlignCmd);
-		cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd, autoSwitchAlignCmd));
+		//autoCubeAlign.whenPressed(autoCubeAlignCmd);
+		//autoSwitchAlign.whenPressed(autoSwitchAlignCmd);
+		//autoSwitchAlign.whenPressed(new PrecisionToggle());
+		//cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd, autoSwitchAlignCmd));
 		
 		//Command emergencyCmd = new EmergencySwitch();
 		

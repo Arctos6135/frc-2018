@@ -120,7 +120,7 @@ public class RobotMap {
 	public static class Speeds {
 		public static final double ELEVATOR_SPEED = 1.0;
 		public static final double WRIST_SPEED = 1.0;
-		public static final double INTAKE_SPEED = 0.8;
+		public static final double INTAKE_SPEED = 1.0;
 		//Driving
 		public static final double AUTO_SPEED = 0.40; //0.6
 		//Turning
@@ -129,7 +129,7 @@ public class RobotMap {
 		public static final double AUTO_INTAKE_SPEED = 0.8;
 		//Elevator
 		public static final double AUTO_ELEVATOR_SPEED = 1.0; 
-		public static final double DRIVE_SPEED = 1.0;
+		public static double DRIVE_SPEED = 1.0;
 	}
 	
 	public static final int WHEEL_DIAMETER = 6; //INCHES

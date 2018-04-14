@@ -46,7 +46,7 @@ public class PlaceCubeAligned extends CommandGroup {
     	//addParallel(new SetWrist(WristPIDSubsystem.ANGLE_BOTTOM));
     	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH));
     	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
-    	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH));
+    	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH+3));
     	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }

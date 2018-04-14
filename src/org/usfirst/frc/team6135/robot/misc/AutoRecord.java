@@ -24,7 +24,8 @@ public class AutoRecord {
 			//as the argument in this method, it is /home/lvuser/[auto].csv
 			writer = new BufferedWriter(new FileWriter(auto));
 			if(createFlipped) {
-				if(auto.length() >= 19 && auto.charAt(18) != 'M') {
+				if(auto.length() >= 19) {
+					// && auto.charAt(18) != 'M'
 					String flippedAuto = auto.substring(0, 18) + (auto.charAt(18) == 'L'?'R':'L');
 					if(auto.length() > 19) flippedAuto += auto.substring(19);
 					flipped = new BufferedWriter(new FileWriter(flippedAuto));

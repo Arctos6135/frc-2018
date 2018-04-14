@@ -56,7 +56,7 @@ public class PlaceCubeFromSide extends CommandGroup {
     	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_EDGE_OFFSET));
     	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	//addSequential(new Delay(RobotMap.AUTO_DELAY));
-    	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH));
+    	addSequential(new DriveStraightDistancePID(RobotMap.INTAKE_LENGTH+5));
     	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }

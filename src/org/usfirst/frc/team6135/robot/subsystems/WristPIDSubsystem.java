@@ -26,7 +26,7 @@ public class WristPIDSubsystem extends PIDSubsystem {
 	public static final double ANGLE_BOTTOM = ANGLE_MAX;
 	
 	public static final int DIRECTION_DOWN = 1;
-	public static final int DIRECITON_UP = -1;
+	public static final int DIRECTION_UP = -1;
 	
 	static int sign(double n) {
 		return n > 0 ? 1 : -1;
@@ -55,7 +55,7 @@ public class WristPIDSubsystem extends PIDSubsystem {
     	setInputRange(ANGLE_MIN, ANGLE_MAX);
     	getPIDController().setContinuous(false);
     	setAbsoluteTolerance(TOLERANCE);
-    	RobotMap.wristGyro.calibrate();
+    	//RobotMap.wristGyro.calibrate();
     	setSetpoint(returnPIDInput());
     }
     
@@ -77,11 +77,13 @@ public class WristPIDSubsystem extends PIDSubsystem {
     }
     
     public double getAngle() {
-    	return RobotMap.wristGyro.getAngle() + angleBias;
+    	//return RobotMap.wristGyro.getAngle() + angleBias;
+    	return 1.0;
     }
     
     public Gyro getGyroSensor() {
-    	return RobotMap.wristGyro;
+    	//return RobotMap.wristGyro;
+    	return null;
     }
     
     public boolean notAtTop() {
@@ -98,7 +100,8 @@ public class WristPIDSubsystem extends PIDSubsystem {
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
 
-        return RobotMap.wristGyro.getAngle();
+        //return RobotMap.wristGyro.getAngle();
+    	return 1;
     }
 
     protected void usePIDOutput(double output) {

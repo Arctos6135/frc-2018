@@ -38,22 +38,16 @@ public class MultiCubeFromMiddle extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addSequential(new PlaceCubeFromMiddleDiagonal(direction));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addParallel(new LowerElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addParallel(new LowerWrist(RobotMap.AUTO_WRIST_TIME));
     	addSequential(new DriveStraightDistancePID(-(RobotMap.ArenaDimensions.ALIGNED_CUBE_PICKUP_BACK - RobotMap.ROBOT_LENGTH / 2)));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addSequential(new AutoTurnPID(-45 * direction));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addParallel(new OperateIntake(0.9));
     	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.ALIGNED_CUBE_PICKUP_DIST));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	//Run it at a low speed here to prevent the cube from falling out
     	addParallel(new OperateIntake(0.4));
-    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.ALIGNED_CUBE_PICKUP_DIST));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
+    	addSequential(new DriveStraightDistancePID(-RobotMap.ArenaDimensions.ALIGNED_CUBE_PICKUP_DIST));
     	addSequential(new AutoTurnPID(45 * direction));
-    	addSequential(new Delay(RobotMap.AUTO_DELAY));
     	addParallel(new OperateIntake(0.0));
     	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.ALIGNED_CUBE_PICKUP_BACK - RobotMap.ROBOT_LENGTH / 2));
     	addSequential(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));

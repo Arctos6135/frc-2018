@@ -21,5 +21,12 @@ public class IntakeSubsystem extends Subsystem {
     	RobotMap.intakeLeft.set(speed);
     	RobotMap.intakeRight.set(speed);
     }
+    
+    public void setLeft(double speed) {
+    	RobotMap.intakeLeft.set(speed);
+    }
+    public void setRight(double speed) {
+    	RobotMap.intakeRight.set(speed);
+    }
 }
 
