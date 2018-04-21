@@ -173,5 +173,20 @@ public class OI {
 		//whenActive() is already called by the constructor
 		//@SuppressWarnings("unused")
 		//Trigger motorCurrentMonitor = new MotorCurrentMonitor();
+		
+		//For DEBUGGING: Resets left and right encoder readings
+		//Assigned to Start button on drive controller
+		new Trigger() {
+			@Override
+			public boolean get() {
+				return driveController.getStartButtonPressed();
+			}
+		}.whenActive(new InstantCommand() {
+			@Override
+			protected void initialize() {
+				RobotMap.leftEncoder.reset();
+				RobotMap.rightEncoder.reset();
+			}
+		});
 	}
 }
