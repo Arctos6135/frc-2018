@@ -175,6 +175,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
 		SmartDashboard.putNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
 		SmartDashboard.putNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);
+		SmartDashboard.putNumber("Teleop Drive Ramp Band", TeleopDrive.rampBand);
 		
 		SmartDashboard.putString("Auto Recording Save Name", "");
 		SmartDashboard.putString("Auto Playback File Name", "");
@@ -197,6 +198,7 @@ public class Robot extends IterativeRobot {
 		DriveStraightDistanceTMP.kD = SmartDashboard.getNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
 		DriveStraightDistanceTMP.kV = SmartDashboard.getNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
 		DriveStraightDistanceTMP.kA = SmartDashboard.getNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);
+		TeleopDrive.rampBand = SmartDashboard.getNumber("Teleop Drive Ramp Band", TeleopDrive.rampBand);
 		
 		String autoRecordingName;
 		if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", "")).length() > 0)
@@ -324,6 +326,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putBoolean("Elevator Top Switch", Robot.elevatorSubsystem.notAtTop());
     	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
     	SmartDashboard.putBoolean("Wrist Switch", Robot.wristSubsystem.notAtTop());
+    	
+    	SmartDashboard.putBoolean("Training Wheels", TeleopDrive.isRamped());
 	}
 
 	/**

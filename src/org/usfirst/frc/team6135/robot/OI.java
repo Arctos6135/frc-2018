@@ -4,6 +4,7 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
+import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.PrecisionToggle;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
@@ -61,6 +62,7 @@ public class OI {
 	 * 	<li>Y Button: Auto Power Cube align</li>
 	 * 	<li>B Button: Cancel auto align</li>
 	 * 	<li>A Button: Start/Stop autonomous recording</li>
+	 * 	<li>Back Button: Toggle Training Wheels</li>
 	 * 	<li>XBOX Button: Enable rocket booster</li>
 	 * </ul>
 	 * Attachments:
@@ -140,6 +142,20 @@ public class OI {
 		//Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_TURN_SPEED);
 		//autoCubeAlign.whenPressed(autoCubeAlignCmd);
 		//cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd, autoSwitchAlignCmd));
+		
+		//Trigger for the Back button
+		Trigger trainingWheels = new Trigger() {
+			@Override
+			public boolean get() {
+				return driveController.getBackButtonPressed();
+			}
+		};
+		trainingWheels.whenActive(new InstantCommand() {
+			@Override
+			protected void initialize() {
+				TeleopDrive.setRamping(!TeleopDrive.isRamped());
+			}
+		});
 		
 		//Triggers for the D-Pad controls
 		POVTrigger raiseElevator = new POVTrigger(attachmentsController, 0);

@@ -19,18 +19,18 @@ public class TeleopDrive extends Command {
     private static final double DEADZONE = 0.15;
     
     public static double rampBand = 0.05;
-    boolean rampingOn = false;
-    double prevLeft, prevRight;
+    static boolean rampingOn = false;
+    static double prevLeft, prevRight;
 
     public TeleopDrive() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drive);
     }
     
-    public boolean isRamped() {
+    public static boolean isRamped() {
     	return rampingOn;
     }
-    public void setRamping(boolean r) {
+    public static void setRamping(boolean r) {
     	rampingOn = r;
     }
 
