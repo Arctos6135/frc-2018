@@ -6,6 +6,7 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoSwitchAlign;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.PrecisionToggle;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
@@ -120,8 +121,8 @@ public class OI {
 	//public static Trigger calibrateGyroTrigger;
 	
 	public OI() {
-		driveController = new XboxController(1);
-		attachmentsController = new XboxController(0);
+		driveController = new XboxController(0);
+		attachmentsController = new XboxController(1);
 		
 		new JoystickButton(attachmentsController, RobotMap.ControllerMap.LBUMPER).whenPressed(new AutoIntake(1.5, -1.0));
 		
@@ -145,10 +146,10 @@ public class OI {
 		Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_TURN_SPEED); 
 		Command autoSwitchAlignCmd = new AutoSwitchAlign(RobotMap.Speeds.AUTO_TURN_SPEED);
 		
-		//autoCubeAlign.whenPressed(autoCubeAlignCmd);
+		autoCubeAlign.whenPressed(autoCubeAlignCmd);
 		//autoSwitchAlign.whenPressed(autoSwitchAlignCmd);
 		//autoSwitchAlign.whenPressed(new PrecisionToggle());
-		//cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd, autoSwitchAlignCmd));
+		cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd, autoSwitchAlignCmd));
 		
 		//Command emergencyCmd = new EmergencySwitch();
 		
