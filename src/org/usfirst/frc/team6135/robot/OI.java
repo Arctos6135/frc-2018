@@ -5,11 +5,10 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoSwitchAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
+import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.PrecisionToggle;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.ResetGyro;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ToggleRecording;
 import org.usfirst.frc.team6135.robot.triggers.POVTrigger;
@@ -62,12 +61,10 @@ public class OI {
 	 * 	<li>Right Analog Stick: Left/Right</li>
 	 * 	<li>Left Bumper: Shift gear to slower configuration</li>
 	 * 	<li>Right Bumper: Shift gear to faster configuration</li>
-	 * 	<li>X Button: Auto Switch align
-	 * 		- Note: The robot will first attempt to locate the alliance colour, but if
-	 * 		the team switch cannot be found, it will ignore the colour and try to find any switch at all.</li>
 	 * 	<li>Y Button: Auto Power Cube align</li>
-	 * 	<li>B Button: Cancel auto align (in case something goes terribly wrong)</li>
+	 * 	<li>B Button: Cancel auto align</li>
 	 * 	<li>A Button: Start/Stop autonomous recording</li>
+	 * 	<li>Back Button: Toggle Training Wheels</li>
 	 * 	<li>XBOX Button: Enable rocket booster</li>
 	 * </ul>
 	 * Attachments:
@@ -76,10 +73,10 @@ public class OI {
 	 * 	<li>Right Analog Stick: Tilt Wrist</li>
 	 * 	<li>Left Trigger: Intake Out (Analog)</li>
 	 * 	<li>Right Trigger: Intake In (Analog)</li>
-	 * 	<li>B Button: The Emergency Button (Hold 2s, changes behavior of the wrist, in case of gyro issues)</li>
-	 * 	<li>Start Button: Gyro reset (Use only if gyro drift gets too much, and wrist is flat.)</li>
 	 * 	<li>D-Pad Up: Raise the elevator to the top</li>
 	 * 	<li>D-Pad Down: Lower the elevator to the bottom</li>
+	 * 	<li>Y Button: Raise the elevator and wrist to Scale position</li>
+	 * 	<li>Left Bumper: Shoots out the cube at full speed for 1s</li>
 	 * </ul>
 	 */
 	public static class Controls {
@@ -88,7 +85,7 @@ public class OI {
 		public static final int SLOW_GEAR = RobotMap.ControllerMap.LBUMPER;
 		public static final int FAST_GEAR = RobotMap.ControllerMap.RBUMPER;
 		public static final int AUTO_CUBE_ALIGN = RobotMap.ControllerMap.BUTTON_Y;
-		public static final int AUTO_SWITCH_ALIGN = RobotMap.ControllerMap.BUTTON_X; //Precision toggle
+		public static final int PRECISION_TOGGLE = RobotMap.ControllerMap.BUTTON_X; //Precision toggle
 		public static final int CANCEL_ALIGN = RobotMap.ControllerMap.BUTTON_B;
 		public static final int RECORD_AUTO = RobotMap.ControllerMap.BUTTON_A;
 		
@@ -96,8 +93,8 @@ public class OI {
 		public static final int WRIST = RobotMap.ControllerMap.RSTICK_Y_AXIS;
 		public static final int INTAKE_IN = RobotMap.ControllerMap.RTRIGGER;
 		public static final int INTAKE_OUT = RobotMap.ControllerMap.LTRIGGER;
-		public static final int EMERGENCY = RobotMap.ControllerMap.BUTTON_B;
 		public static final int SCALE_POSITION = RobotMap.ControllerMap.BUTTON_Y;
+		public static final int SHOOT_CUBE = RobotMap.ControllerMap.LBUMPER;
 		//Note: Some buttons such as the Start button and the D-Pad do not have mappings.
 		//Triggers are created for them to read their states and process them.
 	}
@@ -109,61 +106,58 @@ public class OI {
 	public static JoystickButton gearShiftSlow;
 	
 	public static JoystickButton autoCubeAlign;
-	public static JoystickButton autoSwitchAlign;
 	public static JoystickButton cancelAlign;
 	
 	public static JoystickButton recordAuto;
 	
 	public static JoystickButton scalePosition;
 	
-	//public static JoystickButton emergencyButton;
+	public static JoystickButton shootCube;
 	
-	//public static Trigger calibrateGyroTrigger;
+	public static JoystickButton precisionToggle;
 	
 	public OI() {
 		driveController = new XboxController(0);
 		attachmentsController = new XboxController(1);
 		
-		new JoystickButton(attachmentsController, RobotMap.ControllerMap.LBUMPER).whenPressed(new AutoIntake(1.5, -1.0));
-		
 		//Fast gear = right bumper
 		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
 		gearShiftSlow = new JoystickButton(driveController, Controls.SLOW_GEAR);
 		autoCubeAlign = new JoystickButton(driveController, Controls.AUTO_CUBE_ALIGN);
-		autoSwitchAlign = new JoystickButton(driveController, Controls.AUTO_SWITCH_ALIGN);
 		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
+		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
 		recordAuto = new JoystickButton(driveController, Controls.RECORD_AUTO);
 		scalePosition = new JoystickButton(attachmentsController, Controls.SCALE_POSITION);
-		//emergencyButton = new JoystickButton(attachmentsController, Controls.EMERGENCY);
+		shootCube = new JoystickButton(attachmentsController, Controls.SHOOT_CUBE);
 		
 		recordAuto.whenPressed(new ToggleRecording());
 		
-		gearShiftFast.whenPressed(new PrecisionToggle());
+		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
+		
+		precisionToggle.whenPressed(new PrecisionToggle());
 		
 		scalePosition.whenPressed(new ScalingPosition());
 		
-		Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_TURN_SPEED); 
-		Command autoSwitchAlignCmd = new AutoSwitchAlign(RobotMap.Speeds.AUTO_TURN_SPEED);
+		shootCube.whenPressed(new AutoIntake(1.5, -1.0));
 		
+		Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_TURN_SPEED);
 		autoCubeAlign.whenPressed(autoCubeAlignCmd);
-		//autoSwitchAlign.whenPressed(autoSwitchAlignCmd);
-		//autoSwitchAlign.whenPressed(new PrecisionToggle());
-		cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd, autoSwitchAlignCmd));
+		cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd));
 		
-		//Command emergencyCmd = new EmergencySwitch();
-		
-		//emergencyButton.whenPressed(emergencyCmd);
-		//emergencyButton.whenReleased(new CancelOperation(emergencyCmd));
-		
-		//A trigger has to be used instead since there's no mapping for the start and back buttons
-		Trigger resetGyro = new Trigger() {
+		//Trigger for the Back button
+		Trigger trainingWheels = new Trigger() {
 			@Override
 			public boolean get() {
-				return attachmentsController.getStartButtonPressed();
+				return driveController.getBackButtonPressed();
 			}
 		};
-		resetGyro.whenActive(new ResetGyro());
+		trainingWheels.whenActive(new InstantCommand() {
+			@Override
+			protected void initialize() {
+				TeleopDrive.setRamping(!TeleopDrive.isRamped());
+			}
+		});
 		
 		//Triggers for the D-Pad controls
 		POVTrigger raiseElevator = new POVTrigger(attachmentsController, 0);
@@ -175,6 +169,7 @@ public class OI {
 		raiseElevator.whenActive(elevatorUp);
 		lowerElevator.whenActive(elevatorDown);
 		
+		//A trigger that will cancel the one-press elevator movements if the joystick has input
 		Trigger cancelElevatorMovement = new Trigger() {
 			@Override
 			public boolean get() {
@@ -192,11 +187,24 @@ public class OI {
 			}
 		});
 		
+		//Motor current monitor is currently not working
 		//whenActive() is already called by the constructor
 		//@SuppressWarnings("unused")
 		//Trigger motorCurrentMonitor = new MotorCurrentMonitor();
 		
-		//calibrateGyroTrigger = new GyroLimitSwitch();
-		//calibrateGyroTrigger.whenActive(new ResetGyro(WristPIDSubsystem.LIMIT_SWITCH_ANGLE));
+		//For DEBUGGING: Resets left and right encoder readings
+		//Assigned to Start button on drive controller
+		new Trigger() {
+			@Override
+			public boolean get() {
+				return driveController.getStartButtonPressed();
+			}
+		}.whenActive(new InstantCommand() {
+			@Override
+			protected void initialize() {
+				RobotMap.leftEncoder.reset();
+				RobotMap.rightEncoder.reset();
+			}
+		});
 	}
 }

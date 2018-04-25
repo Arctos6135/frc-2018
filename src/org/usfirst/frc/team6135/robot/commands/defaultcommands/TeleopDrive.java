@@ -17,14 +17,27 @@ public class TeleopDrive extends Command {
     private static final int Y_AXIS = OI.Controls.FWD_REV;
     
     private static final double DEADZONE = 0.15;
+    
+    public static double rampBand = 0.05;
+    static boolean rampingOn = false;
+    static double prevLeft, prevRight;
 
     public TeleopDrive() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drive);
     }
+    
+    public static boolean isRamped() {
+    	return rampingOn;
+    }
+    public static void setRamping(boolean r) {
+    	rampingOn = r;
+    }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	prevLeft = RobotMap.leftDriveTalon1.getMotorOutputPercent();
+    	prevRight = RobotMap.rightDriveTalon1.getMotorOutputPercent();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,10 +48,19 @@ public class TeleopDrive extends Command {
         double r = Math.max(-RobotMap.Speeds.DRIVE_SPEED, Math.min(RobotMap.Speeds.DRIVE_SPEED, y - x));
         
         //Square the final values to smooth out driving
+        //Math.copySign ensures the direction is not lost
         l = Math.copySign(l * l, l);
         r = Math.copySign(r * r, r);
         
+        if(rampingOn) {
+        	l = Math.max(prevLeft - rampBand, Math.min(prevLeft + rampBand, l));
+        	r = Math.max(prevRight - rampBand, Math.min(prevRight + rampBand, r));
+        }
+        
         Robot.drive.setMotorsVBus(l, r);
+        
+        prevLeft = l;
+        prevRight = r;
     }
 
     // Make this return true when this Command no longer needs to run execute()

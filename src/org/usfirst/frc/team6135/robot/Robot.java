@@ -17,6 +17,7 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
+import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceTMP;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.BrakePID;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPlayback;
@@ -170,6 +171,11 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Turn kP", AutoTurnPID.kP);
 		SmartDashboard.putNumber("Turn kI", AutoTurnPID.kI);
 		SmartDashboard.putNumber("Turn kD", AutoTurnPID.kD);
+		SmartDashboard.putNumber("TMP Drive kP", DriveStraightDistanceTMP.kP);
+		SmartDashboard.putNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
+		SmartDashboard.putNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
+		SmartDashboard.putNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);
+		SmartDashboard.putNumber("Teleop Drive Ramp Band", TeleopDrive.rampBand);
 		
 		SmartDashboard.putString("Auto Recording Save Name", "");
 		SmartDashboard.putString("Auto Playback File Name", "");
@@ -188,6 +194,11 @@ public class Robot extends IterativeRobot {
 		AutoTurnPID.kP = SmartDashboard.getNumber("Turn kP", AutoTurnPID.kP);
 		AutoTurnPID.kI = SmartDashboard.getNumber("Turn kI", AutoTurnPID.kI);
 		AutoTurnPID.kD = SmartDashboard.getNumber("Turn kD", AutoTurnPID.kD);
+		DriveStraightDistanceTMP.kP = SmartDashboard.getNumber("TMP Drive kP", DriveStraightDistanceTMP.kP);
+		DriveStraightDistanceTMP.kD = SmartDashboard.getNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
+		DriveStraightDistanceTMP.kV = SmartDashboard.getNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
+		DriveStraightDistanceTMP.kA = SmartDashboard.getNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);
+		TeleopDrive.rampBand = SmartDashboard.getNumber("Teleop Drive Ramp Band", TeleopDrive.rampBand);
 		
 		String autoRecordingName;
 		if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", "")).length() > 0)
@@ -226,7 +237,6 @@ public class Robot extends IterativeRobot {
         visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO); //For vision, change to Mode.VISION
         
         oi = new OI();
-        //(new Thread(new TestingThread())).start();
         
         if(useRecordedAutos) {
         	//Recorded autos
@@ -310,17 +320,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		SmartDashboard.putNumber("Left Encoder", RobotMap.leftEncoder.getDistance());
-    	SmartDashboard.putNumber("Right Encoder", RobotMap.rightEncoder.getDistance());
-
-    	//SmartDashboard.putNumber("Wrist Gyro Reading", RobotMap.wristGyro.getAngle());
-    	SmartDashboard.putBoolean("Wrist PID is enabled", Robot.wristSubsystem.isEnabled());
+		SmartDashboard.putNumber("Left Encoder Reading", RobotMap.leftEncoder.getDistance());
+    	SmartDashboard.putNumber("Right Encoder Reading", RobotMap.rightEncoder.getDistance());
     	
     	SmartDashboard.putBoolean("Elevator Top Switch", Robot.elevatorSubsystem.notAtTop());
     	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
     	SmartDashboard.putBoolean("Wrist Switch", Robot.wristSubsystem.notAtTop());
     	
-    	SmartDashboard.putNumber("Wrist speed", RobotMap.wristVictor.get());
+    	SmartDashboard.putBoolean("Training Wheels", TeleopDrive.isRamped());
 	}
 
 	/**
