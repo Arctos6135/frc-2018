@@ -4,6 +4,8 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.PrecisionToggle;
@@ -103,8 +105,8 @@ public class OI {
 	public static JoystickButton gearShiftFast;
 	public static JoystickButton gearShiftSlow;
 	
-	//public static JoystickButton autoCubeAlign;
-	//public static JoystickButton cancelAlign;
+	public static JoystickButton autoCubeAlign;
+	public static JoystickButton cancelAlign;
 	
 	public static JoystickButton recordAuto;
 	
@@ -115,14 +117,14 @@ public class OI {
 	public static JoystickButton precisionToggle;
 	
 	public OI() {
-		driveController = new XboxController(1);
-		attachmentsController = new XboxController(0);
+		driveController = new XboxController(0);
+		attachmentsController = new XboxController(1);
 		
 		//Fast gear = right bumper
 		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
 		gearShiftSlow = new JoystickButton(driveController, Controls.SLOW_GEAR);
-		//autoCubeAlign = new JoystickButton(driveController, Controls.AUTO_CUBE_ALIGN);
-		//cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
+		autoCubeAlign = new JoystickButton(driveController, Controls.AUTO_CUBE_ALIGN);
+		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
 		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
 		recordAuto = new JoystickButton(driveController, Controls.RECORD_AUTO);
 		scalePosition = new JoystickButton(attachmentsController, Controls.SCALE_POSITION);
@@ -139,9 +141,9 @@ public class OI {
 		
 		shootCube.whenPressed(new AutoIntake(1.5, -1.0));
 		
-		//Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_TURN_SPEED);
-		//autoCubeAlign.whenPressed(autoCubeAlignCmd);
-		//cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd, autoSwitchAlignCmd));
+		Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_TURN_SPEED);
+		autoCubeAlign.whenPressed(autoCubeAlignCmd);
+		cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd));
 		
 		//Trigger for the Back button
 		Trigger trainingWheels = new Trigger() {
