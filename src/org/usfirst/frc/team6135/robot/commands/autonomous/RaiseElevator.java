@@ -5,7 +5,6 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	Raises the elevator all the way to the top until it hits the limit switch.

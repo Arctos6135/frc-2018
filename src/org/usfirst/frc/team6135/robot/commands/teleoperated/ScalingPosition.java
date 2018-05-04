@@ -3,10 +3,8 @@ package org.usfirst.frc.team6135.robot.commands.teleoperated;
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
-import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	Raises both the elevator and the wrist to their maximum for shooting cubes into the scale.

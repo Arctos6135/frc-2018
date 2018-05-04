@@ -3,7 +3,6 @@ package org.usfirst.frc.team6135.robot.commands.teleoperated;
 import org.usfirst.frc.team6135.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  *	Resets the gyroscope on the wrist of the Robot and sets the bias.

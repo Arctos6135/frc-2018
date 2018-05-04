@@ -4,8 +4,6 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
-import org.usfirst.frc.team6135.robot.commands.autonomous.SetWrist;
-import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

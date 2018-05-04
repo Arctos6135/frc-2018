@@ -1,7 +1,6 @@
 package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import org.usfirst.frc.team6135.robot.Robot;
-import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.misc.Setpoint;
 import org.usfirst.frc.team6135.robot.misc.TrapezoidalMotionProfile;
 
