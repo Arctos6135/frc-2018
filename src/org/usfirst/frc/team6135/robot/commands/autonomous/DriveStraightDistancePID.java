@@ -31,11 +31,10 @@ public class DriveStraightDistancePID extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	RobotMap.leftEncoder.reset();
-    	RobotMap.rightEncoder.reset();
+    	Robot.drive.resetEncoders();
 
-    	leftPID = new PIDController(kP, kI, kD, RobotMap.leftEncoder, RobotMap.leftDrivePIDMotor);
-    	rightPID = new PIDController(kP, kI, kD, RobotMap.rightEncoder, RobotMap.rightDrivePIDMotor);
+    	leftPID = new PIDController(kP, kI, kD, Robot.drive.getLeftEncoder(), RobotMap.leftDrivePIDMotor);
+    	rightPID = new PIDController(kP, kI, kD, Robot.drive.getRightEncoder(), RobotMap.rightDrivePIDMotor);
     	
     	leftPID.setOutputRange(-1.0, 1.0);
     	rightPID.setOutputRange(-1.0, 1.0);

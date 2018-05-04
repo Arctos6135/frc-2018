@@ -5,6 +5,7 @@ import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -24,6 +25,23 @@ public class DriveTrain extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new TeleopDrive());
+    }
+    
+    public void resetEncoders() {
+    	RobotMap.leftEncoder.reset();
+    	RobotMap.rightEncoder.reset();
+    }
+    public double getLeftEncoderReading() {
+    	return RobotMap.leftEncoder.getDistance();
+    }
+    public double getRightEncoderReading() {
+    	return RobotMap.rightEncoder.getDistance();
+    }
+    public Encoder getLeftEncoder() {
+    	return RobotMap.leftEncoder;
+    }
+    public Encoder getRightEncoder() {
+    	return RobotMap.rightEncoder;
     }
 }
 

@@ -40,10 +40,10 @@ public class DriveStraightDistanceTMP extends Command {
     	leftTrajectory = new TrapezoidalMotionProfile(distance, maxAccel, maxVelo);
     	rightTrajectory = new TrapezoidalMotionProfile(distance, maxAccel, maxVelo);
     	//Reset encoders
-    	RobotMap.leftEncoder.reset();
-    	RobotMap.rightEncoder.reset();
+    	Robot.drive.resetEncoders();
     	//Initialize values for differentiation
     	lastTime = Timer.getFPGATimestamp();
+    	//Left and right position errors are always going to be 0
     	leftLastErr = rightLastErr = 0;
     }
 
@@ -61,8 +61,8 @@ public class DriveStraightDistanceTMP extends Command {
     	Setpoint leftSetpoint = leftTrajectory.getSetpoint();
     	Setpoint rightSetpoint = rightTrajectory.getSetpoint();
     	//Calculate left and right position errors
-    	double leftErr = leftSetpoint.getPos() - RobotMap.leftEncoder.getDistance();
-    	double rightErr = rightSetpoint.getPos() - RobotMap.rightEncoder.getDistance();
+    	double leftErr = leftSetpoint.getPos() - Robot.drive.getLeftEncoderReading();
+    	double rightErr = rightSetpoint.getPos() - Robot.drive.getRightEncoderReading();
     	//Calculate left and right position derivatives
     	//The desired velocity is subtracted to get the difference
     	double leftDeriv = (leftErr - leftLastErr) / dt 

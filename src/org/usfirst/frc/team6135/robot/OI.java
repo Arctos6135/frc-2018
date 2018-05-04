@@ -202,8 +202,7 @@ public class OI {
 		}.whenActive(new InstantCommand() {
 			@Override
 			protected void initialize() {
-				RobotMap.leftEncoder.reset();
-				RobotMap.rightEncoder.reset();
+				Robot.drive.resetEncoders();
 			}
 		});
 	}

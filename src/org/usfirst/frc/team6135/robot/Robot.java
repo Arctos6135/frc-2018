@@ -320,8 +320,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		SmartDashboard.putNumber("Left Encoder Reading", RobotMap.leftEncoder.getDistance());
-    	SmartDashboard.putNumber("Right Encoder Reading", RobotMap.rightEncoder.getDistance());
+		SmartDashboard.putNumber("Left Encoder Reading", Robot.drive.getLeftEncoderReading());
+    	SmartDashboard.putNumber("Right Encoder Reading", Robot.drive.getRightEncoderReading());
     	
     	SmartDashboard.putBoolean("Elevator Top Switch", Robot.elevatorSubsystem.notAtTop());
     	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
