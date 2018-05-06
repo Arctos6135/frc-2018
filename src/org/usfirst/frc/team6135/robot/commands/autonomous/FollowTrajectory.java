@@ -1,14 +1,15 @@
 package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import org.usfirst.frc.team6135.robot.Robot;
-import org.usfirst.frc.team6135.robot.pathfinder.Moment;
-import org.usfirst.frc.team6135.robot.pathfinder.TankDriveTrajectory;
+
+import robot.pathfinder.Moment;
+import robot.pathfinder.TankDriveTrajectory;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * 	Makes the Robot follow the trajectory of a {@link org.usfirst.frc.team6135.robot.pathfinder.TankDriveTrajectory TankDriveTrajectory}.<br>
+ * 	Makes the Robot follow the trajectory of a {@link robot.pathfinder.TankDriveTrajectory TankDriveTrajectory}.<br>
  * 	<br>
  * 	Note: For this command to function correctly, the unit of length used in the trajectory must be <em>inches</em>,
  * 	and the unit for time must be <em>seconds</em>.
