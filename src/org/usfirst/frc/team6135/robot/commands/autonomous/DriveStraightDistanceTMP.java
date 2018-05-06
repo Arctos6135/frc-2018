@@ -60,8 +60,8 @@ public class DriveStraightDistanceTMP extends Command {
     	Setpoint leftSetpoint = leftTrajectory.getSetpoint();
     	Setpoint rightSetpoint = rightTrajectory.getSetpoint();
     	//Calculate left and right position errors
-    	double leftErr = leftSetpoint.getPos() - Robot.drive.getLeftEncoderReading();
-    	double rightErr = rightSetpoint.getPos() - Robot.drive.getRightEncoderReading();
+    	double leftErr = leftSetpoint.getPos() - Robot.drive.getLeftDistance();
+    	double rightErr = rightSetpoint.getPos() - Robot.drive.getRightDistance();
     	//Calculate left and right position derivatives
     	//The desired velocity is subtracted to get the difference
     	double leftDeriv = (leftErr - leftLastErr) / dt 

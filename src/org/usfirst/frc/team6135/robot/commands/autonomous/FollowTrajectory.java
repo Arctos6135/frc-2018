@@ -50,8 +50,8 @@ public class FollowTrajectory extends Command {
     	Moment leftMoment = trajectory.getLeftSmooth(t);
     	Moment rightMoment = trajectory.getRightSmooth(t);
     	//Left and right errors
-    	double leftErr = leftMoment.getDistance() - Robot.drive.getLeftEncoderReading();
-    	double rightErr = rightMoment.getDistance() - Robot.drive.getRightEncoderReading();
+    	double leftErr = leftMoment.getDistance() - Robot.drive.getLeftDistance();
+    	double rightErr = rightMoment.getDistance() - Robot.drive.getRightDistance();
     	//Calculate left and right position derivatives
     	//The desired velocity is subtracted to get the difference
     	double leftDeriv = (leftErr - leftLastErr) / dt 

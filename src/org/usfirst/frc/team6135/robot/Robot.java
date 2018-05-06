@@ -329,8 +329,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		SmartDashboard.putNumber("Left Encoder Reading", Robot.drive.getLeftEncoderReading());
-    	SmartDashboard.putNumber("Right Encoder Reading", Robot.drive.getRightEncoderReading());
+		SmartDashboard.putNumber("Left Distance", Robot.drive.getLeftDistance());
+    	SmartDashboard.putNumber("Right Distance", Robot.drive.getRightDistance());
+    	SmartDashboard.putNumber("Left Speed", Robot.drive.getLeftSpeed());
+    	SmartDashboard.putNumber("Right Speed", Robot.drive.getRightSpeed());
+    	double[] accel = Robot.drive.getAccelerations();
+    	SmartDashboard.putNumber("Left Acceleration", accel[0]);
+    	SmartDashboard.putNumber("Right Acceleration", accel[1]);
     	
     	SmartDashboard.putBoolean("Elevator Top Switch", Robot.elevatorSubsystem.notAtTop());
     	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
