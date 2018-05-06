@@ -18,6 +18,7 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceTMP;
+import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.BrakePID;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPlayback;
@@ -175,6 +176,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
 		SmartDashboard.putNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
 		SmartDashboard.putNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);
+		SmartDashboard.putNumber("Path Follower kP", FollowTrajectory.kP);
+		SmartDashboard.putNumber("Path Follower kD", FollowTrajectory.kD);
+		SmartDashboard.putNumber("Path Follower kV", FollowTrajectory.kV);
+		SmartDashboard.putNumber("Path Follower kA", FollowTrajectory.kA);
 		SmartDashboard.putNumber("Teleop Drive Ramp Band", TeleopDrive.rampBand);
 		
 		SmartDashboard.putString("Auto Recording Save Name", "");
@@ -198,6 +203,10 @@ public class Robot extends IterativeRobot {
 		DriveStraightDistanceTMP.kD = SmartDashboard.getNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
 		DriveStraightDistanceTMP.kV = SmartDashboard.getNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
 		DriveStraightDistanceTMP.kA = SmartDashboard.getNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);
+		FollowTrajectory.kP = SmartDashboard.getNumber("Path Follower kP", FollowTrajectory.kP);
+		FollowTrajectory.kD = SmartDashboard.getNumber("Path Follower kD", FollowTrajectory.kD);
+		FollowTrajectory.kV = SmartDashboard.getNumber("Path Follower kV", FollowTrajectory.kV);
+		FollowTrajectory.kA = SmartDashboard.getNumber("Path Follower kA", FollowTrajectory.kA);
 		TeleopDrive.rampBand = SmartDashboard.getNumber("Teleop Drive Ramp Band", TeleopDrive.rampBand);
 		
 		String autoRecordingName;
