@@ -53,7 +53,7 @@ public class OI {
 	// button.whenReleased(new ExampleCommand());
 	
 	/**
-	 * <b>CONTROLS</b><br><br>
+	 * <b>SCIENCE RENDEZVOUS CONTROLS</b><br><br>
 	 * 
 	 * Drive:
 	 * <ul>
@@ -62,6 +62,7 @@ public class OI {
 	 * 	<li>Left Bumper: Shift gear to slower configuration</li>
 	 * 	<li>Right Bumper: Shift gear to faster configuration</li>
 	 * 	<li>Y Button: Auto Power Cube align</li>
+	 * 	<li>X Button: Toggle Precision Mode</li>
 	 * 	<li>B Button: Cancel auto align</li>
 	 * 	<li>A Button: Start/Stop autonomous recording</li>
 	 * 	<li>Back Button: Toggle Training Wheels</li>
