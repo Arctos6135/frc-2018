@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.VictorSP;
+import robot.pathfinder.RobotSpecs;
 
 
 /**
@@ -186,6 +187,9 @@ public class RobotMap {
     public static ADXRS450_Gyro wristGyro = new ADXRS450_Gyro();
     
     public static PowerDistributionPanel PDP = new PowerDistributionPanel();
+    
+    //Used to create trajectories
+    public static RobotSpecs specs = new RobotSpecs(0, 0, 23.25);
 	
 	public static void init() {
 		//Set back motors to follow the front motors
