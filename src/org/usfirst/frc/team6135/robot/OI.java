@@ -13,6 +13,7 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ToggleRecording;
 import org.usfirst.frc.team6135.robot.triggers.POVTrigger;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
@@ -65,6 +66,7 @@ public class OI {
 	 * 	<li>B Button: Cancel auto align</li>
 	 * 	<li>A Button: Start/Stop autonomous recording</li>
 	 * 	<li>Back Button: Toggle Training Wheels</li>
+	 * 	<li>Start Button: Enter <em>Demo Mode</em>
 	 * 	<li>XBOX Button: Enable rocket booster</li>
 	 * </ul>
 	 * Attachments:
@@ -77,6 +79,29 @@ public class OI {
 	 * 	<li>D-Pad Down: Lower the elevator to the bottom</li>
 	 * 	<li>Y Button: Raise the elevator and wrist to Scale position</li>
 	 * 	<li>Left Bumper: Shoots out the cube at full speed for 1s</li>
+	 * </ul>
+	 * <br>
+	 * <br>
+	 * <b>DEMO MODE CONTROLS</b><br><br>
+	 * 
+	 * Drive:
+	 * <ul>
+	 * 	<li>Left Analog Stick: Forwards/Backwards</li>
+	 * 	<li>Right Analog Stick: Left/Right</li>
+	 * 	<li>Left Bumper: Shift gear to slower configuration</li>
+	 * 	<li>Right Bumper: Shift gear to faster configuration</li>
+	 * 	<li>X Button: Toggle Precision Mode</li>
+	 * 	<li>B Button: Block/Unblock Attachments Controller</li>
+	 * 	<li>Start Button: Exit <em>Demo Mode</em>
+	 * 	<li>Back Button: Toggle Training Wheels</li>
+	 * 	<li>XBOX Button: Enable rocket booster</li>
+	 * </ul>
+	 * Attachments:
+	 * <ul>
+	 * 	<li>D-Pad Up: Raise the elevator to the top</li>
+	 * 	<li>D-Pad Down: Lower the elevator to the bottom</li>
+	 * 	<li>Left Bumper: Intake Out</li>
+	 * 	<li>Right Bumper: Intake In</li>
 	 * </ul>
 	 */
 	public static class Controls {
@@ -97,6 +122,87 @@ public class OI {
 		public static final int SHOOT_CUBE = RobotMap.ControllerMap.LBUMPER;
 		//Note: Some buttons such as the Start button and the D-Pad do not have mappings.
 		//Triggers are created for them to read their states and process them.
+		
+		public static final int DEMO_BLOCK_ATTACHMENTS = RobotMap.ControllerMap.BUTTON_B;
+		
+		public static final int DEMO_INTAKE_IN = RobotMap.ControllerMap.RBUMPER;
+		public static final int DEMO_INTAKE_OUT = RobotMap.ControllerMap.LBUMPER;
+	}
+	
+	public static boolean isInDemoMode = false;
+	public static boolean attachmentsControllerBlocked = false;
+	
+	/**
+	 * A class that represents a {@code JoystickButton} that is only used in non-demo mode.<br>
+	 * <br>
+	 * If you wish to create a button that is for both demo and non-demo modes, use {@code JoystickButton} instead.
+	 * @see DemoButton
+	 * @author Tyler
+	 *
+	 */
+	static class NonDemoButton extends JoystickButton {
+
+		public NonDemoButton(GenericHID joystick, int buttonNumber) {
+			super(joystick, buttonNumber);
+		}
+		
+		@Override
+		public void whenPressed(Command cmd) {
+			//Wrap the command inside another command that only executes if not in demo mode
+			super.whenPressed(new InstantCommand() {
+				@Override
+				protected void initialize() {
+					if(!OI.isInDemoMode)
+						cmd.start();
+				}
+			});
+		}
+		
+		@Override
+		public void whenReleased(Command cmd) {
+			super.whenReleased(new InstantCommand() {
+				@Override
+				protected void initialize() {
+					if(!OI.isInDemoMode)
+						cmd.start();
+				}
+			});
+		}
+	}
+	
+	/**
+	 * A class that represents a {@code JoystickButton} that is used only in demo mode.
+	 * @see NonDemoButton
+	 * @author Tyler
+	 *
+	 */
+	static class DemoButton extends JoystickButton {
+		
+		boolean isAttachment;
+		
+		public DemoButton(GenericHID joystick, int buttonNumber, boolean isAttachment) {
+			super(joystick, buttonNumber);
+			this.isAttachment = isAttachment;
+		}
+		
+		@Override
+		public void whenPressed(Command cmd) {
+			//Wrap the command inside an InstantCommand that only runs if the OI is in demo mode,
+			//Or if the button is on the attachments controller, only run if the OI is in demo mode and attachments controller is not disabled.
+			super.whenPressed(new InstantCommand() {
+				@Override
+				protected void initialize() {
+					if(isAttachment) {
+						if(OI.isInDemoMode && !OI.attachmentsControllerBlocked)
+							cmd.start();
+					}
+					else {
+						if(OI.isInDemoMode)
+							cmd.start();
+					}
+				}
+			});
+		}
 	}
 	
 	public static XboxController driveController;
@@ -105,8 +211,8 @@ public class OI {
 	public static JoystickButton gearShiftFast;
 	public static JoystickButton gearShiftSlow;
 	
-	public static JoystickButton autoCubeAlign;
-	public static JoystickButton cancelAlign;
+	public static NonDemoButton autoCubeAlign;
+	public static NonDemoButton cancelAlign;
 	
 	public static JoystickButton recordAuto;
 	
@@ -116,6 +222,11 @@ public class OI {
 	
 	public static JoystickButton precisionToggle;
 	
+	
+	public static DemoButton demo_intake;
+	public static DemoButton demo_outtake;
+	public static DemoButton demo_blockattachments;
+	
 	public OI() {
 		driveController = new XboxController(0);
 		attachmentsController = new XboxController(1);
@@ -123,12 +234,16 @@ public class OI {
 		//Fast gear = right bumper
 		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
 		gearShiftSlow = new JoystickButton(driveController, Controls.SLOW_GEAR);
-		autoCubeAlign = new JoystickButton(driveController, Controls.AUTO_CUBE_ALIGN);
-		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
+		autoCubeAlign = new NonDemoButton(driveController, Controls.AUTO_CUBE_ALIGN);
+		cancelAlign = new NonDemoButton(driveController, Controls.CANCEL_ALIGN);
 		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
 		recordAuto = new JoystickButton(driveController, Controls.RECORD_AUTO);
 		scalePosition = new JoystickButton(attachmentsController, Controls.SCALE_POSITION);
 		shootCube = new JoystickButton(attachmentsController, Controls.SHOOT_CUBE);
+		
+		demo_blockattachments = new DemoButton(driveController, Controls.DEMO_BLOCK_ATTACHMENTS, false);
+		demo_intake = new DemoButton(attachmentsController, Controls.DEMO_INTAKE_IN, true);
+		demo_outtake = new DemoButton(attachmentsController, Controls.DEMO_INTAKE_OUT, true);
 		
 		recordAuto.whenPressed(new ToggleRecording());
 		
@@ -160,14 +275,41 @@ public class OI {
 		});
 		
 		//Triggers for the D-Pad controls
-		POVTrigger raiseElevator = new POVTrigger(attachmentsController, 0);
-		POVTrigger lowerElevator = new POVTrigger(attachmentsController, 180);
-		
+		//Make an anonymous class that extends POVTrigger
+		POVTrigger raiseElevator = new POVTrigger(attachmentsController, POVTrigger.UP) {
+			@Override
+			public boolean get() {
+				//Return the result from the POVTrigger's get() and take into consideration if the robot is in demo mode or not
+				return super.get() && !OI.isInDemoMode;
+			}
+		};
+		POVTrigger lowerElevator = new POVTrigger(attachmentsController, POVTrigger.DOWN) {
+			@Override
+			public boolean get() {
+				return super.get() && !OI.isInDemoMode;
+			}
+		};
 		Command elevatorUp = new RaiseElevator(1.0);
 		Command elevatorDown = new LowerElevator(1.0);
-		
 		raiseElevator.whenActive(elevatorUp);
 		lowerElevator.whenActive(elevatorDown);
+		
+		POVTrigger demo_raiseElevator = new POVTrigger(attachmentsController, POVTrigger.UP) {
+			@Override
+			public boolean get() {
+				return super.get() && OI.isInDemoMode;
+			}
+		};
+		POVTrigger demo_lowerElevator = new POVTrigger(attachmentsController, POVTrigger.DOWN) {
+			@Override
+			public boolean get() {
+				return super.get() && OI.isInDemoMode;
+			}
+		};
+		Command demo_elevatorUp = new RaiseElevator(0.6);
+		Command demo_elevatorDown = new LowerElevator(0.6);
+		demo_raiseElevator.whenActive(demo_elevatorUp);
+		demo_lowerElevator.whenActive(demo_elevatorDown);
 		
 		//A trigger that will cancel the one-press elevator movements if the joystick has input
 		Trigger cancelElevatorMovement = new Trigger() {
@@ -184,26 +326,14 @@ public class OI {
 					elevatorUp.cancel();
 				else if(elevatorDown.isRunning() && !elevatorDown.isCanceled())
 					elevatorDown.cancel();
+				
+				if(demo_elevatorUp.isRunning() && !demo_elevatorUp.isCanceled())
+					demo_elevatorUp.cancel();
+				else if(demo_elevatorDown.isRunning() && !demo_elevatorDown.isCanceled())
+					demo_elevatorDown.cancel();
 			}
 		});
 		
-		//Motor current monitor is currently not working
-		//whenActive() is already called by the constructor
-		//@SuppressWarnings("unused")
-		//Trigger motorCurrentMonitor = new MotorCurrentMonitor();
 		
-		//For DEBUGGING: Resets left and right encoder readings
-		//Assigned to Start button on drive controller
-		new Trigger() {
-			@Override
-			public boolean get() {
-				return driveController.getStartButtonPressed();
-			}
-		}.whenActive(new InstantCommand() {
-			@Override
-			protected void initialize() {
-				Robot.drive.resetEncoders();
-			}
-		});
 	}
 }
