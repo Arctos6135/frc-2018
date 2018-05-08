@@ -38,18 +38,20 @@ public class IntakeAnalog extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	final double ltVal = Math.abs(OI.attachmentsController.getRawAxis(OI.Controls.INTAKE_OUT));
-    	final double rtVal = Math.abs(OI.attachmentsController.getRawAxis(OI.Controls.INTAKE_IN));
-    	if(ltVal <= DEADZONE && rtVal > DEADZONE) {
-    		Robot.intakeSubsystem.setSpeed(constrain(rtVal) * RobotMap.Speeds.INTAKE_SPEED);
-    	}
-    	else if(ltVal > DEADZONE && rtVal <= DEADZONE) {
-    		//Set to negative of LT since here we want to reverse the intakeSubsystem
-    		Robot.intakeSubsystem.setSpeed(-constrain(ltVal) * RobotMap.Speeds.INTAKE_SPEED);
-    	}
-    	else {
-    		//Driver messed up - Both LT and RT are pressed
-    		Robot.intakeSubsystem.setSpeed(0);
+    	if(!OI.isInDemoMode) {
+	    	final double ltVal = Math.abs(OI.attachmentsController.getRawAxis(OI.Controls.INTAKE_OUT));
+	    	final double rtVal = Math.abs(OI.attachmentsController.getRawAxis(OI.Controls.INTAKE_IN));
+	    	if(ltVal <= DEADZONE && rtVal > DEADZONE) {
+	    		Robot.intakeSubsystem.setSpeed(constrain(rtVal) * RobotMap.Speeds.INTAKE_SPEED);
+	    	}
+	    	else if(ltVal > DEADZONE && rtVal <= DEADZONE) {
+	    		//Set to negative of LT since here we want to reverse the intakeSubsystem
+	    		Robot.intakeSubsystem.setSpeed(-constrain(ltVal) * RobotMap.Speeds.INTAKE_SPEED);
+	    	}
+	    	else {
+	    		//Driver messed up - Both LT and RT are pressed
+	    		Robot.intakeSubsystem.setSpeed(0);
+	    	}
     	}
     }
 

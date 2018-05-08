@@ -25,13 +25,15 @@ public class ElevatorAnalog extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	final double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.ELEVATOR);
-    	if(Math.abs(joystickVal) > DEADZONE) {
-    		//The limit switch checking has been moved to ElevatorSubsystem
-    		Robot.elevatorSubsystem.setSpeed(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
-    	}
-    	else {
-    		Robot.elevatorSubsystem.setSpeed(0);
+    	if(!OI.isInDemoMode) {
+	    	final double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.ELEVATOR);
+	    	if(Math.abs(joystickVal) > DEADZONE) {
+	    		//The limit switch checking has been moved to ElevatorSubsystem
+	    		Robot.elevatorSubsystem.setSpeed(joystickVal * RobotMap.Speeds.ELEVATOR_SPEED);
+	    	}
+	    	else {
+	    		Robot.elevatorSubsystem.setSpeed(0);
+	    	}
     	}
     }
 
