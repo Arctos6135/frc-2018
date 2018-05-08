@@ -8,6 +8,7 @@ import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.OperateIntake;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.PrecisionToggle;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ToggleRecording;
@@ -214,7 +215,7 @@ public class OI {
 	public static NonDemoButton autoCubeAlign;
 	public static NonDemoButton cancelAlign;
 	
-	public static JoystickButton recordAuto;
+	public static NonDemoButton recordAuto;
 	
 	public static JoystickButton scalePosition;
 	
@@ -225,7 +226,7 @@ public class OI {
 	
 	public static DemoButton demo_intake;
 	public static DemoButton demo_outtake;
-	public static DemoButton demo_blockattachments;
+	public static DemoButton demo_blockAttachments;
 	
 	public OI() {
 		driveController = new XboxController(0);
@@ -237,11 +238,11 @@ public class OI {
 		autoCubeAlign = new NonDemoButton(driveController, Controls.AUTO_CUBE_ALIGN);
 		cancelAlign = new NonDemoButton(driveController, Controls.CANCEL_ALIGN);
 		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
-		recordAuto = new JoystickButton(driveController, Controls.RECORD_AUTO);
+		recordAuto = new NonDemoButton(driveController, Controls.RECORD_AUTO);
 		scalePosition = new JoystickButton(attachmentsController, Controls.SCALE_POSITION);
 		shootCube = new JoystickButton(attachmentsController, Controls.SHOOT_CUBE);
 		
-		demo_blockattachments = new DemoButton(driveController, Controls.DEMO_BLOCK_ATTACHMENTS, false);
+		demo_blockAttachments = new DemoButton(driveController, Controls.DEMO_BLOCK_ATTACHMENTS, false);
 		demo_intake = new DemoButton(attachmentsController, Controls.DEMO_INTAKE_IN, true);
 		demo_outtake = new DemoButton(attachmentsController, Controls.DEMO_INTAKE_OUT, true);
 		
@@ -259,6 +260,28 @@ public class OI {
 		Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_TURN_SPEED);
 		autoCubeAlign.whenPressed(autoCubeAlignCmd);
 		cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd));
+		
+		demo_intake.whenPressed(new OperateIntake(0.7));
+		demo_outtake.whenPressed(new OperateIntake(-0.7));
+		demo_blockAttachments.whenPressed(new InstantCommand() {
+			@Override
+			protected void initialize() {
+				OI.attachmentsControllerBlocked = !OI.attachmentsControllerBlocked;
+			}
+		});
+		Trigger toggleDemo = new Trigger() {
+			@Override
+			public boolean get() {
+				return driveController.getStartButtonPressed();
+			}
+		};
+		toggleDemo.whenActive(new InstantCommand() {
+			@Override
+			protected void initialize() {
+				OI.isInDemoMode = !OI.isInDemoMode;
+				OI.attachmentsControllerBlocked = false;
+			}
+		});
 		
 		//Trigger for the Back button
 		Trigger trainingWheels = new Trigger() {
