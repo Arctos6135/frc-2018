@@ -24,28 +24,30 @@ public class WristAnalogPID extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.WRIST);
-    	//Check if joystick is pushed
-    	
-    	if(Math.abs(joystickVal) > DEADZONE) {
-    		//Disable the PID so that we can freely move the motor
-    		if(Robot.wristSubsystem.isEnabled())
-    			Robot.wristSubsystem.disable();
-    		//Set the speed
-    		Robot.wristSubsystem.setRaw(joystickVal);
-    	}
-    	else {
-    		//IMPORTANT: Since if the joystick was previously pushed, the PID would be enabled,
-    		//this would only run if the joystick went from having input to not having input.
-    		if(!Robot.wristSubsystem.isEnabled()) {
-    			//At this point we can set a new set point for the PID to hold the wrist in place
-    			Robot.wristSubsystem.setSetpoint(Robot.wristSubsystem.getAngle());
-    			//Enable and let the PID take over
-    			//Reset to make sure no integral windup happens
-    			Robot.wristSubsystem.getPIDController().reset();
-    			Robot.wristSubsystem.enable();
-    		}
-    		Robot.wristSubsystem.enable();
+    	if(!OI.isInDemoMode) {
+	    	double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.WRIST);
+	    	//Check if joystick is pushed
+	    	
+	    	if(Math.abs(joystickVal) > DEADZONE) {
+	    		//Disable the PID so that we can freely move the motor
+	    		if(Robot.wristSubsystem.isEnabled())
+	    			Robot.wristSubsystem.disable();
+	    		//Set the speed
+	    		Robot.wristSubsystem.setRaw(joystickVal);
+	    	}
+	    	else {
+	    		//IMPORTANT: Since if the joystick was previously pushed, the PID would be enabled,
+	    		//this would only run if the joystick went from having input to not having input.
+	    		if(!Robot.wristSubsystem.isEnabled()) {
+	    			//At this point we can set a new set point for the PID to hold the wrist in place
+	    			Robot.wristSubsystem.setSetpoint(Robot.wristSubsystem.getAngle());
+	    			//Enable and let the PID take over
+	    			//Reset to make sure no integral windup happens
+	    			Robot.wristSubsystem.getPIDController().reset();
+	    			Robot.wristSubsystem.enable();
+	    		}
+	    		Robot.wristSubsystem.enable();
+	    	}
     	}
     }
 
