@@ -41,6 +41,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.pathfinder.TankDriveTrajectory;
+import robot.pathfinder.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -299,6 +301,14 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Multi-Cube (Aligned with switch): Left", multiCubeLeftAligned);
 		chooser.addObject("Multi-Cube (Aligned with switch): Right", multiCubeRightAligned);
 		chooser.addObject("Multi-Cube from middle", multiCubeFromMiddle);
+		
+		//Test trajectory
+		TankDriveTrajectory testTrajectory = new TankDriveTrajectory(new Waypoint[] {
+				new Waypoint(0, 0, Math.PI / 2),
+				new Waypoint(0, 120, Math.PI / 2),
+		}, RobotMap.specs, 100, 5000);
+		chooser.addObject("Pathfinder Trajectory", new FollowTrajectory(testTrajectory));
+		
 		//chooser.addObject("Place Cube With Vision: Middle", visionAuto);
 		//Display the chooser
 		SmartDashboard.putData("Auto mode", chooser);
