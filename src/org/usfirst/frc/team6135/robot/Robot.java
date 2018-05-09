@@ -165,7 +165,7 @@ public class Robot extends IterativeRobot {
 		//SmartDashboard.putNumber("Wrist kP", WristPIDSubsystem.kP);
 		//SmartDashboard.putNumber("Wrist kI", WristPIDSubsystem.kI);
 		//SmartDashboard.putNumber("Wrist kD", WristPIDSubsystem.kD);
-		SmartDashboard.putNumber("Brake kP", BrakePID.kP);
+		/*SmartDashboard.putNumber("Brake kP", BrakePID.kP);
 		SmartDashboard.putNumber("Brake kI", BrakePID.kI);
 		SmartDashboard.putNumber("Brake kD", BrakePID.kD);
 		SmartDashboard.putNumber("Drive kP", DriveStraightDistancePID.kP);
@@ -177,7 +177,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("TMP Drive kP", DriveStraightDistanceTMP.kP);
 		SmartDashboard.putNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
 		SmartDashboard.putNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
-		SmartDashboard.putNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);
+		SmartDashboard.putNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);*/
 		SmartDashboard.putNumber("Path Follower kP", FollowTrajectory.kP);
 		SmartDashboard.putNumber("Path Follower kD", FollowTrajectory.kD);
 		SmartDashboard.putNumber("Path Follower kV", FollowTrajectory.kV);
@@ -192,7 +192,7 @@ public class Robot extends IterativeRobot {
 		//WristPIDSubsystem.kP = SmartDashboard.getNumber("Wrist kP", WristPIDSubsystem.kP);
 		//WristPIDSubsystem.kI = SmartDashboard.getNumber("Wrist kI", WristPIDSubsystem.kI);
 		//WristPIDSubsystem.kD = SmartDashboard.getNumber("Wrist kD", WristPIDSubsystem.kD);
-		BrakePID.kP = SmartDashboard.getNumber("Brake kP", BrakePID.kP);
+		/*BrakePID.kP = SmartDashboard.getNumber("Brake kP", BrakePID.kP);
 		BrakePID.kI = SmartDashboard.getNumber("Brake kI", BrakePID.kI);
 		BrakePID.kD = SmartDashboard.getNumber("Brake kD", BrakePID.kD);
 		DriveStraightDistancePID.kP = SmartDashboard.getNumber("Drive kP", DriveStraightDistancePID.kP);
@@ -204,7 +204,7 @@ public class Robot extends IterativeRobot {
 		DriveStraightDistanceTMP.kP = SmartDashboard.getNumber("TMP Drive kP", DriveStraightDistanceTMP.kP);
 		DriveStraightDistanceTMP.kD = SmartDashboard.getNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
 		DriveStraightDistanceTMP.kV = SmartDashboard.getNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
-		DriveStraightDistanceTMP.kA = SmartDashboard.getNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);
+		DriveStraightDistanceTMP.kA = SmartDashboard.getNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);*/
 		FollowTrajectory.kP = SmartDashboard.getNumber("Path Follower kP", FollowTrajectory.kP);
 		FollowTrajectory.kD = SmartDashboard.getNumber("Path Follower kD", FollowTrajectory.kD);
 		FollowTrajectory.kV = SmartDashboard.getNumber("Path Follower kV", FollowTrajectory.kV);
@@ -303,11 +303,11 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Multi-Cube from middle", multiCubeFromMiddle);
 		
 		//Test trajectory
-		TankDriveTrajectory testTrajectory = new TankDriveTrajectory(new Waypoint[] {
+		/*TankDriveTrajectory testTrajectory = new TankDriveTrajectory(new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
 				new Waypoint(0, 120, Math.PI / 2),
 		}, RobotMap.specs, 100, 5000);
-		chooser.addObject("Pathfinder Trajectory", new FollowTrajectory(testTrajectory));
+		chooser.addObject("Pathfinder Trajectory", new FollowTrajectory(testTrajectory));*/
 		
 		//chooser.addObject("Place Cube With Vision: Middle", visionAuto);
 		//Display the chooser

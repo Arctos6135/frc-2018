@@ -264,6 +264,8 @@ public class OI {
 		
 		demo_intake.whenPressed(new OperateIntake(0.7));
 		demo_outtake.whenPressed(new OperateIntake(-0.7));
+		demo_intake.whenReleased(new OperateIntake(0.0));
+		demo_outtake.whenReleased(new OperateIntake(0.0));
 		demo_blockAttachments.whenPressed(new InstantCommand() {
 			@Override
 			protected void initialize() {
