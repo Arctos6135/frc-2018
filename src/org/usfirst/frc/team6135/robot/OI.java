@@ -205,6 +205,21 @@ public class OI {
 				}
 			});
 		}
+		@Override
+		public void whenReleased(Command cmd) {
+			super.whenReleased(new InstantCommand() {
+				@Override
+				protected void initialize() {
+					if(isAttachment) {
+						if(OI.isInDemoMode && !OI.attachmentsControllerBlocked)
+							cmd.start();
+					}
+					else if(OI.isInDemoMode) {
+						cmd.start();
+					}
+				}
+			});
+		}
 	}
 	
 	public static XboxController driveController;
@@ -323,13 +338,13 @@ public class OI {
 		POVTrigger demo_raiseElevator = new POVTrigger(attachmentsController, POVTrigger.UP) {
 			@Override
 			public boolean get() {
-				return super.get() && OI.isInDemoMode;
+				return super.get() && OI.isInDemoMode && !OI.attachmentsControllerBlocked;
 			}
 		};
 		POVTrigger demo_lowerElevator = new POVTrigger(attachmentsController, POVTrigger.DOWN) {
 			@Override
 			public boolean get() {
-				return super.get() && OI.isInDemoMode;
+				return super.get() && OI.isInDemoMode && !OI.attachmentsControllerBlocked;
 			}
 		};
 		Command demo_elevatorUp = new RaiseElevator(0.6);
