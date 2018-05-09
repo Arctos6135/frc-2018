@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -235,7 +236,7 @@ public class OI {
 	
 	public static JoystickButton scalePosition;
 	
-	public static JoystickButton shootCube;
+	public static NonDemoButton shootCube;
 	
 	public static JoystickButton precisionToggle;
 	
@@ -256,7 +257,7 @@ public class OI {
 		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
 		recordAuto = new NonDemoButton(driveController, Controls.RECORD_AUTO);
 		scalePosition = new JoystickButton(attachmentsController, Controls.SCALE_POSITION);
-		shootCube = new JoystickButton(attachmentsController, Controls.SHOOT_CUBE);
+		shootCube = new NonDemoButton(attachmentsController, Controls.SHOOT_CUBE);
 		
 		demo_blockAttachments = new DemoButton(driveController, Controls.DEMO_BLOCK_ATTACHMENTS, false);
 		demo_intake = new DemoButton(attachmentsController, Controls.DEMO_INTAKE_IN, true);
