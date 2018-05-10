@@ -53,7 +53,7 @@ public class OI {
 	// button.whenReleased(new ExampleCommand());
 	
 	/**
-	 * <b>SCIENCE RENDEZVOUS CONTROLS</b><br><br>
+	 * <b>CONTROLS</b><br><br>
 	 * 
 	 * Drive:
 	 * <ul>
