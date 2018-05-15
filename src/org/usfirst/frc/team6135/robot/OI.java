@@ -155,8 +155,9 @@ public class OI {
 			super.whenPressed(new InstantCommand() {
 				@Override
 				protected void initialize() {
-					if(!OI.isInDemoMode)
+					if(!OI.isInDemoMode) {
 						cmd.start();
+					}
 				}
 			});
 		}
@@ -166,8 +167,9 @@ public class OI {
 			super.whenReleased(new InstantCommand() {
 				@Override
 				protected void initialize() {
-					if(!OI.isInDemoMode)
+					if(!OI.isInDemoMode) {
 						cmd.start();
+					}
 				}
 			});
 		}
@@ -196,12 +198,12 @@ public class OI {
 				@Override
 				protected void initialize() {
 					if(isAttachment) {
-						if(OI.isInDemoMode && !OI.attachmentsControllerBlocked)
+						if(OI.isInDemoMode && !OI.attachmentsControllerBlocked) {
 							cmd.start();
+						}
 					}
-					else {
-						if(OI.isInDemoMode)
-							cmd.start();
+					else if(OI.isInDemoMode) {
+						cmd.start();
 					}
 				}
 			});
@@ -212,8 +214,9 @@ public class OI {
 				@Override
 				protected void initialize() {
 					if(isAttachment) {
-						if(OI.isInDemoMode && !OI.attachmentsControllerBlocked)
+						if(OI.isInDemoMode && !OI.attachmentsControllerBlocked) {
 							cmd.start();
+						}
 					}
 					else if(OI.isInDemoMode) {
 						cmd.start();
