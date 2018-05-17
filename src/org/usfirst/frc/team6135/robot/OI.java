@@ -237,7 +237,7 @@ public class OI {
 	
 	public static NonDemoButton recordAuto;
 	
-	public static JoystickButton scalePosition;
+	public static NonDemoButton scalePosition;
 	
 	public static NonDemoButton shootCube;
 	
@@ -259,7 +259,7 @@ public class OI {
 		cancelAlign = new NonDemoButton(driveController, Controls.CANCEL_ALIGN);
 		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
 		recordAuto = new NonDemoButton(driveController, Controls.RECORD_AUTO);
-		scalePosition = new JoystickButton(attachmentsController, Controls.SCALE_POSITION);
+		scalePosition = new NonDemoButton(attachmentsController, Controls.SCALE_POSITION);
 		shootCube = new NonDemoButton(attachmentsController, Controls.SHOOT_CUBE);
 		
 		demo_blockAttachments = new DemoButton(driveController, Controls.DEMO_BLOCK_ATTACHMENTS, false);
