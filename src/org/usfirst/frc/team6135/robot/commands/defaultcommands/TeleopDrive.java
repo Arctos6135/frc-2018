@@ -44,8 +44,7 @@ public class TeleopDrive extends Command {
     protected void execute() {
     	double x = Math.abs(OI.driveController.getRawAxis(X_AXIS))>DEADZONE?OI.driveController.getRawAxis(X_AXIS):0;
         double y = Math.abs(OI.driveController.getRawAxis(Y_AXIS))>DEADZONE?-OI.driveController.getRawAxis(Y_AXIS):0;
-        double l = Math.max(-RobotMap.Speeds.DRIVE_SPEED, Math.min(RobotMap.Speeds.DRIVE_SPEED, y + x));//constrain to [-1,1]
-        double r = Math.max(-RobotMap.Speeds.DRIVE_SPEED, Math.min(RobotMap.Speeds.DRIVE_SPEED, y - x));
+        double l = y + x, r = y - x;
         
         //Square the final values to smooth out driving
         //Math.copySign ensures the direction is not lost

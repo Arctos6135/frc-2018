@@ -20,19 +20,44 @@ public class DriveTrain extends Subsystem {
 	double leftLastRate = 0, rightLastRate = 0;
 	double lastTime;
 	
+	//Default: Unscaled
+	double speedMultiplier = 1.0;
+	
 	public DriveTrain() {
 		lastTime = Timer.getFPGATimestamp();
+	}
+	
+	/**
+	 * Gets the speed multiplier.<br>
+	 * <br>
+	 * Every time the speed of the motors are set, the speed is first multiplied by the multiplier.
+	 * Setting this value to be between 0 and 1 effectively constrains the top speed of the drive.
+	 * @return The speed multiplier
+	 */
+	public double getSpeedMultiplier() {
+		return speedMultiplier;
+	}
+	/**
+	 * Sets the speed multiplier.<br>
+	 * <br>
+	 * Every time the speed of the motors are set, the speed is first multiplied by the multiplier.
+	 * Setting this value to be between 0 and 1 effectively constrains the top speed of the drive.
+	 * @param multiplier - The speed multiplier
+	 */
+	public void setSpeedMultiplier(double multiplier) {
+		this.speedMultiplier = multiplier;
 	}
 
 	/**
 	 * Sets the speed of the drive motors for both sides of the robot.
+	 * The motor speeds are first scaled by the scaling constant, and then constrained to [-1, 1].
 	 * @param leftMotorVBus - The left output percentage
 	 * @param rightMotorVBus - The right ouput percentage
 	 */
 	public void setMotorsVBus(double leftMotorVBus, double rightMotorVBus) {
-		
-		RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, leftMotorVBus);
-		RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, -rightMotorVBus);
+		//Constrain to [-1, 1]
+		RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, Math.max(-1, Math.min(1, leftMotorVBus)));
+		RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, Math.max(-1, Math.min(1, rightMotorVBus)));
 	}
 	
     public void initDefaultCommand() {
