@@ -5,7 +5,6 @@ import org.usfirst.frc.team6135.robot.commands.defaultcommands.WristAnalogPID;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -109,7 +108,6 @@ public class WristPIDSubsystem extends PIDSubsystem {
         // e.g. yourMotor.set(output);
     	// Since the gyro reading decreases (Gets more negative) when the wrist raises,
     	// And the wrist is reversed, the output does not have to be reversed
-    	SmartDashboard.putNumber("Wrist output", output);
     	if(notAtTop()) {
     		RobotMap.wristVictor.set(output);
     	}
