@@ -130,7 +130,6 @@ public class RobotMap {
 		public static final double AUTO_INTAKE_SPEED = 0.8;
 		//Elevator
 		public static final double AUTO_ELEVATOR_SPEED = 1.0; 
-		public static double DRIVE_SPEED = 1.0;
 	}
 	
 	public static final int WHEEL_DIAMETER = 6; //INCHES
