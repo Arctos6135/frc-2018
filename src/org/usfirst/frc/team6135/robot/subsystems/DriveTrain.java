@@ -20,8 +20,8 @@ public class DriveTrain extends Subsystem {
 	double leftLastRate = 0, rightLastRate = 0;
 	double lastTime;
 	
-	//Default: Unscaled
-	double speedMultiplier = 1.0;
+	//Default: 30% Max (For demonstration purposes)
+	double speedMultiplier = 0.3;
 	
 	public DriveTrain() {
 		lastTime = Timer.getFPGATimestamp();
