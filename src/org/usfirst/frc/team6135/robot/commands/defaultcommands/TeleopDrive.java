@@ -19,7 +19,7 @@ public class TeleopDrive extends Command {
     private static final double DEADZONE = 0.15;
     
     public static double rampBand = 0.05;
-    static boolean rampingOn = false;
+    static boolean rampingOn = true;
     static double prevLeft, prevRight;
 
     public TeleopDrive() {

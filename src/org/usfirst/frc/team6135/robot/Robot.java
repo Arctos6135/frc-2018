@@ -351,9 +351,9 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
     	SmartDashboard.putBoolean("Wrist Switch", Robot.wristSubsystem.notAtTop());
     	
-    	SmartDashboard.putBoolean("Training Wheels", TeleopDrive.isRamped());
     	SmartDashboard.putBoolean("Demo Mode", OI.isInDemoMode);
     	SmartDashboard.putBoolean("Demo Mode Operator Enabled", !OI.attachmentsControllerBlocked);
+    	SmartDashboard.putBoolean("Drive Ramping", TeleopDrive.isRamped());
 	}
 
 	/**
