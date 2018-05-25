@@ -188,7 +188,7 @@ public class RobotMap {
     public static PowerDistributionPanel PDP = new PowerDistributionPanel();
     
     //Used to create trajectories
-    public static RobotSpecs specs = new RobotSpecs(0, 0, 23.25);
+    public static RobotSpecs specs = new RobotSpecs(78, 60, 23.25);
 	
 	public static void init() {
 		//Set back motors to follow the front motors
