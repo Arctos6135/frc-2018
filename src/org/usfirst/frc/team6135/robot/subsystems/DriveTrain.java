@@ -57,7 +57,7 @@ public class DriveTrain extends Subsystem {
 	public void setMotorsVBus(double leftMotorVBus, double rightMotorVBus) {
 		//Constrain to [-1, 1]
 		RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, Math.max(-1, Math.min(1, leftMotorVBus)));
-		RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, Math.max(-1, Math.min(1, rightMotorVBus)));
+		RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, Math.max(-1, Math.min(1, -rightMotorVBus)));
 	}
 	
     public void initDefaultCommand() {
