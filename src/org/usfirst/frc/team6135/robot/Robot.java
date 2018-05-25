@@ -303,11 +303,11 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Multi-Cube from middle", multiCubeFromMiddle);
 		
 		//Test trajectory
-		/*TankDriveTrajectory testTrajectory = new TankDriveTrajectory(new Waypoint[] {
+		TankDriveTrajectory testTrajectory = new TankDriveTrajectory(new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
 				new Waypoint(0, 120, Math.PI / 2),
 		}, RobotMap.specs, 100, 5000);
-		chooser.addObject("Pathfinder Trajectory", new FollowTrajectory(testTrajectory));*/
+		chooser.addObject("Pathfinder Trajectory", new FollowTrajectory(testTrajectory));
 		
 		//chooser.addObject("Place Cube With Vision: Middle", visionAuto);
 		//Display the chooser
