@@ -635,6 +635,9 @@ public class Robot extends IterativeRobot {
 					}
 				}
 			}
+			else {
+				autonomousCommand.start();
+			}
 		}
 	}
 
