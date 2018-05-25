@@ -305,8 +305,8 @@ public class Robot extends IterativeRobot {
 		//Test trajectory
 		TankDriveTrajectory testTrajectory = new TankDriveTrajectory(new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
-				new Waypoint(0, 120, Math.PI / 2),
-		}, RobotMap.specs, 100, 5000);
+				new Waypoint(60, 144, Math.PI / 2),
+		}, RobotMap.specs, 300, 5000);
 		chooser.addObject("Pathfinder Trajectory", new FollowTrajectory(testTrajectory));
 		
 		//chooser.addObject("Place Cube With Vision: Middle", visionAuto);
