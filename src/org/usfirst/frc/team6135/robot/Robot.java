@@ -159,7 +159,10 @@ public class Robot extends IterativeRobot {
 	AutoPlayback player;
 	AutoRecord recorder;
 	
+	public static boolean inDebugMode = false;
 	void putTunables() {
+		if(!inDebugMode)
+			return;
 		//Output these values to the SmartDashboard for tuning
 		SmartDashboard.putNumber("Drive kP", DriveStraightDistancePID.kP);
 		SmartDashboard.putNumber("Drive kI", DriveStraightDistancePID.kI);
@@ -181,6 +184,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Auto Playback File Name", "");
 	}
 	void updateTunables() {
+		if(!inDebugMode)
+			return;
 		//Read the tunable values and overwrite them
 		DriveStraightDistancePID.kP = SmartDashboard.getNumber("Drive kP", DriveStraightDistancePID.kP);
 		DriveStraightDistancePID.kI = SmartDashboard.getNumber("Drive kI", DriveStraightDistancePID.kI);
@@ -328,36 +333,38 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		SmartDashboard.putNumber("Left Distance", Robot.drive.getLeftDistance());
-    	SmartDashboard.putNumber("Right Distance", Robot.drive.getRightDistance());
-    	double leftVel = Robot.drive.getLeftSpeed();
-    	double rightVel = Robot.drive.getRightSpeed();
-    	SmartDashboard.putNumber("Left Speed", leftVel);
-    	SmartDashboard.putNumber("Right Speed", rightVel);
-    	double[] accel = Robot.drive.getAccelerations();
-    	SmartDashboard.putNumber("Left Acceleration", accel[0]);
-    	SmartDashboard.putNumber("Right Acceleration", accel[1]);
+		if(inDebugMode) {
+			SmartDashboard.putNumber("Left Distance", Robot.drive.getLeftDistance());
+	    	SmartDashboard.putNumber("Right Distance", Robot.drive.getRightDistance());
+	    	double leftVel = Robot.drive.getLeftSpeed();
+	    	double rightVel = Robot.drive.getRightSpeed();
+	    	SmartDashboard.putNumber("Left Speed", leftVel);
+	    	SmartDashboard.putNumber("Right Speed", rightVel);
+	    	double[] accel = Robot.drive.getAccelerations();
+	    	SmartDashboard.putNumber("Left Acceleration", accel[0]);
+	    	SmartDashboard.putNumber("Right Acceleration", accel[1]);
+	    	
+	    	if(Math.abs(leftVel) > Math.abs(leftMaxVel)) {
+	    		leftMaxVel = leftVel;
+	    	}
+	    	if(Math.abs(rightVel) > Math.abs(rightMaxVel)) {
+	    		rightMaxVel = rightVel;
+	    	}
+	    	if(Math.abs(accel[0]) > Math.abs(leftMaxAccel)) {
+	    		leftMaxAccel = accel[0];
+	    	}
+	    	if(Math.abs(accel[1]) > Math.abs(rightMaxAccel)) {
+	    		rightMaxAccel = accel[1];
+	    	}
+	    	SmartDashboard.putNumber("Left Max Speed", leftMaxVel);
+	    	SmartDashboard.putNumber("Right Max Speed", rightMaxVel);
+	    	SmartDashboard.putNumber("Left Max Acceleration", leftMaxAccel);
+	    	SmartDashboard.putNumber("Right Max Acceleration", rightMaxAccel);
     	
-    	if(Math.abs(leftVel) > Math.abs(leftMaxVel)) {
-    		leftMaxVel = leftVel;
-    	}
-    	if(Math.abs(rightVel) > Math.abs(rightMaxVel)) {
-    		rightMaxVel = rightVel;
-    	}
-    	if(Math.abs(accel[0]) > Math.abs(leftMaxAccel)) {
-    		leftMaxAccel = accel[0];
-    	}
-    	if(Math.abs(accel[1]) > Math.abs(rightMaxAccel)) {
-    		rightMaxAccel = accel[1];
-    	}
-    	SmartDashboard.putNumber("Left Max Speed", leftMaxVel);
-    	SmartDashboard.putNumber("Right Max Speed", rightMaxVel);
-    	SmartDashboard.putNumber("Left Max Acceleration", leftMaxAccel);
-    	SmartDashboard.putNumber("Right Max Acceleration", rightMaxAccel);
-    	
-    	SmartDashboard.putBoolean("Elevator Top Switch", Robot.elevatorSubsystem.notAtTop());
-    	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
-    	SmartDashboard.putBoolean("Wrist Switch", Robot.wristSubsystem.notAtTop());
+	    	SmartDashboard.putBoolean("Elevator Top Switch", Robot.elevatorSubsystem.notAtTop());
+	    	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
+	    	SmartDashboard.putBoolean("Wrist Switch", Robot.wristSubsystem.notAtTop());
+		}
     	
     	SmartDashboard.putBoolean("Drive Ramping", TeleopDrive.isRamped());
 	}
