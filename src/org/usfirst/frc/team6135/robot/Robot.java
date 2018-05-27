@@ -19,6 +19,7 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
+import org.usfirst.frc.team6135.robot.misc.AutoPaths;
 import org.usfirst.frc.team6135.robot.misc.AutoPlayback;
 import org.usfirst.frc.team6135.robot.misc.AutoRecord;
 import org.usfirst.frc.team6135.robot.misc.CameraCaptureTask;
@@ -231,6 +232,8 @@ public class Robot extends TimedRobot {
         visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO); //For vision, change to Mode.VISION
         
         oi = new OI();
+        
+        AutoPaths.generateAll(RobotMap.specs);
         
         if(useRecordedAutos) {
         	//Recorded autos
