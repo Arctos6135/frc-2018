@@ -11,9 +11,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class SwitchAligned extends CommandGroup {
+public class SwitchMiddle extends CommandGroup {
+	
+	public static final int DIRECTION_LEFT = 1;
+	public static final int DIRECTION_RIGHT = -1;
 
-    public SwitchAligned() {
+    public SwitchMiddle(int direction) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -31,7 +34,7 @@ public class SwitchAligned extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addParallel(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
-    	addSequential(new FollowTrajectory(AutoPaths.aligned_driveForward));
+    	addSequential(new FollowTrajectory(direction == DIRECTION_LEFT ? AutoPaths.middle_left : AutoPaths.middle_right));
     	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }

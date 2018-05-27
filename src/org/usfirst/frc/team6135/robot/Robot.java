@@ -8,9 +8,8 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseline;
 import org.usfirst.frc.team6135.robot.commands.autocommands.MultiCubeAligned;
 import org.usfirst.frc.team6135.robot.commands.autocommands.MultiCubeFromMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.MultiCubeFromSide;
-import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeAligned;
-import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromMiddle;
-import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromMiddleDiagonal;
+import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchAligned;
+import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
@@ -68,9 +67,8 @@ public class Robot extends TimedRobot {
 	
 	//These commands are combined with the alliance colour and switch location and used later
 	//They are the options that are shown in the auto menu
-	public static PlaceCubeFromMiddle placeCubeFromMiddle;
-	public static PlaceCubeFromMiddleDiagonal placeCubeFromMiddleFast;
-	public static PlaceCubeAligned placeCubeLeftSide, placeCubeRightSide;
+	public static SwitchMiddle placeCubeFromMiddle;
+	public static SwitchAligned placeCubeLeftSide, placeCubeRightSide;
 	public static PlaceCubeFromSide placeCubeLeftSideOffset, placeCubeRightSideOffset;
 	public static VisionAuto visionAuto;
 	public static MultiCubeFromSide multiCubeLeftSide, multiCubeRightSide;
@@ -257,10 +255,9 @@ public class Robot extends TimedRobot {
         //chooser.addObject("DriveStraightDistancePID", new DriveStraightDistancePID(60));
         //chooser.addObject("AutoTurnPID", new AutoTurnPID(90));
         //Direction doesn't matter
-		placeCubeFromMiddle = new PlaceCubeFromMiddle(1);
-		placeCubeFromMiddleFast = new PlaceCubeFromMiddleDiagonal(1);
-		placeCubeLeftSide = new PlaceCubeAligned();
-		placeCubeRightSide = new PlaceCubeAligned();
+		placeCubeFromMiddle = new SwitchMiddle(1);
+		placeCubeLeftSide = new SwitchAligned();
+		placeCubeRightSide = new SwitchAligned();
 		placeCubeLeftSideOffset = new PlaceCubeFromSide(PlaceCubeFromSide.SIDE_LEFT);
 		placeCubeRightSideOffset = new PlaceCubeFromSide(PlaceCubeFromSide.SIDE_RIGHT);
 		scaleSameSideLeft = new ScaleCubeSameSide(ScaleCubeSameSide.SIDE_LEFT);
@@ -278,7 +275,7 @@ public class Robot extends TimedRobot {
 		chooser.addObject("Place Cube from right side", placeCubeRightSideOffset);
 		chooser.addObject("Place Cube (Aligned with switch): Left", placeCubeLeftSide);
 		chooser.addObject("Place Cube (Aligned with switch): Right", placeCubeRightSide);
-		chooser.addObject("Place Cube: Middle", placeCubeFromMiddleFast);
+		chooser.addObject("Place Cube: Middle", placeCubeFromMiddle);
 		//chooser.addObject("Place Cube From Middle (FASTER)", placeCubeFromMiddleFast);
 		chooser.addObject("Shoot Cube into Scale: Left", scaleSameSideLeft);
 		chooser.addObject("Shoot Cube into Scale: Right", scaleSameSideRight);
@@ -557,10 +554,7 @@ public class Robot extends TimedRobot {
 						//If the alliance switch is on the left side
 						if(autonomousCommand == placeCubeFromMiddle) {
 							//If command is to place a cube from the middle
-							(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_LEFT)).start();
-						}
-						else if(autonomousCommand == placeCubeFromMiddleFast){
-							new PlaceCubeFromMiddleDiagonal(PlaceCubeFromMiddleDiagonal.DIRECTION_LEFT).start();
+							new SwitchMiddle(SwitchMiddle.DIRECTION_LEFT).start();
 						}
 						//Use == to check if they're the exact same object
 						else if(autonomousCommand == placeCubeRightSide) {
@@ -589,10 +583,7 @@ public class Robot extends TimedRobot {
 					} 
 					else {
 						if(autonomousCommand == placeCubeFromMiddle) {
-							(new PlaceCubeFromMiddle(PlaceCubeFromMiddle.DIRECTION_RIGHT)).start();
-						}
-						else if(autonomousCommand == placeCubeFromMiddleFast){
-							new PlaceCubeFromMiddleDiagonal(PlaceCubeFromMiddleDiagonal.DIRECTION_RIGHT).start();
+							new SwitchMiddle(SwitchMiddle.DIRECTION_RIGHT).start();
 						}
 						else if(autonomousCommand == placeCubeLeftSide) {
 							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
