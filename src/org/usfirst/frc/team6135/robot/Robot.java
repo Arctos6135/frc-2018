@@ -16,7 +16,6 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSid
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
-import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPlayback;
 import org.usfirst.frc.team6135.robot.misc.AutoRecord;
@@ -156,73 +155,8 @@ public class Robot extends IterativeRobot {
 	AutoRecord recorder;
 	
 	void putTunables() {
-		//Output these values to the SmartDashboard for tuning
-<<<<<<< HEAD
-		//SmartDashboard.putNumber("Wrist kP", WristPIDSubsystem.kP);
-		//SmartDashboard.putNumber("Wrist kI", WristPIDSubsystem.kI);
-		//SmartDashboard.putNumber("Wrist kD", WristPIDSubsystem.kD);
-		/*SmartDashboard.putNumber("Brake kP", BrakePID.kP);
-		SmartDashboard.putNumber("Brake kI", BrakePID.kI);
-		SmartDashboard.putNumber("Brake kD", BrakePID.kD);
-=======
->>>>>>> 02ff91e... Archive unused BrakePID and remove related code
-		SmartDashboard.putNumber("Drive kP", DriveStraightDistancePID.kP);
-		SmartDashboard.putNumber("Drive kI", DriveStraightDistancePID.kI);
-		SmartDashboard.putNumber("Drive kD", DriveStraightDistancePID.kD);
-		SmartDashboard.putNumber("Turn kP", AutoTurnPID.kP);
-		SmartDashboard.putNumber("Turn kI", AutoTurnPID.kI);
-		SmartDashboard.putNumber("Turn kD", AutoTurnPID.kD);
-		SmartDashboard.putNumber("TMP Drive kP", DriveStraightDistanceTMP.kP);
-		SmartDashboard.putNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
-		SmartDashboard.putNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
-		SmartDashboard.putNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);*/
-		SmartDashboard.putNumber("Path Follower kP", FollowTrajectory.kP);
-		SmartDashboard.putNumber("Path Follower kD", FollowTrajectory.kD);
-		SmartDashboard.putNumber("Path Follower kV", FollowTrajectory.kV);
-		SmartDashboard.putNumber("Path Follower kA", FollowTrajectory.kA);
-		SmartDashboard.putNumber("Teleop Drive Ramp Band", TeleopDrive.rampBand);
-		
-		SmartDashboard.putString("Auto Recording Save Name", "");
-		SmartDashboard.putString("Auto Playback File Name", "");
 	}
 	void updateTunables() {
-		//Read the tunable values and overwrite them
-<<<<<<< HEAD
-		//WristPIDSubsystem.kP = SmartDashboard.getNumber("Wrist kP", WristPIDSubsystem.kP);
-		//WristPIDSubsystem.kI = SmartDashboard.getNumber("Wrist kI", WristPIDSubsystem.kI);
-		//WristPIDSubsystem.kD = SmartDashboard.getNumber("Wrist kD", WristPIDSubsystem.kD);
-		/*BrakePID.kP = SmartDashboard.getNumber("Brake kP", BrakePID.kP);
-		BrakePID.kI = SmartDashboard.getNumber("Brake kI", BrakePID.kI);
-		BrakePID.kD = SmartDashboard.getNumber("Brake kD", BrakePID.kD);
-=======
->>>>>>> 02ff91e... Archive unused BrakePID and remove related code
-		DriveStraightDistancePID.kP = SmartDashboard.getNumber("Drive kP", DriveStraightDistancePID.kP);
-		DriveStraightDistancePID.kI = SmartDashboard.getNumber("Drive kI", DriveStraightDistancePID.kI);
-		DriveStraightDistancePID.kD = SmartDashboard.getNumber("Drive kD", DriveStraightDistancePID.kD);
-		AutoTurnPID.kP = SmartDashboard.getNumber("Turn kP", AutoTurnPID.kP);
-		AutoTurnPID.kI = SmartDashboard.getNumber("Turn kI", AutoTurnPID.kI);
-		AutoTurnPID.kD = SmartDashboard.getNumber("Turn kD", AutoTurnPID.kD);
-		DriveStraightDistanceTMP.kP = SmartDashboard.getNumber("TMP Drive kP", DriveStraightDistanceTMP.kP);
-		DriveStraightDistanceTMP.kD = SmartDashboard.getNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
-		DriveStraightDistanceTMP.kV = SmartDashboard.getNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
-		DriveStraightDistanceTMP.kA = SmartDashboard.getNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);*/
-		FollowTrajectory.kP = SmartDashboard.getNumber("Path Follower kP", FollowTrajectory.kP);
-		FollowTrajectory.kD = SmartDashboard.getNumber("Path Follower kD", FollowTrajectory.kD);
-		FollowTrajectory.kV = SmartDashboard.getNumber("Path Follower kV", FollowTrajectory.kV);
-		FollowTrajectory.kA = SmartDashboard.getNumber("Path Follower kA", FollowTrajectory.kA);
-		TeleopDrive.rampBand = SmartDashboard.getNumber("Teleop Drive Ramp Band", TeleopDrive.rampBand);
-		
-		String autoRecordingName;
-		if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", "")).length() > 0)
-			recordingString = CSV_FILE_PREFIX + autoRecordingName + ".csv";
-		else
-			recordingString = null;
-		
-		String autoPlaybackName;
-		if((autoPlaybackName = SmartDashboard.getString("Auto Playback File Name", "")).length() > 0)
-			customAutoFileName = CSV_FILE_PREFIX + autoPlaybackName + ".csv";
-		else
-			customAutoFileName = null;
 	}
 	
 	/**
