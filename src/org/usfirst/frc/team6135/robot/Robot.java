@@ -18,7 +18,6 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
-import org.usfirst.frc.team6135.robot.commands.defaultcommands.BrakePID;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPlayback;
 import org.usfirst.frc.team6135.robot.misc.AutoRecord;
@@ -159,14 +158,11 @@ public class Robot extends TimedRobot {
 	AutoPlayback player;
 	AutoRecord recorder;
 	
+	public static boolean inDebugMode = false;
 	void putTunables() {
+		if(!inDebugMode)
+			return;
 		//Output these values to the SmartDashboard for tuning
-		//SmartDashboard.putNumber("Wrist kP", WristPIDSubsystem.kP);
-		//SmartDashboard.putNumber("Wrist kI", WristPIDSubsystem.kI);
-		//SmartDashboard.putNumber("Wrist kD", WristPIDSubsystem.kD);
-		SmartDashboard.putNumber("Brake kP", BrakePID.kP);
-		SmartDashboard.putNumber("Brake kI", BrakePID.kI);
-		SmartDashboard.putNumber("Brake kD", BrakePID.kD);
 		SmartDashboard.putNumber("Drive kP", DriveStraightDistancePID.kP);
 		SmartDashboard.putNumber("Drive kI", DriveStraightDistancePID.kI);
 		SmartDashboard.putNumber("Drive kD", DriveStraightDistancePID.kD);
@@ -183,13 +179,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putString("Auto Playback File Name", "");
 	}
 	void updateTunables() {
+		if(!inDebugMode)
+			return;
 		//Read the tunable values and overwrite them
-		//WristPIDSubsystem.kP = SmartDashboard.getNumber("Wrist kP", WristPIDSubsystem.kP);
-		//WristPIDSubsystem.kI = SmartDashboard.getNumber("Wrist kI", WristPIDSubsystem.kI);
-		//WristPIDSubsystem.kD = SmartDashboard.getNumber("Wrist kD", WristPIDSubsystem.kD);
-		BrakePID.kP = SmartDashboard.getNumber("Brake kP", BrakePID.kP);
-		BrakePID.kI = SmartDashboard.getNumber("Brake kI", BrakePID.kI);
-		BrakePID.kD = SmartDashboard.getNumber("Brake kD", BrakePID.kD);
 		DriveStraightDistancePID.kP = SmartDashboard.getNumber("Drive kP", DriveStraightDistancePID.kP);
 		DriveStraightDistancePID.kI = SmartDashboard.getNumber("Drive kI", DriveStraightDistancePID.kI);
 		DriveStraightDistancePID.kD = SmartDashboard.getNumber("Drive kD", DriveStraightDistancePID.kD);
@@ -296,8 +288,8 @@ public class Robot extends TimedRobot {
 		//Test trajectory
 		TankDriveTrajectory testTrajectory = new TankDriveTrajectory(new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
-				new Waypoint(0, 120, Math.PI / 2),
-		}, RobotMap.specs, 100, 5000);
+				new Waypoint(60, 144, Math.PI / 2),
+		}, RobotMap.specs, 300, 5000);
 		chooser.addObject("Pathfinder Trajectory", new FollowTrajectory(testTrajectory));
 		
 		//chooser.addObject("Place Cube With Vision: Middle", visionAuto);
@@ -332,36 +324,38 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		SmartDashboard.putNumber("Left Distance", Robot.drive.getLeftDistance());
-    	SmartDashboard.putNumber("Right Distance", Robot.drive.getRightDistance());
-    	double leftVel = Robot.drive.getLeftSpeed();
-    	double rightVel = Robot.drive.getRightSpeed();
-    	SmartDashboard.putNumber("Left Speed", leftVel);
-    	SmartDashboard.putNumber("Right Speed", rightVel);
-    	double[] accel = Robot.drive.getAccelerations();
-    	SmartDashboard.putNumber("Left Acceleration", accel[0]);
-    	SmartDashboard.putNumber("Right Acceleration", accel[1]);
+		if(inDebugMode) {
+			SmartDashboard.putNumber("Left Distance", Robot.drive.getLeftDistance());
+	    	SmartDashboard.putNumber("Right Distance", Robot.drive.getRightDistance());
+	    	double leftVel = Robot.drive.getLeftSpeed();
+	    	double rightVel = Robot.drive.getRightSpeed();
+	    	SmartDashboard.putNumber("Left Speed", leftVel);
+	    	SmartDashboard.putNumber("Right Speed", rightVel);
+	    	double[] accel = Robot.drive.getAccelerations();
+	    	SmartDashboard.putNumber("Left Acceleration", accel[0]);
+	    	SmartDashboard.putNumber("Right Acceleration", accel[1]);
+	    	
+	    	if(Math.abs(leftVel) > Math.abs(leftMaxVel)) {
+	    		leftMaxVel = leftVel;
+	    	}
+	    	if(Math.abs(rightVel) > Math.abs(rightMaxVel)) {
+	    		rightMaxVel = rightVel;
+	    	}
+	    	if(Math.abs(accel[0]) > Math.abs(leftMaxAccel)) {
+	    		leftMaxAccel = accel[0];
+	    	}
+	    	if(Math.abs(accel[1]) > Math.abs(rightMaxAccel)) {
+	    		rightMaxAccel = accel[1];
+	    	}
+	    	SmartDashboard.putNumber("Left Max Speed", leftMaxVel);
+	    	SmartDashboard.putNumber("Right Max Speed", rightMaxVel);
+	    	SmartDashboard.putNumber("Left Max Acceleration", leftMaxAccel);
+	    	SmartDashboard.putNumber("Right Max Acceleration", rightMaxAccel);
     	
-    	if(Math.abs(leftVel) > Math.abs(leftMaxVel)) {
-    		leftMaxVel = leftVel;
-    	}
-    	if(Math.abs(rightVel) > Math.abs(rightMaxVel)) {
-    		rightMaxVel = rightVel;
-    	}
-    	if(Math.abs(accel[0]) > Math.abs(leftMaxAccel)) {
-    		leftMaxAccel = accel[0];
-    	}
-    	if(Math.abs(accel[1]) > Math.abs(rightMaxAccel)) {
-    		rightMaxAccel = accel[1];
-    	}
-    	SmartDashboard.putNumber("Left Max Speed", leftMaxVel);
-    	SmartDashboard.putNumber("Right Max Speed", rightMaxVel);
-    	SmartDashboard.putNumber("Left Max Acceleration", leftMaxAccel);
-    	SmartDashboard.putNumber("Right Max Acceleration", rightMaxAccel);
-    	
-    	SmartDashboard.putBoolean("Elevator Top Switch", Robot.elevatorSubsystem.notAtTop());
-    	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
-    	SmartDashboard.putBoolean("Wrist Switch", Robot.wristSubsystem.notAtTop());
+	    	SmartDashboard.putBoolean("Elevator Top Switch", Robot.elevatorSubsystem.notAtTop());
+	    	SmartDashboard.putBoolean("Elevator Bottom Switch", Robot.elevatorSubsystem.notAtBottom());
+	    	SmartDashboard.putBoolean("Wrist Switch", Robot.wristSubsystem.notAtTop());
+		}
     	
     	SmartDashboard.putBoolean("Drive Ramping", TeleopDrive.isRamped());
 	}
@@ -374,8 +368,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 		captureTask.pause();
-		//Set drivetrain's default so there's no more braking
-		Robot.drive.setDefaultCommand(new TeleopDrive());
 	}
 
 	@Override
@@ -436,9 +428,6 @@ public class Robot extends TimedRobot {
 
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
-		
-		//Set the drivetrain's default command to enable braking
-		Robot.drive.setDefaultCommand(new BrakePID());
 		
 		captureTask.resume();
 		
@@ -626,6 +615,9 @@ public class Robot extends TimedRobot {
 					}
 				}
 			}
+			else {
+				autonomousCommand.start();
+			}
 		}
 	}
 
@@ -667,8 +659,6 @@ public class Robot extends TimedRobot {
 		
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
-		//Set the drivetrain's default command to disable braking
-		Robot.drive.setDefaultCommand(new TeleopDrive());
 		RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Coast);
 		RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Coast);
 		RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Coast);

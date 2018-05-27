@@ -64,8 +64,8 @@ public class OI {
 	 * 	<li>Y Button: Auto Power Cube align</li>
 	 * 	<li>X Button: Toggle Precision Mode</li>
 	 * 	<li>B Button: Cancel auto align</li>
-	 * 	<li>A Button: Start/Stop autonomous recording</li>
-	 * 	<li>Back Button: Toggle Training Wheels</li>
+	 * 	<li>Back Button: Toggle Drive Ramping</li>
+	 * 	<li>Start Button: Toggle Debug Mode</li>
 	 * 	<li>XBOX Button: Enable rocket booster</li>
 	 * </ul>
 	 * Attachments:
@@ -127,11 +127,11 @@ public class OI {
 		autoCubeAlign = new JoystickButton(driveController, Controls.AUTO_CUBE_ALIGN);
 		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
 		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
-		recordAuto = new JoystickButton(driveController, Controls.RECORD_AUTO);
+		//recordAuto = new JoystickButton(driveController, Controls.RECORD_AUTO);
 		scalePosition = new JoystickButton(attachmentsController, Controls.SCALE_POSITION);
 		shootCube = new JoystickButton(attachmentsController, Controls.SHOOT_CUBE);
 		
-		recordAuto.whenPressed(new ToggleRecording());
+		//recordAuto.whenPressed(new ToggleRecording());
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
@@ -193,8 +193,6 @@ public class OI {
 		//@SuppressWarnings("unused")
 		//Trigger motorCurrentMonitor = new MotorCurrentMonitor();
 		
-		//For DEBUGGING: Resets left and right encoder readings
-		//Assigned to Start button on drive controller
 		new Trigger() {
 			@Override
 			public boolean get() {
@@ -203,7 +201,7 @@ public class OI {
 		}.whenActive(new InstantCommand() {
 			@Override
 			protected void initialize() {
-				Robot.drive.resetEncoders();
+				Robot.inDebugMode = !Robot.inDebugMode;
 			}
 		});
 	}
