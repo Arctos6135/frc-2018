@@ -15,9 +15,7 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.PlaceCubeFromSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
-import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceTMP;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.BrakePID;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
@@ -41,8 +39,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.pathfinder.TankDriveTrajectory;
-import robot.pathfinder.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the
