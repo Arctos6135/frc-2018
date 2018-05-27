@@ -17,7 +17,6 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
-import org.usfirst.frc.team6135.robot.commands.defaultcommands.BrakePID;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPlayback;
 import org.usfirst.frc.team6135.robot.misc.AutoRecord;
@@ -158,12 +157,15 @@ public class Robot extends IterativeRobot {
 	
 	void putTunables() {
 		//Output these values to the SmartDashboard for tuning
+<<<<<<< HEAD
 		//SmartDashboard.putNumber("Wrist kP", WristPIDSubsystem.kP);
 		//SmartDashboard.putNumber("Wrist kI", WristPIDSubsystem.kI);
 		//SmartDashboard.putNumber("Wrist kD", WristPIDSubsystem.kD);
 		/*SmartDashboard.putNumber("Brake kP", BrakePID.kP);
 		SmartDashboard.putNumber("Brake kI", BrakePID.kI);
 		SmartDashboard.putNumber("Brake kD", BrakePID.kD);
+=======
+>>>>>>> 02ff91e... Archive unused BrakePID and remove related code
 		SmartDashboard.putNumber("Drive kP", DriveStraightDistancePID.kP);
 		SmartDashboard.putNumber("Drive kI", DriveStraightDistancePID.kI);
 		SmartDashboard.putNumber("Drive kD", DriveStraightDistancePID.kD);
@@ -185,12 +187,15 @@ public class Robot extends IterativeRobot {
 	}
 	void updateTunables() {
 		//Read the tunable values and overwrite them
+<<<<<<< HEAD
 		//WristPIDSubsystem.kP = SmartDashboard.getNumber("Wrist kP", WristPIDSubsystem.kP);
 		//WristPIDSubsystem.kI = SmartDashboard.getNumber("Wrist kI", WristPIDSubsystem.kI);
 		//WristPIDSubsystem.kD = SmartDashboard.getNumber("Wrist kD", WristPIDSubsystem.kD);
 		/*BrakePID.kP = SmartDashboard.getNumber("Brake kP", BrakePID.kP);
 		BrakePID.kI = SmartDashboard.getNumber("Brake kI", BrakePID.kI);
 		BrakePID.kD = SmartDashboard.getNumber("Brake kD", BrakePID.kD);
+=======
+>>>>>>> 02ff91e... Archive unused BrakePID and remove related code
 		DriveStraightDistancePID.kP = SmartDashboard.getNumber("Drive kP", DriveStraightDistancePID.kP);
 		DriveStraightDistancePID.kI = SmartDashboard.getNumber("Drive kI", DriveStraightDistancePID.kI);
 		DriveStraightDistancePID.kD = SmartDashboard.getNumber("Drive kD", DriveStraightDistancePID.kD);
@@ -353,8 +358,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		captureTask.pause();
-		//Set drivetrain's default so there's no more braking
-		Robot.drive.setDefaultCommand(new TeleopDrive());
 	}
 
 	@Override
@@ -415,9 +418,6 @@ public class Robot extends IterativeRobot {
 
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
-		
-		//Set the drivetrain's default command to enable braking
-		Robot.drive.setDefaultCommand(new BrakePID());
 		
 		captureTask.resume();
 		
@@ -646,8 +646,6 @@ public class Robot extends IterativeRobot {
 		
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
-		//Set the drivetrain's default command to disable braking
-		Robot.drive.setDefaultCommand(new TeleopDrive());
 		RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Coast);
 		RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Coast);
 		RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Coast);
