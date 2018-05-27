@@ -17,7 +17,6 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistanceTMP;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPlayback;
@@ -35,7 +34,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -50,7 +49,7 @@ import robot.pathfinder.Waypoint;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot {
+public class Robot extends TimedRobot {
 	
 	//SUBSYSTEMS
 	//public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
@@ -170,10 +169,6 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Turn kP", AutoTurnPID.kP);
 		SmartDashboard.putNumber("Turn kI", AutoTurnPID.kI);
 		SmartDashboard.putNumber("Turn kD", AutoTurnPID.kD);
-		SmartDashboard.putNumber("TMP Drive kP", DriveStraightDistanceTMP.kP);
-		SmartDashboard.putNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
-		SmartDashboard.putNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
-		SmartDashboard.putNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);
 		SmartDashboard.putNumber("Path Follower kP", FollowTrajectory.kP);
 		SmartDashboard.putNumber("Path Follower kD", FollowTrajectory.kD);
 		SmartDashboard.putNumber("Path Follower kV", FollowTrajectory.kV);
@@ -193,10 +188,6 @@ public class Robot extends IterativeRobot {
 		AutoTurnPID.kP = SmartDashboard.getNumber("Turn kP", AutoTurnPID.kP);
 		AutoTurnPID.kI = SmartDashboard.getNumber("Turn kI", AutoTurnPID.kI);
 		AutoTurnPID.kD = SmartDashboard.getNumber("Turn kD", AutoTurnPID.kD);
-		DriveStraightDistanceTMP.kP = SmartDashboard.getNumber("TMP Drive kP", DriveStraightDistanceTMP.kP);
-		DriveStraightDistanceTMP.kD = SmartDashboard.getNumber("TMP Drive kD", DriveStraightDistanceTMP.kD);
-		DriveStraightDistanceTMP.kV = SmartDashboard.getNumber("TMP Drive kV", DriveStraightDistanceTMP.kV);
-		DriveStraightDistanceTMP.kA = SmartDashboard.getNumber("TMP Drive kA", DriveStraightDistanceTMP.kA);
 		FollowTrajectory.kP = SmartDashboard.getNumber("Path Follower kP", FollowTrajectory.kP);
 		FollowTrajectory.kD = SmartDashboard.getNumber("Path Follower kD", FollowTrajectory.kD);
 		FollowTrajectory.kV = SmartDashboard.getNumber("Path Follower kV", FollowTrajectory.kV);
