@@ -11,7 +11,6 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.OperateIntake;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.PrecisionToggle;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.ToggleRecording;
 import org.usfirst.frc.team6135.robot.triggers.POVTrigger;
 
 import edu.wpi.first.wpilibj.GenericHID;
