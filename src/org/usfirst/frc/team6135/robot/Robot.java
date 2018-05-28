@@ -23,7 +23,7 @@ import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.IntakeSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
-import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
+import org.usfirst.frc.team6135.robot.subsystems.WristSubsystem;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
 	public static IntakeSubsystem intakeSubsystem;
 	public static GearShiftSubsystem gearShiftSubsystem;
 	public static ElevatorSubsystem elevatorSubsystem;
-	public static WristPIDSubsystem wristSubsystem;
+	public static WristSubsystem wristSubsystem;
 	public static VisionSubsystem visionSubsystem;
 	
 	public static Alliance color;
@@ -210,7 +210,7 @@ public class Robot extends TimedRobot {
 		intakeSubsystem = new IntakeSubsystem();
 		gearShiftSubsystem = new GearShiftSubsystem();
 		elevatorSubsystem = new ElevatorSubsystem();
-		wristSubsystem = new WristPIDSubsystem();
+		wristSubsystem = new WristSubsystem();
 		
 		//Get the team's colour and station number
 		station = DriverStation.getInstance().getLocation();

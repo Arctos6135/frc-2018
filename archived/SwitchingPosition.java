@@ -3,7 +3,7 @@ package org.usfirst.frc.team6135.robot.commands.teleoperated;
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
-import org.usfirst.frc.team6135.robot.subsystems.WristPIDSubsystem;
+import org.usfirst.frc.team6135.robot.subsystems.WristSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -23,7 +23,7 @@ public class SwitchingPosition extends Command {
     protected void initialize() {
     	if(!Robot.wristSubsystem.isEnabled())
     		Robot.wristSubsystem.enable();
-    	Robot.wristSubsystem.setSetpoint(WristPIDSubsystem.ANGLE_BOTTOM);
+    	Robot.wristSubsystem.setSetpoint(WristSubsystem.ANGLE_BOTTOM);
     	Robot.elevatorSubsystem.setSpeed(RobotMap.Speeds.AUTO_ELEVATOR_SPEED * ElevatorSubsystem.DIRECTION_UP);
     }
 
