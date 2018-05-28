@@ -44,7 +44,6 @@ import robot.pathfinder.Waypoint;
 public class Robot extends TimedRobot {
 	
 	//SUBSYSTEMS
-	//public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
 	public static DriveTrain drive;
 	public static IntakeSubsystem intakeSubsystem;
@@ -53,16 +52,16 @@ public class Robot extends TimedRobot {
 	public static WristSubsystem wristSubsystem;
 	public static VisionSubsystem visionSubsystem;
 	
-	public static Alliance color;
+	public static Alliance color; //Red or Blue
 	public static int station; //Driver station number (1, 2 or 3)
 	public static String gameData; //Used to tell the locations of the switch/scale plates
 	
-	//Location consts
+	//Location consts, used in auto choosing
 	public static final int LOCATION_LEFT = -1;
 	public static final int LOCATION_MID = 0;
 	public static final int LOCATION_RIGHT = 1;
 	
-	//Auto mode consts
+	//Auto mode consts, used in auto choosing
 	public static final int AUTO_DEBUG = 0x00;
 	public static final int AUTO_BASELINE = 0x01;
 	public static final int AUTO_ALIGNED = 0x02;
@@ -151,6 +150,7 @@ public class Robot extends TimedRobot {
 		if(!inDebugMode)
 			return;
 		//Output these values to the SmartDashboard for tuning
+		//They will show up as modifiable text boxes on the SmartDashboard
 		SmartDashboard.putNumber("Drive kP", DriveStraightDistancePID.kP);
 		SmartDashboard.putNumber("Drive kI", DriveStraightDistancePID.kI);
 		SmartDashboard.putNumber("Drive kD", DriveStraightDistancePID.kD);
@@ -169,7 +169,8 @@ public class Robot extends TimedRobot {
 	static void updateTunables() {
 		if(!inDebugMode)
 			return;
-		//Read the tunable values and overwrite them
+		//Read the textbox values and overwrite the old ones with the new ones
+		//The value is not changed by default (new value = old value)
 		DriveStraightDistancePID.kP = SmartDashboard.getNumber("Drive kP", DriveStraightDistancePID.kP);
 		DriveStraightDistancePID.kI = SmartDashboard.getNumber("Drive kI", DriveStraightDistancePID.kI);
 		DriveStraightDistancePID.kD = SmartDashboard.getNumber("Drive kD", DriveStraightDistancePID.kD);
@@ -183,6 +184,8 @@ public class Robot extends TimedRobot {
 		TeleopDrive.rampBand = SmartDashboard.getNumber("Teleop Drive Ramp Band", TeleopDrive.rampBand);
 		
 		String autoRecordingName;
+		//This makes sure that the file we save to/read from is in the valid location
+		//"/home/lvuser/"
 		if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", "")).length() > 0)
 			recordingString = CSV_FILE_PREFIX + autoRecordingName + ".csv";
 		else
@@ -209,19 +212,25 @@ public class Robot extends TimedRobot {
 		elevatorSubsystem = new ElevatorSubsystem();
 		wristSubsystem = new WristSubsystem();
 		
-		//Get the team's colour and station number
-		station = DriverStation.getInstance().getLocation();
-		color = DriverStation.getInstance().getAlliance();
-		
 		//Initialize camera stream and vision subsystem
         visionSubsystem = new VisionSubsystem(CameraServer.getInstance().startAutomaticCapture());
         //Set camera config
         visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO); //For vision, change to Mode.VISION
         
+        //Get the team's colour and station number
+        station = DriverStation.getInstance().getLocation();
+        color = DriverStation.getInstance().getAlliance();
+        //Game data is retrieved later
+        
+        //OI must be initialized after all subsystems, because it maps buttons to commands, and those commands
+        //require subsystems to be properly initialized
         oi = new OI();
         
+        //Generate all autonomous paths/trajectories
+        //Takes quite some time so we do it here instead of in the autos themselves
         AutoPaths.generateAll(RobotMap.specs);
         
+        //Initialize the correct auto chooser
         if(useRecordedAutos) {
         	//Recorded autos
             initRecordedAutoChooser();
@@ -230,9 +239,15 @@ public class Robot extends TimedRobot {
         	initAutoChooser();
         }
 		
+        //Output the tunable values
 		putTunables();
 	}
+	
+	/**
+	 * Initializes the autonomous chooser for pre-written autos
+	 */
 	public static void initAutoChooser() {
+		//Add options to choosers
 		robotLocationChooser.addObject("Left", LOCATION_LEFT);
 		robotLocationChooser.addObject("Middle", LOCATION_MID);
 		robotLocationChooser.addObject("Right", LOCATION_RIGHT);
@@ -244,11 +259,14 @@ public class Robot extends TimedRobot {
 		
 		prewrittenAutoChooser.addObject("Debug Auto", AUTO_DEBUG);
 		
-		//prewrittenAutoChooser.addObject("Place Cube With Vision: Middle", visionAuto);
-		//Display the prewrittenAutoChooser
-		SmartDashboard.putData("Auto mode", prewrittenAutoChooser);
+		//Display the choosers by sending them over the SmartDashboard
+		SmartDashboard.putData("Auto Mode", prewrittenAutoChooser);
+		SmartDashboard.putData("Robot Location", robotLocationChooser);
 	}
 	
+	/**
+	 * Initializes the autonomous chooser for recorded autos
+	 */
 	public void initRecordedAutoChooser() {
 		recordedAutoChooser.addDefault("Drive Past Baseline (Better to use one of the commands below)", BASELINE);
 		recordedAutoChooser.addObject("Place Cube from left side", SWITCH_LEFT);
@@ -287,6 +305,7 @@ public class Robot extends TimedRobot {
 	    	SmartDashboard.putNumber("Left Acceleration", accel[0]);
 	    	SmartDashboard.putNumber("Right Acceleration", accel[1]);
 	    	
+	    	//Update max speed and accel
 	    	if(Math.abs(leftVel) > Math.abs(leftMaxVel)) {
 	    		leftMaxVel = leftVel;
 	    	}
@@ -328,22 +347,14 @@ public class Robot extends TimedRobot {
 	}
 
 	/**
-	 * This autonomous (along with the prewrittenAutoChooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * prewrittenAutoChooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the prewrittenAutoChooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the
-	 * prewrittenAutoChooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
+	 * Called when the robot first enters autonomous mode. Start auto commands here.
 	 */
 	@Override
 	public void autonomousInit() {
 		
-		//Retrieve the selected auto command
-		
 		if(useRecordedAutos) {
+			//Set up recorded auto
+			//Get the selected auto
 			String macroAuto = recordedAutoChooser.getSelected();
 			setUpMacroAutos(macroAuto);
 			if(useRecordedAutos) {
@@ -352,9 +363,11 @@ public class Robot extends TimedRobot {
 				} catch (Exception e){
 					e.printStackTrace();
 				}
+				//Because the recorded autos are recorded with motors in coast, set them to coast
 				RobotMap.setAllMotorNeuralModes(NeutralMode.Coast);
 			}
 		} else {
+			//Get the location and auto mode from choosers
 			int location = robotLocationChooser.getSelected();
 			int autoMode = robotLocationChooser.getSelected();
 			
@@ -456,11 +469,17 @@ public class Robot extends TimedRobot {
 		}
 	}
 	
+	/**
+	 * Starts an autonomous command by setting the static member {@code autonomousCommand} to the given command
+	 * and calling {@link Command#start() start()} on it.
+	 * @param autoCommand - The command to start
+	 */
 	public static void startAutoCommand(Command autoCommand) {
 		autonomousCommand = autoCommand;
 		autoCommand.start();
 	}
 	public static void runSetAuto(int location, int mode) {
+		//Retrieve the locations of the switch plates (in game data)
 		gameData = DriverStation.getInstance().getGameSpecificMessage().toUpperCase();
 		if(gameData.length() > 0) {
 			switch(mode) {
@@ -468,6 +487,7 @@ public class Robot extends TimedRobot {
 				startAutoCommand(new DrivePastBaseline());
 				break;
 			case AUTO_ALIGNED:
+				//Run aligned with switch command only if the robot's position is the same as the switch plate's
 				if((location == LOCATION_LEFT && gameData.charAt(0) == 'L') 
 						|| (location == LOCATION_RIGHT && gameData.charAt(0) == 'R')) {
 					startAutoCommand(new SwitchAligned());
@@ -477,6 +497,7 @@ public class Robot extends TimedRobot {
 				}
 				break;
 			case AUTO_MIDDLE:
+				//Start the middle auto command with the correct direction
 				startAutoCommand(new SwitchMiddle(gameData.charAt(0) == 'L' ? SwitchMiddle.DIRECTION_LEFT : SwitchMiddle.DIRECTION_RIGHT));
 				break;
 			case AUTO_SIDE:
@@ -488,6 +509,7 @@ public class Robot extends TimedRobot {
 					startAutoCommand(new DrivePastBaseline());
 				}
 				break;
+			//For debug purposes only
 			case AUTO_DEBUG:
 				startAutoCommand(new FollowTrajectory(new TankDriveTrajectory(new Waypoint[] {
 						new Waypoint(0, 0, Math.PI / 2),
@@ -505,6 +527,7 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		if(useRecordedAutos) {
+			//Run the auto player if we are playing a recorded auto
 			try {
 				if (player != null && !player.finished()){
 					player.play();
@@ -525,6 +548,7 @@ public class Robot extends TimedRobot {
 			autonomousCommand.cancel();
 		
 		if(useRecordedAutos) {
+			//Shut down the player
 			if(player != null) {
 				try {
 					player.end();
@@ -549,7 +573,7 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		if(recording) {
 			try{
-				//Dynamic recording, so we dont have to enable/disable teleop
+				//Dynamic recording, so we don't have to enable/disable teleop
 				if(doneRecording) {
 					String autoRecordingName;
 					if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", null)) != null)
