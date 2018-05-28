@@ -176,15 +176,6 @@ public class RobotMap {
     public static DigitalInput elevatorBottomSwitch = new DigitalInput(5);
     public static DigitalInput wristSwitch = new DigitalInput(6);
     
-    
-    //This is the gyroscope that is mounted in the SPI port of the roboRIO
-    //Use the ADXRS450_Gyro class instead of AnalogGyro
-    //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-    
-    //This is the gyroscope that is mounted on the wrist to detect its angle
-    //Due to the current design, wrist angle has to be constantly maintained
-    public static ADXRS450_Gyro wristGyro = new ADXRS450_Gyro();
-    
     public static PowerDistributionPanel PDP = new PowerDistributionPanel();
     
     //Used to create trajectories
