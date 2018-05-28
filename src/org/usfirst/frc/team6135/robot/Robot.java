@@ -5,15 +5,11 @@ import java.io.IOException;
 import java.util.Timer;
 
 import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseline;
-import org.usfirst.frc.team6135.robot.commands.autocommands.MultiCubeAligned;
-import org.usfirst.frc.team6135.robot.commands.autocommands.MultiCubeFromMiddle;
-import org.usfirst.frc.team6135.robot.commands.autocommands.MultiCubeFromSide;
+import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSide;
+import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchAligned;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchSide;
-import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSide;
-import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
-import org.usfirst.frc.team6135.robot.commands.autocommands.VisionAuto;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
@@ -70,10 +66,6 @@ public class Robot extends TimedRobot {
 	public static SwitchMiddle placeCubeFromMiddle;
 	public static SwitchAligned placeCubeLeftAligned, placeCubeRightAligned;
 	public static SwitchSide placeCubeLeftSideOffset, placeCubeRightSideOffset;
-	public static VisionAuto visionAuto;
-	public static MultiCubeFromSide multiCubeLeftSide, multiCubeRightSide;
-	public static MultiCubeAligned multiCubeLeftAligned, multiCubeRightAligned;
-	public static MultiCubeFromMiddle multiCubeFromMiddle;
 	public static ScaleCubeSameSide scaleSameSideLeft, scaleSameSideRight;
 	
 	//Autonomous command chooser
@@ -262,13 +254,7 @@ public class Robot extends TimedRobot {
 		placeCubeRightSideOffset = new SwitchSide(SwitchSide.SIDE_RIGHT);
 		scaleSameSideLeft = new ScaleCubeSameSide(ScaleCubeSameSide.SIDE_LEFT);
 		scaleSameSideRight = new ScaleCubeSameSide(ScaleCubeSameSide.SIDE_RIGHT);
-		visionAuto = new VisionAuto(VisionAuto.DIRECTION_LEFT);
-		multiCubeLeftSide = new MultiCubeFromSide(MultiCubeFromSide.SIDE_LEFT);
-		multiCubeRightSide = new MultiCubeFromSide(MultiCubeFromSide.SIDE_RIGHT);
-		multiCubeLeftAligned = new MultiCubeAligned(MultiCubeAligned.SIDE_LEFT);
-		multiCubeRightAligned = new MultiCubeAligned(MultiCubeAligned.SIDE_RIGHT);
-		//Direction doesn't matter
-		multiCubeFromMiddle = new MultiCubeFromMiddle(1);
+		
 		//chooser.addDefault("No Auto", null);
 		chooser.addDefault("Drive Past Baseline (Better to use one of the commands below)", new DrivePastBaseline());
 		chooser.addObject("Place Cube from left side", placeCubeLeftSideOffset);
@@ -279,11 +265,6 @@ public class Robot extends TimedRobot {
 		//chooser.addObject("Place Cube From Middle (FASTER)", placeCubeFromMiddleFast);
 		chooser.addObject("Shoot Cube into Scale: Left", scaleSameSideLeft);
 		chooser.addObject("Shoot Cube into Scale: Right", scaleSameSideRight);
-		chooser.addObject("Multi-Cube from left side", multiCubeLeftSide);
-		chooser.addObject("Multi-Cube from right side", multiCubeRightSide);
-		chooser.addObject("Multi-Cube (Aligned with switch): Left", multiCubeLeftAligned);
-		chooser.addObject("Multi-Cube (Aligned with switch): Right", multiCubeRightAligned);
-		chooser.addObject("Multi-Cube from middle", multiCubeFromMiddle);
 		
 		//Test trajectory
 		TankDriveTrajectory testTrajectory = new TankDriveTrajectory(new Waypoint[] {
@@ -565,18 +546,6 @@ public class Robot extends TimedRobot {
 						else if(autonomousCommand == placeCubeRightSideOffset) {
 							(new DrivePastBaseline()).start();
 						}
-						else if(autonomousCommand == visionAuto) {
-							(new VisionAuto(VisionAuto.DIRECTION_LEFT)).start();
-						}
-						else if(autonomousCommand == multiCubeRightSide) {
-							(new DrivePastBaseline()).start();
-						}
-						else if(autonomousCommand == multiCubeRightAligned) {
-							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
-						}
-						else if(autonomousCommand == multiCubeFromMiddle) {
-							(new MultiCubeFromMiddle(MultiCubeFromMiddle.DIRECTION_LEFT)).start();
-						}
 						else {
 							autonomousCommand.start();
 						}
@@ -590,18 +559,6 @@ public class Robot extends TimedRobot {
 						}
 						else if(autonomousCommand == placeCubeLeftSideOffset) {
 							(new DrivePastBaseline()).start();
-						}
-						else if(autonomousCommand == visionAuto) {
-							(new VisionAuto(VisionAuto.DIRECTION_RIGHT)).start();
-						}
-						else if(autonomousCommand == multiCubeLeftSide) {
-							(new DrivePastBaseline()).start();
-						}
-						else if(autonomousCommand == multiCubeRightAligned) {
-							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
-						}
-						else if(autonomousCommand == multiCubeFromMiddle) {
-							(new MultiCubeFromMiddle(MultiCubeFromMiddle.DIRECTION_RIGHT)).start();
 						}
 						else {
 							autonomousCommand.start();
