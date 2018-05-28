@@ -2,7 +2,6 @@
 package org.usfirst.frc.team6135.robot;
 
 import java.io.IOException;
-import java.util.Timer;
 
 import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseline;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchAligned;
@@ -15,7 +14,6 @@ import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPaths;
 import org.usfirst.frc.team6135.robot.misc.AutoPlayback;
 import org.usfirst.frc.team6135.robot.misc.AutoRecord;
-import org.usfirst.frc.team6135.robot.misc.CameraCaptureTask;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
@@ -78,13 +76,6 @@ public class Robot extends TimedRobot {
 	
 	//This keeps track of the command that runs in autonomous so we can cancel it when entering teleop
 	static Command autonomousCommand;
-	
-	//Camera recording timer task
-	public static CameraCaptureTask captureTask;
-	public static Timer captureTimer = new Timer();
-	//Capture FPS
-	static final int CAPTURE_FPS = 8;
-	static final int CAPTURE_PERIOD = 1000 / CAPTURE_FPS;
 	
 	/*
 	 * RECORDING AUTOS AND PLAYBACK
@@ -239,14 +230,7 @@ public class Robot extends TimedRobot {
         	initAutoChooser();
         }
 		
-		//Camera capture is paused during disabled
-		captureTask = new CameraCaptureTask();
-		captureTask.pause();
-		//If camera capture is not desired, comment out this line
-		//captureTimer.schedule(captureTask, 1000, CAPTURE_PERIOD);
-		
 		putTunables();
-		//SmartDashboard.putData("Pause/Resume Camera Capture", new ToggleCameraCapture());
 	}
 	public static void initAutoChooser() {
 		robotLocationChooser.addObject("Left", LOCATION_LEFT);
@@ -335,7 +319,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-		captureTask.pause();
 		RobotMap.setAllMotorNeuralModes(NeutralMode.Coast);
 	}
 
@@ -383,8 +366,6 @@ public class Robot extends TimedRobot {
 
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
-		
-		captureTask.resume();
 		
 		updateTunables();
 	}
@@ -557,11 +538,7 @@ public class Robot extends TimedRobot {
 		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
 		RobotMap.setAllMotorNeuralModes(NeutralMode.Coast);
 		
-		captureTask.resume();
-		
 		updateTunables();
-		
-		
 	}
 
 	/**

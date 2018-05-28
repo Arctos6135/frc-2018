@@ -29,7 +29,7 @@ public class RobotMap {
 	// public static TalonSRX leftMotor = new TalonSRX(0);
 	// public static TalonSRX rightMotor = new TalonSRX(1);
 	
-	/*
+	/**
 	 * A mapping of the XBox controller. Use this static class instead of 
 	 * magic numbers or individual constants to keep everything clear.
 	 */
@@ -53,9 +53,8 @@ public class RobotMap {
 		public static final int BUTTON_RSTICK = 10;
 	}
 	
-	/*
-	 * Holds values for the dimensions of the arena. 
-	 * Used in fallback (hard-coded) auto
+	/**
+	 * Holds values for the dimensions of the Arcade. 
 	 * All units are in inches
 	 */
 	public static class ArenaDimensions {
