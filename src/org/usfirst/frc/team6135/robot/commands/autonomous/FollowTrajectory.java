@@ -20,7 +20,7 @@ public class FollowTrajectory extends Command {
 	//Acceleration feedforward term, velocity feedforward term, proportional gain, derivative gain
 	//Must tune later by trial and error
 	//These are kept as non-constant to allow easy tuning from the SmartDashboard
-	public static double kA = 0, kV = 0, kP = 0, kD = 0;
+	public static double kA = 0.001, kV = 0.0095, kP = 2.0e-4, kD = 1.0e-4;
 	
 	TankDriveTrajectory trajectory;
 	

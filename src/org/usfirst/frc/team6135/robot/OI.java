@@ -55,7 +55,7 @@ public class OI {
 	// button.whenReleased(new ExampleCommand());
 	
 	/**
-	 * <b>SCIENCE RENDEZVOUS CONTROLS</b><br><br>
+	 * <b>CONTROLS</b><br><br>
 	 * 
 	 * Drive:
 	 * <ul>
@@ -257,6 +257,7 @@ public class OI {
 		autoCubeAlign = new NonDemoButton(driveController, Controls.AUTO_CUBE_ALIGN);
 		cancelAlign = new NonDemoButton(driveController, Controls.CANCEL_ALIGN);
 		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
+		
 		recordAuto = new NonDemoButton(driveController, Controls.RECORD_AUTO);
 		scalePosition = new NonDemoButton(attachmentsController, Controls.SCALE_POSITION);
 		shootCube = new NonDemoButton(attachmentsController, Controls.SHOOT_CUBE);
@@ -265,7 +266,7 @@ public class OI {
 		demo_intake = new DemoButton(attachmentsController, Controls.DEMO_INTAKE_IN, true);
 		demo_outtake = new DemoButton(attachmentsController, Controls.DEMO_INTAKE_OUT, true);
 		
-		recordAuto.whenPressed(new ToggleRecording());
+		//recordAuto.whenPressed(new ToggleRecording());
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
@@ -377,7 +378,6 @@ public class OI {
 					demo_elevatorDown.cancel();
 			}
 		});
-		
 		
 	}
 }

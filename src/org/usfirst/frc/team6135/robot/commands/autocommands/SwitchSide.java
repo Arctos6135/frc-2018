@@ -1,17 +1,22 @@
 package org.usfirst.frc.team6135.robot.commands.autocommands;
 
 import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
+import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
+import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
+import org.usfirst.frc.team6135.robot.misc.AutoPaths;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *	Hard-Coded Command Group that simply drives past the baseline. 
- *	The path of the robot has to be clear.
+ *
  */
-public class DrivePastBaseline extends CommandGroup {
+public class SwitchSide extends CommandGroup {
+	
+	public static final int SIDE_LEFT = 1;
+	public static final int SIDE_RIGHT = -1;
 
-    public DrivePastBaseline() {
+    public SwitchSide(int side) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -28,6 +33,8 @@ public class DrivePastBaseline extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightDistancePID(RobotMap.ArenaDimensions.BASELINE_DISTANCE));
+    	addParallel(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
+    	addSequential(new FollowTrajectory(side == SIDE_LEFT ? AutoPaths.side_left : AutoPaths.side_right));
+    	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }

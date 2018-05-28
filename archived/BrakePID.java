@@ -31,8 +31,8 @@ public class BrakePID extends Command {
     protected void initialize() {
     	Robot.drive.resetEncoders();
     	
-    	leftPID = new PIDController(kP, kI, kD, Robot.drive.getLeftEncoder(), RobotMap.leftDrivePIDMotor);
-    	rightPID = new PIDController(kP, kI, kD, Robot.drive.getRightEncoder(), RobotMap.rightDrivePIDMotor);
+    	leftPID = new PIDController(kP, kI, kD, Robot.drive.getLeftEncoder(), RobotMap.leftDrivePIDMotorUnramped);
+    	rightPID = new PIDController(kP, kI, kD, Robot.drive.getRightEncoder(), RobotMap.rightDrivePIDMotorUnramped);
     	
     	leftPID.setOutputRange(-1.0, 1.0);
     	rightPID.setOutputRange(-1.0, 1.0);
