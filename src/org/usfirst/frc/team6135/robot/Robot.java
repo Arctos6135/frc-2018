@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.Timer;
 
 import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseline;
-import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeOppositeSide;
-import org.usfirst.frc.team6135.robot.commands.autocommands.ScaleCubeSameSide;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchAligned;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchSide;
@@ -58,20 +56,28 @@ public class Robot extends TimedRobot {
 	public static VisionSubsystem visionSubsystem;
 	
 	public static Alliance color;
-	public static int station; //Starting position of robot
-	public static String gameData;
+	public static int station; //Driver station number (1, 2 or 3)
+	public static String gameData; //Used to tell the locations of the switch/scale plates
 	
-	//These commands are combined with the alliance colour and switch location and used later
-	//They are the options that are shown in the auto menu
-	public static SwitchMiddle placeCubeFromMiddle;
-	public static SwitchAligned placeCubeLeftAligned, placeCubeRightAligned;
-	public static SwitchSide placeCubeLeftSideOffset, placeCubeRightSideOffset;
-	public static ScaleCubeSameSide scaleSameSideLeft, scaleSameSideRight;
+	//Location consts
+	public static final int LOCATION_LEFT = -1;
+	public static final int LOCATION_MID = 0;
+	public static final int LOCATION_RIGHT = 1;
 	
-	//Autonomous command chooser
-	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	//Auto mode consts
+	public static final int AUTO_DEBUG = 0x00;
+	public static final int AUTO_BASELINE = 0x01;
+	public static final int AUTO_ALIGNED = 0x02;
+	public static final int AUTO_SIDE = 0x03;
+	public static final int AUTO_MIDDLE = 0x04;
+	
+	//Autonomous command choosers
+	SendableChooser<Integer> robotLocationChooser = new SendableChooser<>();
+	SendableChooser<Integer> prewrittenAutoChooser = new SendableChooser<>();
 	SendableChooser<String> recordedAutoChooser = new SendableChooser<>();
+	
+	//This keeps track of the command that runs in autonomous so we can cancel it when entering teleop
+	static Command autonomousCommand;
 	
 	//Camera recording timer task
 	public static CameraCaptureTask captureTask;
@@ -243,39 +249,20 @@ public class Robot extends TimedRobot {
 		//SmartDashboard.putData("Pause/Resume Camera Capture", new ToggleCameraCapture());
 	}
 	public void initAutoChooser() {
-		//Add commands into the autonomous command chooser
-        //chooser.addObject("DriveStraightDistancePID", new DriveStraightDistancePID(60));
-        //chooser.addObject("AutoTurnPID", new AutoTurnPID(90));
-        //Direction doesn't matter
-		placeCubeFromMiddle = new SwitchMiddle(1);
-		placeCubeLeftAligned = new SwitchAligned();
-		placeCubeRightAligned = new SwitchAligned();
-		placeCubeLeftSideOffset = new SwitchSide(SwitchSide.SIDE_LEFT);
-		placeCubeRightSideOffset = new SwitchSide(SwitchSide.SIDE_RIGHT);
-		scaleSameSideLeft = new ScaleCubeSameSide(ScaleCubeSameSide.SIDE_LEFT);
-		scaleSameSideRight = new ScaleCubeSameSide(ScaleCubeSameSide.SIDE_RIGHT);
+		robotLocationChooser.addObject("Left", LOCATION_LEFT);
+		robotLocationChooser.addObject("Middle", LOCATION_MID);
+		robotLocationChooser.addObject("Right", LOCATION_RIGHT);
 		
-		//chooser.addDefault("No Auto", null);
-		chooser.addDefault("Drive Past Baseline (Better to use one of the commands below)", new DrivePastBaseline());
-		chooser.addObject("Place Cube from left side", placeCubeLeftSideOffset);
-		chooser.addObject("Place Cube from right side", placeCubeRightSideOffset);
-		chooser.addObject("Place Cube (Aligned with switch): Left", placeCubeLeftAligned);
-		chooser.addObject("Place Cube (Aligned with switch): Right", placeCubeRightAligned);
-		chooser.addObject("Place Cube: Middle", placeCubeFromMiddle);
-		//chooser.addObject("Place Cube From Middle (FASTER)", placeCubeFromMiddleFast);
-		chooser.addObject("Shoot Cube into Scale: Left", scaleSameSideLeft);
-		chooser.addObject("Shoot Cube into Scale: Right", scaleSameSideRight);
+		prewrittenAutoChooser.addDefault("Drive Past Baseline", AUTO_BASELINE);
+		prewrittenAutoChooser.addObject("Switch Auto: Side", AUTO_SIDE);
+		prewrittenAutoChooser.addObject("Switch Auto: Aligned", AUTO_ALIGNED);
+		prewrittenAutoChooser.addObject("Switch Auto: Middle", AUTO_MIDDLE);
 		
-		//Test trajectory
-		TankDriveTrajectory testTrajectory = new TankDriveTrajectory(new Waypoint[] {
-				new Waypoint(0, 0, Math.PI / 2),
-				new Waypoint(60, 144, Math.PI / 2),
-		}, RobotMap.specs, 300, 5000);
-		chooser.addObject("Pathfinder Trajectory", new FollowTrajectory(testTrajectory));
+		prewrittenAutoChooser.addObject("Debug Auto", AUTO_DEBUG);
 		
-		//chooser.addObject("Place Cube With Vision: Middle", visionAuto);
-		//Display the chooser
-		SmartDashboard.putData("Auto mode", chooser);
+		//prewrittenAutoChooser.addObject("Place Cube With Vision: Middle", visionAuto);
+		//Display the prewrittenAutoChooser
+		SmartDashboard.putData("Auto mode", prewrittenAutoChooser);
 	}
 	
 	public void initRecordedAutoChooser() {
@@ -357,14 +344,14 @@ public class Robot extends TimedRobot {
 	}
 
 	/**
-	 * This autonomous (along with the chooser code above) shows how to select
+	 * This autonomous (along with the prewrittenAutoChooser code above) shows how to select
 	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
+	 * prewrittenAutoChooser code works with the Java SmartDashboard. If you prefer the
+	 * LabVIEW Dashboard, remove all of the prewrittenAutoChooser code and uncomment the
 	 * getString code to get the auto name from the text box below the Gyro
 	 *
 	 * You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
+	 * prewrittenAutoChooser code above (like the commented example) or additional comparisons
 	 * to the switch structure below with additional strings & commands.
 	 */
 	@Override
@@ -389,8 +376,9 @@ public class Robot extends TimedRobot {
 				RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Coast);
 			}
 		} else {
-			autonomousCommand = chooser.getSelected();
-			runSetAutos(autonomousCommand);
+			int location = robotLocationChooser.getSelected();
+			int autoMode = robotLocationChooser.getSelected();
+			
 			//Set motors to be in brake mode
 			RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Brake);
 			RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Brake);
@@ -398,6 +386,8 @@ public class Robot extends TimedRobot {
 			RobotMap.rightDriveTalon2.setNeutralMode(NeutralMode.Brake);
 			RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Brake);
 			RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Brake);
+			
+			runSetAuto(location, autoMode);
 		}
 
 		/*
@@ -501,73 +491,44 @@ public class Robot extends TimedRobot {
 		}
 	}
 	
-	public void runSetAutos(Command autonomousCommand) {
-		if(autonomousCommand != null) {
-			gameData = DriverStation.getInstance().getGameSpecificMessage().toUpperCase();
-			if(gameData.length() > 0){
-				//Depending on which side the alliance switch is on, some commands need to change
-				//Check if command is a scale command
-				if(autonomousCommand instanceof ScaleCubeSameSide) {
-					//Check the second character of the game data for the direction of the alliance scale
-					if(gameData.charAt(1) == 'L') {
-						if(autonomousCommand == scaleSameSideLeft) {
-							autonomousCommand.start();
-						}
-						else {
-							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.SIDE_LEFT).start();
-							//(new DrivePastBaseLine()).start();
-						}
-					}
-					else {
-						if(autonomousCommand == scaleSameSideRight) {
-							autonomousCommand.start();
-						}
-						else {
-							new ScaleCubeOppositeSide(ScaleCubeOppositeSide.SIDE_RIGHT).start();
-							//(new DrivePastBaseLine()).start();
-						}
-					}
+	public static void startAutoCommand(Command autoCommand) {
+		autonomousCommand = autoCommand;
+		autoCommand.start();
+	}
+	public static void runSetAuto(int location, int mode) {
+		gameData = DriverStation.getInstance().getGameSpecificMessage().toUpperCase();
+		if(gameData.length() > 0) {
+			switch(mode) {
+			case AUTO_BASELINE:
+				startAutoCommand(new DrivePastBaseline());
+				break;
+			case AUTO_ALIGNED:
+				if((location == LOCATION_LEFT && gameData.charAt(0) == 'L') 
+						|| (location == LOCATION_RIGHT && gameData.charAt(0) == 'R')) {
+					startAutoCommand(new SwitchAligned());
 				}
 				else {
-					//Check the first character of the game data for the direction of the alliance switch
-					
-					if(gameData.charAt(0) == 'L'){
-						//If the alliance switch is on the left side
-						if(autonomousCommand == placeCubeFromMiddle) {
-							//If command is to place a cube from the middle
-							new SwitchMiddle(SwitchMiddle.DIRECTION_LEFT).start();
-						}
-						//Use == to check if they're the exact same object
-						else if(autonomousCommand == placeCubeRightAligned) {
-							//If command is to place a cube from the right, give up placing the cube and
-							//instead drive past the baseline
-							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
-						}
-						else if(autonomousCommand == placeCubeRightSideOffset) {
-							(new DrivePastBaseline()).start();
-						}
-						else {
-							autonomousCommand.start();
-						}
-					} 
-					else {
-						if(autonomousCommand == placeCubeFromMiddle) {
-							new SwitchMiddle(SwitchMiddle.DIRECTION_RIGHT).start();
-						}
-						else if(autonomousCommand == placeCubeLeftAligned) {
-							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
-						}
-						else if(autonomousCommand == placeCubeLeftSideOffset) {
-							(new DrivePastBaseline()).start();
-						}
-						else {
-							autonomousCommand.start();
-						}
-					}
+					startAutoCommand(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH));
 				}
-			}
-			else {
-				autonomousCommand.start();
+				break;
+			case AUTO_MIDDLE:
+				startAutoCommand(new SwitchMiddle(gameData.charAt(0) == 'L' ? SwitchMiddle.DIRECTION_LEFT : SwitchMiddle.DIRECTION_RIGHT));
+				break;
+			case AUTO_SIDE:
+				if((location == LOCATION_LEFT && gameData.charAt(0) == 'L') 
+						|| (location == LOCATION_RIGHT && gameData.charAt(0) == 'R')) {
+					startAutoCommand(new SwitchSide(location == LOCATION_LEFT ? SwitchSide.SIDE_LEFT : SwitchSide.SIDE_RIGHT));
+				}
+				else {
+					startAutoCommand(new DrivePastBaseline());
+				}
+				break;
+			case AUTO_DEBUG:
+				startAutoCommand(new FollowTrajectory(new TankDriveTrajectory(new Waypoint[] {
+						new Waypoint(0, 0, Math.PI / 2),
+						new Waypoint(60, 144, Math.PI / 2),
+				}, RobotMap.specs, 300, 5000)));
+				break;
 			}
 		}
 	}

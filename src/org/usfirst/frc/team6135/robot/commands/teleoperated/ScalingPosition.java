@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *	Raises both the elevator and the wrist to their maximum for shooting cubes into the scale.
- *	Requires wrist to have PID and limit switch.
+ *	Requires wrist to have limit switch.
  */
 public class ScalingPosition extends Command {
 	
