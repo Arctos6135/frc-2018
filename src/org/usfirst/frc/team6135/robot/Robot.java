@@ -72,9 +72,9 @@ public class Robot extends TimedRobot {
 	public static final int AUTO_MIDDLE = 0x04;
 	
 	//Autonomous command choosers
-	SendableChooser<Integer> robotLocationChooser = new SendableChooser<>();
-	SendableChooser<Integer> prewrittenAutoChooser = new SendableChooser<>();
-	SendableChooser<String> recordedAutoChooser = new SendableChooser<>();
+	public static SendableChooser<Integer> robotLocationChooser = new SendableChooser<>();
+	public static SendableChooser<Integer> prewrittenAutoChooser = new SendableChooser<>();
+	public static SendableChooser<String> recordedAutoChooser = new SendableChooser<>();
 	
 	//This keeps track of the command that runs in autonomous so we can cancel it when entering teleop
 	static Command autonomousCommand;
@@ -156,7 +156,7 @@ public class Robot extends TimedRobot {
 	AutoRecord recorder;
 	
 	public static boolean inDebugMode = false;
-	void putTunables() {
+	static void putTunables() {
 		if(!inDebugMode)
 			return;
 		//Output these values to the SmartDashboard for tuning
@@ -175,7 +175,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putString("Auto Recording Save Name", "");
 		SmartDashboard.putString("Auto Playback File Name", "");
 	}
-	void updateTunables() {
+	static void updateTunables() {
 		if(!inDebugMode)
 			return;
 		//Read the tunable values and overwrite them
@@ -248,7 +248,7 @@ public class Robot extends TimedRobot {
 		putTunables();
 		//SmartDashboard.putData("Pause/Resume Camera Capture", new ToggleCameraCapture());
 	}
-	public void initAutoChooser() {
+	public static void initAutoChooser() {
 		robotLocationChooser.addObject("Left", LOCATION_LEFT);
 		robotLocationChooser.addObject("Middle", LOCATION_MID);
 		robotLocationChooser.addObject("Right", LOCATION_RIGHT);
@@ -336,6 +336,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 		captureTask.pause();
+		RobotMap.setAllMotorNeuralModes(NeutralMode.Coast);
 	}
 
 	@Override
@@ -368,34 +369,17 @@ public class Robot extends TimedRobot {
 				} catch (Exception e){
 					e.printStackTrace();
 				}
-				RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Coast);
-				RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Coast);
-				RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Coast);
-				RobotMap.rightDriveTalon2.setNeutralMode(NeutralMode.Coast);
-				RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Coast);
-				RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Coast);
+				RobotMap.setAllMotorNeuralModes(NeutralMode.Coast);
 			}
 		} else {
 			int location = robotLocationChooser.getSelected();
 			int autoMode = robotLocationChooser.getSelected();
 			
 			//Set motors to be in brake mode
-			RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Brake);
-			RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Brake);
-			RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Brake);
-			RobotMap.rightDriveTalon2.setNeutralMode(NeutralMode.Brake);
-			RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Brake);
-			RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Brake);
+			RobotMap.setAllMotorNeuralModes(NeutralMode.Brake);
 			
 			runSetAuto(location, autoMode);
 		}
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
 
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
@@ -571,12 +555,7 @@ public class Robot extends TimedRobot {
 		
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
-		RobotMap.leftDriveTalon1.setNeutralMode(NeutralMode.Coast);
-		RobotMap.leftDriveTalon2.setNeutralMode(NeutralMode.Coast);
-		RobotMap.rightDriveTalon1.setNeutralMode(NeutralMode.Coast);
-		RobotMap.rightDriveTalon2.setNeutralMode(NeutralMode.Coast);
-		RobotMap.leftDriveVictor.setNeutralMode(NeutralMode.Coast);
-		RobotMap.rightDriveVictor.setNeutralMode(NeutralMode.Coast);
+		RobotMap.setAllMotorNeuralModes(NeutralMode.Coast);
 		
 		captureTask.resume();
 		

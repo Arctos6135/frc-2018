@@ -4,6 +4,7 @@ import org.usfirst.frc.team6135.robot.misc.PIDMotorController;
 import org.usfirst.frc.team6135.robot.misc.RampedPIDMotorController;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -180,6 +181,15 @@ public class RobotMap {
     
     //Used to create trajectories
     public static RobotSpecs specs = new RobotSpecs(78, 60, 23.25);
+    
+    public static void setAllMotorNeuralModes(NeutralMode mode) {
+    	RobotMap.leftDriveTalon1.setNeutralMode(mode);
+		RobotMap.leftDriveTalon2.setNeutralMode(mode);
+		RobotMap.rightDriveTalon1.setNeutralMode(mode);
+		RobotMap.rightDriveTalon2.setNeutralMode(mode);
+		RobotMap.leftDriveVictor.setNeutralMode(mode);
+		RobotMap.rightDriveVictor.setNeutralMode(mode);
+    }
 	
 	public static void init() {
 		//Set back motors to follow the front motors
