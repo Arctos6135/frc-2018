@@ -8,7 +8,7 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchAligned;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchSide;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistancePID;
+import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistance;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPaths;
@@ -151,9 +151,6 @@ public class Robot extends TimedRobot {
 			return;
 		//Output these values to the SmartDashboard for tuning
 		//They will show up as modifiable text boxes on the SmartDashboard
-		SmartDashboard.putNumber("Drive kP", DriveStraightDistancePID.kP);
-		SmartDashboard.putNumber("Drive kI", DriveStraightDistancePID.kI);
-		SmartDashboard.putNumber("Drive kD", DriveStraightDistancePID.kD);
 		SmartDashboard.putNumber("Turn kP", AutoTurnPID.kP);
 		SmartDashboard.putNumber("Turn kI", AutoTurnPID.kI);
 		SmartDashboard.putNumber("Turn kD", AutoTurnPID.kD);
@@ -171,9 +168,6 @@ public class Robot extends TimedRobot {
 			return;
 		//Read the textbox values and overwrite the old ones with the new ones
 		//The value is not changed by default (new value = old value)
-		DriveStraightDistancePID.kP = SmartDashboard.getNumber("Drive kP", DriveStraightDistancePID.kP);
-		DriveStraightDistancePID.kI = SmartDashboard.getNumber("Drive kI", DriveStraightDistancePID.kI);
-		DriveStraightDistancePID.kD = SmartDashboard.getNumber("Drive kD", DriveStraightDistancePID.kD);
 		AutoTurnPID.kP = SmartDashboard.getNumber("Turn kP", AutoTurnPID.kP);
 		AutoTurnPID.kI = SmartDashboard.getNumber("Turn kI", AutoTurnPID.kI);
 		AutoTurnPID.kD = SmartDashboard.getNumber("Turn kD", AutoTurnPID.kD);
@@ -421,7 +415,7 @@ public class Robot extends TimedRobot {
 						} else if(macroAuto.equals(SWITCH_ALIGNED_RIGHT)) {
 							//If command is to place a cube from the right, give up placing the cube and
 							//instead drive past the baseline
-							new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE).start();
+							new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_DISTANCE).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(SWITCH_RIGHT)) {
 							new DrivePastBaseline().start();
@@ -432,7 +426,7 @@ public class Robot extends TimedRobot {
 							(new DrivePastBaseline()).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(MULTI_ALIGNED_RIGHT)) {
-							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
+							(new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(MULTI_MIDDLE)) {
 							selectedAuto = CSV_FILE_PREFIX + MULTI_MIDDLE_LEFT + ".csv";
@@ -445,7 +439,7 @@ public class Robot extends TimedRobot {
 						} else if(macroAuto.equals(SWITCH_ALIGNED_LEFT)) {
 							//If command is to place a cube from the right, give up placing the cube and
 							//instead drive past the baseline
-							new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE).start();
+							new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_DISTANCE).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(SWITCH_ALIGNED_RIGHT)) {
 							selectedAuto = CSV_FILE_PREFIX + SWITCH_ALIGNED + ".csv";
@@ -456,7 +450,7 @@ public class Robot extends TimedRobot {
 							(new DrivePastBaseline()).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(MULTI_ALIGNED_LEFT)) {
-							(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
+							(new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(MULTI_MIDDLE)) {
 							selectedAuto = CSV_FILE_PREFIX + MULTI_MIDDLE_RIGHT + ".csv";
@@ -493,7 +487,7 @@ public class Robot extends TimedRobot {
 					startAutoCommand(new SwitchAligned());
 				}
 				else {
-					startAutoCommand(new DriveStraightDistancePID(RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH));
+					startAutoCommand(new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH));
 				}
 				break;
 			case AUTO_MIDDLE:

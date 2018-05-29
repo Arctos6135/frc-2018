@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import org.usfirst.frc.team6135.robot.Robot;
+import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.misc.Setpoint;
 import org.usfirst.frc.team6135.robot.misc.TrapezoidalMotionProfile;
 
@@ -10,23 +11,25 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *	Drives a straight distance forward with a trapezoidal motion profile.
  */
-public class DriveStraightDistanceTMP extends Command {
+public class DriveStraightDistance extends Command {
 	
 	TrapezoidalMotionProfile leftTrajectory, rightTrajectory;
 	
 	//Acceleration feedforward term, velocity feedforward term, proportional gain, derivative gain
 	//Must tune later by trial and error
 	//These are kept as non-constant to allow easy tuning from the SmartDashboard
-	public static double kA = 0, kV = 0, kP = 0, kD = 0;
+	public static double kA = FollowTrajectory.kA, kV = FollowTrajectory.kV, kP = FollowTrajectory.kP, kD = FollowTrajectory.kD;
 	//Must tune later by looking at graphs
-	public static final double maxAccel = 0, maxVelo = 0;
+	//Because RobotMap is referenced first before anything, its static member specs must be initialized
+	//and therefore there will be no chance of it being null.
+	public static final double maxAccel = RobotMap.specs.getMaxAcceleration(), maxVelo = RobotMap.specs.getMaxVelocity();
 	
 	double distance;
 	
 	double lastTime;
 	double leftLastErr, rightLastErr;
 
-    public DriveStraightDistanceTMP(double distance) {
+    public DriveStraightDistance(double distance) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
