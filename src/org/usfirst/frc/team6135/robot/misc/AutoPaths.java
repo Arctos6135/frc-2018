@@ -30,5 +30,7 @@ public class AutoPaths {
 				new Waypoint(RobotMap.ArenaDimensions.SWITCH_EDGE_OFFSET, RobotMap.ArenaDimensions.SWITCH_CENTER_DISTANCE - RobotMap.ROBOT_LENGTH / 2, 0)
 		}, specs, 100, 3000);
 		side_right = side_left.mirror();
+		
+		
 	}
 }

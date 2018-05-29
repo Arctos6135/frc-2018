@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -112,7 +111,7 @@ public class RobotMap {
 	//Amount of time the elevator climbs for
 	public static final double AUTO_ELEVATOR_TIME = 4.5; //4.5
 	
-	public static final double AUTO_INTAKE_TIME = 1.5;
+	public static final double AUTO_INTAKE_TIME = 0.75;
 	
 	public static final double AUTO_WRIST_TIME = 2;//3
 	/**

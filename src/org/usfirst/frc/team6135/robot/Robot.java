@@ -7,7 +7,7 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseline;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchAligned;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchSide;
-import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistance;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
@@ -151,9 +151,9 @@ public class Robot extends TimedRobot {
 			return;
 		//Output these values to the SmartDashboard for tuning
 		//They will show up as modifiable text boxes on the SmartDashboard
-		SmartDashboard.putNumber("Turn kP", AutoTurnPID.kP);
-		SmartDashboard.putNumber("Turn kI", AutoTurnPID.kI);
-		SmartDashboard.putNumber("Turn kD", AutoTurnPID.kD);
+		SmartDashboard.putNumber("Turn kP", AutoTurn.kP);
+		SmartDashboard.putNumber("Turn kI", AutoTurn.kI);
+		SmartDashboard.putNumber("Turn kD", AutoTurn.kD);
 		SmartDashboard.putNumber("Path Follower kP", FollowTrajectory.kP);
 		SmartDashboard.putNumber("Path Follower kD", FollowTrajectory.kD);
 		SmartDashboard.putNumber("Path Follower kV", FollowTrajectory.kV);
@@ -168,9 +168,9 @@ public class Robot extends TimedRobot {
 			return;
 		//Read the textbox values and overwrite the old ones with the new ones
 		//The value is not changed by default (new value = old value)
-		AutoTurnPID.kP = SmartDashboard.getNumber("Turn kP", AutoTurnPID.kP);
-		AutoTurnPID.kI = SmartDashboard.getNumber("Turn kI", AutoTurnPID.kI);
-		AutoTurnPID.kD = SmartDashboard.getNumber("Turn kD", AutoTurnPID.kD);
+		AutoTurn.kP = SmartDashboard.getNumber("Turn kP", AutoTurn.kP);
+		AutoTurn.kI = SmartDashboard.getNumber("Turn kI", AutoTurn.kI);
+		AutoTurn.kD = SmartDashboard.getNumber("Turn kD", AutoTurn.kD);
 		FollowTrajectory.kP = SmartDashboard.getNumber("Path Follower kP", FollowTrajectory.kP);
 		FollowTrajectory.kD = SmartDashboard.getNumber("Path Follower kD", FollowTrajectory.kD);
 		FollowTrajectory.kV = SmartDashboard.getNumber("Path Follower kV", FollowTrajectory.kV);
