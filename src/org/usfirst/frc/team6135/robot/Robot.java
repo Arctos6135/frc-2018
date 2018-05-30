@@ -164,8 +164,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putString("Auto Playback File Name", "");
 	}
 	static void updateTunables() {
-		if(!inDebugMode)
-			return;
 		//Read the textbox values and overwrite the old ones with the new ones
 		//The value is not changed by default (new value = old value)
 		AutoTurn.kP = SmartDashboard.getNumber("Turn kP", AutoTurn.kP);
@@ -243,7 +241,7 @@ public class Robot extends TimedRobot {
 	public static void initAutoChooser() {
 		//Add options to choosers
 		robotLocationChooser.addObject("Left", LOCATION_LEFT);
-		robotLocationChooser.addObject("Middle", LOCATION_MID);
+		robotLocationChooser.addDefault("Middle", LOCATION_MID);
 		robotLocationChooser.addObject("Right", LOCATION_RIGHT);
 		
 		prewrittenAutoChooser.addDefault("Drive Past Baseline", AUTO_BASELINE);
@@ -508,6 +506,7 @@ public class Robot extends TimedRobot {
 				startAutoCommand(new FollowTrajectory(new TankDriveTrajectory(new Waypoint[] {
 						new Waypoint(0, 0, Math.PI / 2),
 						new Waypoint(60, 144, Math.PI / 2),
+						new Waypoint(120, 144, -Math.PI / 2),
 				}, RobotMap.specs, 300, 5000)));
 				break;
 			}
