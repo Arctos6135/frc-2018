@@ -243,7 +243,7 @@ public class Robot extends TimedRobot {
 	public static void initAutoChooser() {
 		//Add options to choosers
 		robotLocationChooser.addObject("Left", LOCATION_LEFT);
-		robotLocationChooser.addObject("Middle", LOCATION_MID);
+		robotLocationChooser.addDefault("Middle", LOCATION_MID);
 		robotLocationChooser.addObject("Right", LOCATION_RIGHT);
 		
 		prewrittenAutoChooser.addDefault("Drive Past Baseline", AUTO_BASELINE);

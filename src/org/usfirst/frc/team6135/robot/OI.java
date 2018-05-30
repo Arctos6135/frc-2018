@@ -202,6 +202,7 @@ public class OI {
 			@Override
 			protected void initialize() {
 				Robot.inDebugMode = !Robot.inDebugMode;
+				Robot.putTunables();
 			}
 		});
 	}

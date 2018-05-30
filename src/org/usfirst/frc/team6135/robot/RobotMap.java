@@ -178,7 +178,8 @@ public class RobotMap {
     public static PowerDistributionPanel PDP = new PowerDistributionPanel();
     
     //Used to create trajectories
-    public static RobotSpecs specs = new RobotSpecs(78, 60, 23.25);
+    //78, 60, 23.25
+    public static RobotSpecs specs = new RobotSpecs(60, 48, 23.00);
     
     public static void setAllMotorNeuralModes(NeutralMode mode) {
     	RobotMap.leftDriveTalon1.setNeutralMode(mode);
