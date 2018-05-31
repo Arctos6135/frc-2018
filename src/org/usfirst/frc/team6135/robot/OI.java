@@ -3,6 +3,7 @@ package org.usfirst.frc.team6135.robot;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
+import org.usfirst.frc.team6135.robot.commands.debug.SetMotors;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
@@ -10,7 +11,6 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.PrecisionToggle;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.ToggleRecording;
 import org.usfirst.frc.team6135.robot.triggers.POVTrigger;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -120,6 +120,10 @@ public class OI {
 	public OI() {
 		driveController = new XboxController(0);
 		attachmentsController = new XboxController(1);
+		
+		JoystickButton j = new JoystickButton(driveController, RobotMap.ControllerMap.BUTTON_A);
+		j.whenPressed(new SetMotors(1.0, 1.0));
+		j.whenReleased(new SetMotors(0.0, 0.0));
 		
 		//Fast gear = right bumper
 		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
