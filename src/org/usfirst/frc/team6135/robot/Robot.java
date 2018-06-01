@@ -473,7 +473,6 @@ public class Robot extends TimedRobot {
 	public static void runSetAuto(int location, int mode) {
 		//Retrieve the locations of the switch plates (in game data)
 		gameData = DriverStation.getInstance().getGameSpecificMessage().toUpperCase();
-		System.out.println(mode);
 		if(gameData.length() > 0) {
 			switch(mode) {
 			case AUTO_BASELINE:
@@ -505,14 +504,9 @@ public class Robot extends TimedRobot {
 			//For debug purposes only
 			case AUTO_DEBUG:
 				startAutoCommand(new FollowTrajectory(new TankDriveTrajectory(new Waypoint[] {
-						new Waypoint(0, 0, Math.PI / 2),
-						new Waypoint(100, 144, 0),
-						new Waypoint(100, 0, Math.PI),
-						new Waypoint(0, 0, Math.PI),
-						new Waypoint(0, -80, 0),
-						new Waypoint(100, 80, Math.PI / 2),
-						
-				}, RobotMap.specs, 250, 5000)));
+						new Waypoint(0, 0, 0),
+						new Waypoint(120, 0, 0),
+				}, RobotMap.specs, 50, 5000)));
 				break;
 			}
 		}

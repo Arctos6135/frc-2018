@@ -111,14 +111,14 @@ public class RobotMap {
 	//Amount of time the elevator climbs for
 	public static final double AUTO_ELEVATOR_TIME = 4.5; //4.5
 	
-	public static final double AUTO_INTAKE_TIME = 0.75;
+	public static final double AUTO_INTAKE_TIME = 0.5;
 	
 	public static final double AUTO_WRIST_TIME = 2;//3
 	/**
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */
 	public static class Speeds {
-		public static final double ELEVATOR_SPEED = 1.0;
+		public static final double ELEVATOR_SPEED = 0.8;
 		public static final double WRIST_SPEED = 1.0;
 		public static final double INTAKE_SPEED = 1.0;
 		//Driving
@@ -128,7 +128,7 @@ public class RobotMap {
 		//Intake
 		public static final double AUTO_INTAKE_SPEED = 0.8;
 		//Elevator
-		public static final double AUTO_ELEVATOR_SPEED = 1.0; 
+		public static final double AUTO_ELEVATOR_SPEED = 0.8; 
 	}
 	
 	public static final int WHEEL_DIAMETER = 6; //INCHES
@@ -178,7 +178,7 @@ public class RobotMap {
     public static PowerDistributionPanel PDP = new PowerDistributionPanel();
     
     //Used to create trajectories
-    public static RobotSpecs specs = new RobotSpecs(100, 50, 23.00);
+    public static RobotSpecs specs = new RobotSpecs(100, 80, 23.00);
     
     public static void setAllMotorNeuralModes(NeutralMode mode) {
     	RobotMap.leftDriveTalon1.setNeutralMode(mode);

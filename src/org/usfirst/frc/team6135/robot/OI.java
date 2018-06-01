@@ -167,8 +167,8 @@ public class OI {
 		POVTrigger raiseElevator = new POVTrigger(attachmentsController, 0);
 		POVTrigger lowerElevator = new POVTrigger(attachmentsController, 180);
 		
-		Command elevatorUp = new RaiseElevator(1.0);
-		Command elevatorDown = new LowerElevator(1.0);
+		Command elevatorUp = new RaiseElevator(0.8);
+		Command elevatorDown = new LowerElevator(0.8);
 		
 		raiseElevator.whenActive(elevatorUp);
 		lowerElevator.whenActive(elevatorDown);

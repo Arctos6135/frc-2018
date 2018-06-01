@@ -42,7 +42,21 @@ public class SwitchMiddle extends CommandGroup {
     	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     	
     	addParallel(new LowerElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
-    	addSequential(new DriveStraightDistance(-42));
+    	addSequential(new FollowTrajectory(direction == DIRECTION_LEFT ? AutoPaths.middle_left2 : AutoPaths.middle_right2));
+    	addParallel(new OperateIntake(RobotMap.Speeds.INTAKE_SPEED));
+    	addSequential(new FollowTrajectory(AutoPaths.middle_3));
+    	addParallel(new OperateIntake(0.2));
+    	addSequential(new FollowTrajectory(AutoPaths.middle_4));
+    	addParallel(new OperateIntake(0));
+    	
+    	addParallel(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
+    	addSequential(new FollowTrajectory(direction == DIRECTION_LEFT ? AutoPaths.middle_left : AutoPaths.middle_right));
+    	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
+    	
+    	addParallel(new LowerElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
+    	addSequential(new FollowTrajectory(AutoPaths.middle_4));
+    	
+    	/*addSequential(new DriveStraightDistance(-42));
     	addSequential(new AutoTurn(30 * direction, AutoTurn.RIGHT));
     	addParallel(new OperateIntake(RobotMap.Speeds.AUTO_INTAKE_SPEED));
     	addSequential(new DriveStraightDistance(20));
@@ -51,6 +65,6 @@ public class SwitchMiddle extends CommandGroup {
     	addSequential(new AutoTurn(30 * direction, AutoTurn.LEFT));
     	addParallel(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
     	addSequential(new DriveStraightDistance(42));
-    	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
+    	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));*/
     }
 }
