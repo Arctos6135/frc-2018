@@ -3,7 +3,7 @@ package org.usfirst.frc.team6135.robot;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
-import org.usfirst.frc.team6135.robot.commands.debug.SetMotors;
+import org.usfirst.frc.team6135.robot.commands.debug.DriveForward;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
@@ -122,8 +122,7 @@ public class OI {
 		attachmentsController = new XboxController(1);
 		
 		JoystickButton j = new JoystickButton(driveController, RobotMap.ControllerMap.BUTTON_A);
-		j.whenPressed(new SetMotors(1.0, 1.0));
-		j.whenReleased(new SetMotors(0.0, 0.0));
+		j.whenPressed(new DriveForward(3));
 		
 		//Fast gear = right bumper
 		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
