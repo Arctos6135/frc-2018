@@ -3,10 +3,9 @@ package org.usfirst.frc.team6135.robot.commands.autocommands;
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
-import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistance;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
+import org.usfirst.frc.team6135.robot.commands.autonomous.LowerWrist;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.OperateIntake;
 import org.usfirst.frc.team6135.robot.misc.AutoPaths;
@@ -40,6 +39,7 @@ public class SwitchMiddle extends CommandGroup {
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
     	
     	addParallel(new LowerElevator());
+    	addParallel(new LowerWrist());
     	addSequential(new FollowTrajectory(direction == Robot.LEFT ? AutoPaths.middle_left2 : AutoPaths.middle_right2));
     	addParallel(new OperateIntake(RobotMap.Speeds.INTAKE_SPEED));
     	addSequential(new FollowTrajectory(AutoPaths.middle_3));
@@ -52,6 +52,6 @@ public class SwitchMiddle extends CommandGroup {
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
     	
     	addParallel(new LowerElevator());
-    	addSequential(new FollowTrajectory(AutoPaths.middle_4));
+    	addSequential(new FollowTrajectory(AutoPaths.back_up));
     }
 }

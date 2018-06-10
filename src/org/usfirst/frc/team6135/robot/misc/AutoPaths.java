@@ -13,6 +13,8 @@ public class AutoPaths {
 	public static TankDriveTrajectory middle_left2, middle_right2;
 	public static TankDriveTrajectory middle_3, middle_4;
 	
+	public static TankDriveTrajectory back_up;
+	
 	public static TankDriveTrajectory side_left, side_right;
 	
 	public static void generateAll(RobotSpecs specs) {
@@ -40,6 +42,6 @@ public class AutoPaths {
 		}, specs, 100, 3000);
 		side_right = side_left.mirrorLeftRight();
 		
-		
+		back_up = middle_4;
 	}
 }
