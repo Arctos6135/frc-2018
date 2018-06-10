@@ -31,8 +31,8 @@ public class SwitchSide extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addParallel(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
+    	addParallel(new RaiseElevator());
     	addSequential(new FollowTrajectory(side == Robot.LEFT ? AutoPaths.side_left : AutoPaths.side_right));
-    	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
+    	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
     }
 }
