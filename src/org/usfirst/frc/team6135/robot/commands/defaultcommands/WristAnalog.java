@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class WristAnalog extends Command {
 	
-	static final double DEADZONE = 0.25;
+	static final double DEADZONE = 0.15;
 
     public WristAnalog() {
         // Use requires() here to declare subsystem dependencies
@@ -29,6 +29,9 @@ public class WristAnalog extends Command {
     	
     	if(Math.abs(joystickVal) > DEADZONE) {
     		Robot.wristSubsystem.setRaw(joystickVal);
+    	}
+    	else {
+    		Robot.wristSubsystem.setRaw(0);
     	}
     }
 
