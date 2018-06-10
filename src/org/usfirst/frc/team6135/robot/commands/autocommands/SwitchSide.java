@@ -1,5 +1,6 @@
 package org.usfirst.frc.team6135.robot.commands.autocommands;
 
+import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
@@ -12,9 +13,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *
  */
 public class SwitchSide extends CommandGroup {
-	
-	public static final int SIDE_LEFT = 1;
-	public static final int SIDE_RIGHT = -1;
 
     public SwitchSide(int side) {
         // Add Commands here:
@@ -34,7 +32,7 @@ public class SwitchSide extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addParallel(new RaiseElevator(RobotMap.Speeds.AUTO_ELEVATOR_SPEED));
-    	addSequential(new FollowTrajectory(side == SIDE_LEFT ? AutoPaths.side_left : AutoPaths.side_right));
+    	addSequential(new FollowTrajectory(side == Robot.LEFT ? AutoPaths.side_left : AutoPaths.side_right));
     	addSequential(new AutoIntake(RobotMap.AUTO_INTAKE_TIME, -RobotMap.Speeds.AUTO_INTAKE_SPEED));
     }
 }

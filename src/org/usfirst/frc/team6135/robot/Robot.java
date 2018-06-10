@@ -56,21 +56,24 @@ public class Robot extends TimedRobot {
 	public static int station; //Driver station number (1, 2 or 3)
 	public static String gameData; //Used to tell the locations of the switch/scale plates
 	
-	//Location consts, used in auto choosing
-	public static final int LOCATION_LEFT = -1;
-	public static final int LOCATION_MID = 0;
-	public static final int LOCATION_RIGHT = 1;
+	public static final int LEFT = 1;
+	public static final int RIGHT = -1;
 	
-	//Auto mode consts, used in auto choosing
-	public static final int AUTO_DEBUG = 0x00;
-	public static final int AUTO_BASELINE = 0x01;
-	public static final int AUTO_ALIGNED = 0x02;
-	public static final int AUTO_SIDE = 0x03;
-	public static final int AUTO_MIDDLE = 0x04;
-	
+	public enum Location {
+		LEFT,
+		MIDDLE,
+		RIGHT,
+	}
+	public enum Auto {
+		DEBUG,
+		BASELINE,
+		ALIGNED,
+		SIDE,
+		MIDDLE,
+	}
 	//Autonomous command choosers
-	public static SendableChooser<Integer> robotLocationChooser = new SendableChooser<>();
-	public static SendableChooser<Integer> prewrittenAutoChooser = new SendableChooser<>();
+	public static SendableChooser<Location> robotLocationChooser = new SendableChooser<>();
+	public static SendableChooser<Auto> prewrittenAutoChooser = new SendableChooser<>();
 	public static SendableChooser<String> recordedAutoChooser = new SendableChooser<>();
 	
 	//This keeps track of the command that runs in autonomous so we can cancel it when entering teleop
@@ -240,16 +243,16 @@ public class Robot extends TimedRobot {
 	 */
 	public static void initAutoChooser() {
 		//Add options to choosers
-		robotLocationChooser.addObject("Left", LOCATION_LEFT);
-		robotLocationChooser.addDefault("Middle", LOCATION_MID);
-		robotLocationChooser.addObject("Right", LOCATION_RIGHT);
+		robotLocationChooser.addObject("Left", Location.LEFT);
+		robotLocationChooser.addDefault("Middle", Location.MIDDLE);
+		robotLocationChooser.addObject("Right", Location.RIGHT);
 		
-		prewrittenAutoChooser.addDefault("Drive Past Baseline", AUTO_BASELINE);
-		prewrittenAutoChooser.addObject("Switch Auto: Side", AUTO_SIDE);
-		prewrittenAutoChooser.addObject("Switch Auto: Aligned", AUTO_ALIGNED);
-		prewrittenAutoChooser.addObject("Switch Auto: Middle", AUTO_MIDDLE);
+		prewrittenAutoChooser.addDefault("Drive Past Baseline", Auto.BASELINE);
+		prewrittenAutoChooser.addObject("Switch Auto: Side", Auto.SIDE);
+		prewrittenAutoChooser.addObject("Switch Auto: Aligned", Auto.ALIGNED);
+		prewrittenAutoChooser.addObject("Switch Auto: Middle", Auto.MIDDLE);
 		
-		prewrittenAutoChooser.addObject("Debug Auto", AUTO_DEBUG);
+		prewrittenAutoChooser.addObject("Debug Auto", Auto.DEBUG);
 		
 		//Display the choosers by sending them over the SmartDashboard
 		SmartDashboard.putData("Auto Mode", prewrittenAutoChooser);
@@ -360,8 +363,8 @@ public class Robot extends TimedRobot {
 			}
 		} else {
 			//Get the location and auto mode from choosers
-			int location = robotLocationChooser.getSelected();
-			int autoMode = prewrittenAutoChooser.getSelected();
+			Location location = robotLocationChooser.getSelected();
+			Auto autoMode = prewrittenAutoChooser.getSelected();
 			
 			//Set motors to be in brake mode
 			RobotMap.setAllMotorNeuralModes(NeutralMode.Brake);
@@ -470,39 +473,39 @@ public class Robot extends TimedRobot {
 		autonomousCommand = autoCommand;
 		autoCommand.start();
 	}
-	public static void runSetAuto(int location, int mode) {
+	public static void runSetAuto(Location location, Auto mode) {
 		//Retrieve the locations of the switch plates (in game data)
 		gameData = DriverStation.getInstance().getGameSpecificMessage().toUpperCase();
 		if(gameData.length() > 0) {
 			switch(mode) {
-			case AUTO_BASELINE:
+			case BASELINE:
 				startAutoCommand(new DrivePastBaseline());
 				break;
-			case AUTO_ALIGNED:
+			case ALIGNED:
 				//Run aligned with switch command only if the robot's position is the same as the switch plate's
-				if((location == LOCATION_LEFT && gameData.charAt(0) == 'L') 
-						|| (location == LOCATION_RIGHT && gameData.charAt(0) == 'R')) {
+				if((location == Location.LEFT && gameData.charAt(0) == 'L') 
+						|| (location == Location.RIGHT && gameData.charAt(0) == 'R')) {
 					startAutoCommand(new SwitchAligned());
 				}
 				else {
 					startAutoCommand(new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH));
 				}
 				break;
-			case AUTO_MIDDLE:
+			case MIDDLE:
 				//Start the middle auto command with the correct direction
-				startAutoCommand(new SwitchMiddle(gameData.charAt(0) == 'L' ? SwitchMiddle.DIRECTION_LEFT : SwitchMiddle.DIRECTION_RIGHT));
+				startAutoCommand(new SwitchMiddle(gameData.charAt(0) == 'L' ? LEFT : RIGHT));
 				break;
-			case AUTO_SIDE:
-				if((location == LOCATION_LEFT && gameData.charAt(0) == 'L') 
-						|| (location == LOCATION_RIGHT && gameData.charAt(0) == 'R')) {
-					startAutoCommand(new SwitchSide(location == LOCATION_LEFT ? SwitchSide.SIDE_LEFT : SwitchSide.SIDE_RIGHT));
+			case SIDE:
+				if((location == Location.LEFT && gameData.charAt(0) == 'L') 
+						|| (location == Location.RIGHT && gameData.charAt(0) == 'R')) {
+					startAutoCommand(new SwitchSide(location == Location.LEFT ? LEFT : RIGHT));
 				}
 				else {
 					startAutoCommand(new DrivePastBaseline());
 				}
 				break;
 			//For debug purposes only
-			case AUTO_DEBUG:
+			case DEBUG:
 				startAutoCommand(new FollowTrajectory(new TankDriveTrajectory(new Waypoint[] {
 						new Waypoint(0, 0, 0),
 						new Waypoint(120, 0, 0),
