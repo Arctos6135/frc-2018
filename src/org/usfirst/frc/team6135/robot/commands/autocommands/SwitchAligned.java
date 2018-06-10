@@ -1,17 +1,20 @@
 package org.usfirst.frc.team6135.robot.commands.autocommands;
 
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
+import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
+import org.usfirst.frc.team6135.robot.commands.autonomous.LowerWrist;
+import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.misc.AutoPaths;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *	Hard-Coded Command Group that simply drives past the baseline. 
- *	The path of the robot has to be clear.
+ *
  */
-public class DrivePastBaseline extends CommandGroup {
+public class SwitchAligned extends CommandGroup {
 
-    public DrivePastBaseline() {
+    public SwitchAligned() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -28,6 +31,12 @@ public class DrivePastBaseline extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new FollowTrajectory(AutoPaths.baseline_driveForward));
+    	addParallel(new RaiseElevator());
+    	addSequential(new FollowTrajectory(AutoPaths.aligned_driveForward));
+    	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
+    	
+    	addParallel(new LowerElevator());
+    	addParallel(new LowerWrist());
+    	addParallel(new FollowTrajectory(AutoPaths.back_up));
     }
 }

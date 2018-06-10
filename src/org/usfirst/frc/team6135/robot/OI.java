@@ -3,6 +3,7 @@ package org.usfirst.frc.team6135.robot;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
+import org.usfirst.frc.team6135.robot.commands.debug.DriveForward;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
@@ -10,7 +11,6 @@ import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.PrecisionToggle;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.ToggleRecording;
 import org.usfirst.frc.team6135.robot.triggers.POVTrigger;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -121,6 +121,9 @@ public class OI {
 		driveController = new XboxController(0);
 		attachmentsController = new XboxController(1);
 		
+		JoystickButton j = new JoystickButton(driveController, RobotMap.ControllerMap.BUTTON_A);
+		j.whenPressed(new DriveForward(3));
+		
 		//Fast gear = right bumper
 		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
 		gearShiftSlow = new JoystickButton(driveController, Controls.SLOW_GEAR);
@@ -164,8 +167,8 @@ public class OI {
 		POVTrigger raiseElevator = new POVTrigger(attachmentsController, 0);
 		POVTrigger lowerElevator = new POVTrigger(attachmentsController, 180);
 		
-		Command elevatorUp = new RaiseElevator(1.0);
-		Command elevatorDown = new LowerElevator(1.0);
+		Command elevatorUp = new RaiseElevator(0.8);
+		Command elevatorDown = new LowerElevator(0.8);
 		
 		raiseElevator.whenActive(elevatorUp);
 		lowerElevator.whenActive(elevatorDown);
@@ -202,6 +205,7 @@ public class OI {
 			@Override
 			protected void initialize() {
 				Robot.inDebugMode = !Robot.inDebugMode;
+				Robot.putTunables();
 			}
 		});
 	}

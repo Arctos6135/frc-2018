@@ -1,7 +1,7 @@
 package org.usfirst.frc.team6135.robot.commands.teleoperated;
 
 import org.usfirst.frc.team6135.robot.Robot;
-import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurnPID;
+import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
 import org.usfirst.frc.team6135.robot.subsystems.VisionSubsystem;
 import org.usfirst.frc.team6135.robot.vision.VisionException;
 
@@ -49,7 +49,7 @@ public class AutoCubeAlign extends InstantCommand {
     	}
     	int angle = (int) (-Math.round(Math.toDegrees(angleRaw)));
     	SmartDashboard.putNumber("Angle: ", angle);
-    	(new AutoTurnPID(angle)).start();
+    	(new AutoTurn(angle)).start();
     	
     	Robot.visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
     }

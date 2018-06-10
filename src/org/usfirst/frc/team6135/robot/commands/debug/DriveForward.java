@@ -1,36 +1,33 @@
-package org.usfirst.frc.team6135.robot.commands.autonomous;
+package org.usfirst.frc.team6135.robot.commands.debug;
 
 import org.usfirst.frc.team6135.robot.Robot;
-import org.usfirst.frc.team6135.robot.subsystems.WristSubsystem;
 
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
  *
  */
-public class LowerWrist extends TimedCommand {
+public class DriveForward extends TimedCommand {
 
-	double speed = 1.0 * WristSubsystem.DIRECTION_DOWN;
-	
-    public LowerWrist() {
+    public DriveForward(double timeout) {
+        super(timeout);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	super(3.0);
-    	requires(Robot.wristSubsystem);
+        requires(Robot.drive);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.drive.setMotorsVBus(1.0, 1.0);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.wristSubsystem.setRaw(speed);
     }
 
-    // Called once after isFinished returns true
+    // Called once after timeout
     protected void end() {
-    	Robot.wristSubsystem.setRaw(0);
+    	Robot.drive.setMotorsVBus(0.0, 0.0);
     }
 
     // Called when another command which requires one or more of the same

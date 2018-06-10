@@ -4,10 +4,10 @@ import org.usfirst.frc.team6135.robot.misc.PIDMotorController;
 import org.usfirst.frc.team6135.robot.misc.RampedPIDMotorController;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -28,7 +28,7 @@ public class RobotMap {
 	// public static TalonSRX leftMotor = new TalonSRX(0);
 	// public static TalonSRX rightMotor = new TalonSRX(1);
 	
-	/*
+	/**
 	 * A mapping of the XBox controller. Use this static class instead of 
 	 * magic numbers or individual constants to keep everything clear.
 	 */
@@ -52,9 +52,8 @@ public class RobotMap {
 		public static final int BUTTON_RSTICK = 10;
 	}
 	
-	/*
-	 * Holds values for the dimensions of the arena. 
-	 * Used in fallback (hard-coded) auto
+	/**
+	 * Holds values for the dimensions of the Arcade. 
 	 * All units are in inches
 	 */
 	public static class ArenaDimensions {
@@ -112,14 +111,14 @@ public class RobotMap {
 	//Amount of time the elevator climbs for
 	public static final double AUTO_ELEVATOR_TIME = 4.5; //4.5
 	
-	public static final double AUTO_INTAKE_TIME = 1.5;
+	public static final double AUTO_INTAKE_TIME = 0.5;
 	
 	public static final double AUTO_WRIST_TIME = 2;//3
 	/**
 	 * Holds constants for the the top speeds of things to keep stuff organized 
 	 */
 	public static class Speeds {
-		public static final double ELEVATOR_SPEED = 1.0;
+		public static final double ELEVATOR_SPEED = 0.8;
 		public static final double WRIST_SPEED = 1.0;
 		public static final double INTAKE_SPEED = 1.0;
 		//Driving
@@ -129,7 +128,7 @@ public class RobotMap {
 		//Intake
 		public static final double AUTO_INTAKE_SPEED = 0.8;
 		//Elevator
-		public static final double AUTO_ELEVATOR_SPEED = 1.0; 
+		public static final double AUTO_ELEVATOR_SPEED = 0.8; 
 	}
 	
 	public static final int WHEEL_DIAMETER = 6; //INCHES
@@ -176,19 +175,19 @@ public class RobotMap {
     public static DigitalInput elevatorBottomSwitch = new DigitalInput(5);
     public static DigitalInput wristSwitch = new DigitalInput(6);
     
-    
-    //This is the gyroscope that is mounted in the SPI port of the roboRIO
-    //Use the ADXRS450_Gyro class instead of AnalogGyro
-    //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-    
-    //This is the gyroscope that is mounted on the wrist to detect its angle
-    //Due to the current design, wrist angle has to be constantly maintained
-    public static ADXRS450_Gyro wristGyro = new ADXRS450_Gyro();
-    
     public static PowerDistributionPanel PDP = new PowerDistributionPanel();
     
     //Used to create trajectories
-    public static RobotSpecs specs = new RobotSpecs(78, 60, 23.25);
+    public static RobotSpecs specs = new RobotSpecs(100, 80, 23.00);
+    
+    public static void setAllMotorNeuralModes(NeutralMode mode) {
+    	RobotMap.leftDriveTalon1.setNeutralMode(mode);
+		RobotMap.leftDriveTalon2.setNeutralMode(mode);
+		RobotMap.rightDriveTalon1.setNeutralMode(mode);
+		RobotMap.rightDriveTalon2.setNeutralMode(mode);
+		RobotMap.leftDriveVictor.setNeutralMode(mode);
+		RobotMap.rightDriveVictor.setNeutralMode(mode);
+    }
 	
 	public static void init() {
 		//Set back motors to follow the front motors

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *	A command that uses PID to turn a set number of degrees.
  */
-public class AutoTurnPID extends Command {
+public class AutoTurn extends Command {
 	
 	public static final double ROBOT_DIAM = 23.25; //For turning, INCHES
 	public static final double ROBOT_RADIUS = ROBOT_DIAM/2;
@@ -31,7 +31,7 @@ public class AutoTurnPID extends Command {
 	 * The degrees follow the unit circle, so a positive value means turning left.
 	 * @param degrees - The amount of degrees to turn
 	 */
-    public AutoTurnPID(double degrees) {
+    public AutoTurn(double degrees) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
@@ -39,6 +39,13 @@ public class AutoTurnPID extends Command {
     	leftDistance = -DISTANCE_PER_DEGREE * degrees;
     	rightDistance = DISTANCE_PER_DEGREE * degrees;
     }
+    public static final int LEFT = 1;
+    public static final int RIGHT = -1;
+    
+    public AutoTurn(double degrees, int direction) {
+    	this(degrees * direction);
+    }
+    
 
     // Called just before this Command runs the first time
     protected void initialize() {

@@ -1,51 +1,53 @@
-package org.usfirst.frc.team6135.robot.commands.autonomous;
+package org.usfirst.frc.team6135.robot.commands.defaultcommands;
 
+import org.usfirst.frc.team6135.robot.OI;
 import org.usfirst.frc.team6135.robot.Robot;
-import org.usfirst.frc.team6135.robot.RobotMap;
-import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *	Raises the elevator all the way to the top until it hits the limit switch.
+ *
  */
-public class LowerElevator extends Command {
-
-	double speed;
+public class WristAnalog extends Command {
 	
-    public LowerElevator(double speed) {
+	static final double DEADZONE = 0.15;
+
+    public WristAnalog() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.elevatorSubsystem);
-    	this.speed = speed;
-    	this.speed *= ElevatorSubsystem.DIRECTION_DOWN;
-    }
-    public LowerElevator() {
-    	this(RobotMap.Speeds.AUTO_ELEVATOR_SPEED);
+    	requires(Robot.wristSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	RobotMap.elevatorVictor.set(speed);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.WRIST);
+    	//Check if joystick is pushed
+    	
+    	if(Math.abs(joystickVal) > DEADZONE) {
+    		Robot.wristSubsystem.setRaw(joystickVal);
+    	}
+    	else {
+    		Robot.wristSubsystem.setRaw(0);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return !Robot.elevatorSubsystem.notAtBottom();
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.elevatorSubsystem.setSpeed(0);
+    	Robot.wristSubsystem.setRaw(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.elevatorSubsystem.setSpeed(0);
+    	end();
     }
 }
