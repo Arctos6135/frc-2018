@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import org.usfirst.frc.team6135.robot.Robot;
+import org.usfirst.frc.team6135.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
@@ -11,12 +12,20 @@ public class AutoIntake extends TimedCommand {
 
 	final double speed;
 	
+	public enum Direction {
+		IN,
+		OUT
+	}
+	
     public AutoIntake(double timeout, double speed) {
         super(timeout);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.intakeSubsystem);
         this.speed = speed;
+    }
+    public AutoIntake(Direction direction) {
+    	this(RobotMap.AUTO_INTAKE_TIME, direction == Direction.IN ? RobotMap.Speeds.AUTO_INTAKE_SPEED : -RobotMap.Speeds.AUTO_INTAKE_SPEED);
     }
 
     // Called just before this Command runs the first time

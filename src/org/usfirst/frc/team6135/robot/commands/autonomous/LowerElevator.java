@@ -20,6 +20,9 @@ public class LowerElevator extends Command {
     	this.speed = speed;
     	this.speed *= ElevatorSubsystem.DIRECTION_DOWN;
     }
+    public LowerElevator() {
+    	this(RobotMap.Speeds.AUTO_ELEVATOR_SPEED);
+    }
 
     // Called just before this Command runs the first time
     protected void initialize() {
