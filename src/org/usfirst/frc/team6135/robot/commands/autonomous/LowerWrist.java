@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6135.robot.commands.autonomous;
 
-import org.usfirst.frc.team6135.robot.RobotMap;
+import org.usfirst.frc.team6135.robot.Robot;
+import org.usfirst.frc.team6135.robot.subsystems.WristSubsystem;
 
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
@@ -9,12 +10,13 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
  */
 public class LowerWrist extends TimedCommand {
 
-	double speed = 1.0;
+	double speed = 1.0 * WristSubsystem.DIRECTION_DOWN;
 	
-    public LowerWrist(double timeout) {
+    public LowerWrist() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	super(timeout);
+    	super(3.0);
+    	requires(Robot.wristSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -23,17 +25,17 @@ public class LowerWrist extends TimedCommand {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	RobotMap.wristVictor.set(speed);
+    	Robot.wristSubsystem.setRaw(speed);
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	RobotMap.wristVictor.set(0);
+    	Robot.wristSubsystem.setRaw(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	RobotMap.wristVictor.set(0);
+    	end();
     }
 }
