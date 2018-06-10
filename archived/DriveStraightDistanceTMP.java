@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *	Drives a straight distance forward with a trapezoidal motion profile.
  */
-public class DriveStraightDistance extends Command {
+public class DriveStraightDistanceTMP extends Command {
 	
 	TrapezoidalMotionProfile leftTrajectory, rightTrajectory;
 	
@@ -29,7 +29,7 @@ public class DriveStraightDistance extends Command {
 	double lastTime;
 	double leftLastErr, rightLastErr;
 
-    public DriveStraightDistance(double distance) {
+    public DriveStraightDistanceTMP(double distance) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);

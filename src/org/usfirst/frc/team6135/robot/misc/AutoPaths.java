@@ -7,17 +7,25 @@ import robot.pathfinder.TankDriveTrajectory;
 import robot.pathfinder.Waypoint;
 
 public class AutoPaths {
+	
+	public static TankDriveTrajectory baseline_driveForward;
+	
 	public static TankDriveTrajectory aligned_driveForward;
 	
 	public static TankDriveTrajectory middle_left, middle_right;
 	public static TankDriveTrajectory middle_left2, middle_right2;
 	public static TankDriveTrajectory middle_3, middle_4;
 	
-	public static TankDriveTrajectory back_up;
-	
 	public static TankDriveTrajectory side_left, side_right;
 	
+	public static TankDriveTrajectory back_up;
+	
 	public static void generateAll(RobotSpecs specs) {
+		baseline_driveForward = new TankDriveTrajectory(new Waypoint[] {
+				new Waypoint(0, 0, Math.PI / 2),
+				new Waypoint(0, RobotMap.ArenaDimensions.BASELINE_DISTANCE),
+		}, specs, 100, 1000);
+		
 		aligned_driveForward = new TankDriveTrajectory(new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
 				new Waypoint(0, RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2)
