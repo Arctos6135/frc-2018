@@ -8,7 +8,6 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchAligned;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchSide;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
-import org.usfirst.frc.team6135.robot.commands.autonomous.DriveStraightDistance;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPaths;
@@ -416,7 +415,7 @@ public class Robot extends TimedRobot {
 						} else if(macroAuto.equals(SWITCH_ALIGNED_RIGHT)) {
 							//If command is to place a cube from the right, give up placing the cube and
 							//instead drive past the baseline
-							new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_DISTANCE).start();
+							new FollowTrajectory(AutoPaths.aligned_driveForward).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(SWITCH_RIGHT)) {
 							new DrivePastBaseline().start();
@@ -427,7 +426,7 @@ public class Robot extends TimedRobot {
 							(new DrivePastBaseline()).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(MULTI_ALIGNED_RIGHT)) {
-							(new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
+							new FollowTrajectory(AutoPaths.aligned_driveForward).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(MULTI_MIDDLE)) {
 							selectedAuto = CSV_FILE_PREFIX + MULTI_MIDDLE_LEFT + ".csv";
@@ -440,7 +439,7 @@ public class Robot extends TimedRobot {
 						} else if(macroAuto.equals(SWITCH_ALIGNED_LEFT)) {
 							//If command is to place a cube from the right, give up placing the cube and
 							//instead drive past the baseline
-							new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_DISTANCE).start();
+							new FollowTrajectory(AutoPaths.aligned_driveForward).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(SWITCH_ALIGNED_RIGHT)) {
 							selectedAuto = CSV_FILE_PREFIX + SWITCH_ALIGNED + ".csv";
@@ -451,7 +450,7 @@ public class Robot extends TimedRobot {
 							(new DrivePastBaseline()).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(MULTI_ALIGNED_LEFT)) {
-							(new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_DISTANCE)).start();
+							new FollowTrajectory(AutoPaths.aligned_driveForward).start();
 							useRecordedAutos = false;
 						} else if(macroAuto.equals(MULTI_MIDDLE)) {
 							selectedAuto = CSV_FILE_PREFIX + MULTI_MIDDLE_RIGHT + ".csv";
@@ -488,7 +487,7 @@ public class Robot extends TimedRobot {
 					startAutoCommand(new SwitchAligned());
 				}
 				else {
-					startAutoCommand(new DriveStraightDistance(RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH));
+					startAutoCommand(new FollowTrajectory(AutoPaths.aligned_driveForward));
 				}
 				break;
 			case MIDDLE:
