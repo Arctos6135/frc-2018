@@ -30,8 +30,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.pathfinder.TankDriveTrajectory;
-import robot.pathfinder.Waypoint;
+import robot.pathfinder.core.Waypoint;
+import robot.pathfinder.core.trajectory.TankDriveTrajectory;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -505,10 +505,7 @@ public class Robot extends TimedRobot {
 				break;
 			//For debug purposes only
 			case DEBUG:
-				startAutoCommand(new FollowTrajectory(new TankDriveTrajectory(new Waypoint[] {
-						new Waypoint(0, 0, 0),
-						new Waypoint(120, 0, 0),
-				}, RobotMap.specs, 50, 5000)));
+				
 				break;
 			}
 		}

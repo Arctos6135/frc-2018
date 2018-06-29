@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.VictorSP;
-import robot.pathfinder.RobotSpecs;
+import robot.pathfinder.core.RobotSpecs;
 
 
 /**

@@ -2,14 +2,14 @@ package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import org.usfirst.frc.team6135.robot.Robot;
 
-import robot.pathfinder.Moment;
-import robot.pathfinder.TankDriveTrajectory;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
+import robot.pathfinder.core.trajectory.TankDriveTrajectory;
+import robot.pathfinder.core.trajectory.TankDriveMoment;
+
 /**
- * 	Makes the Robot follow the trajectory of a {@link robot.pathfinder.TankDriveTrajectory TankDriveTrajectory}.<br>
+ * 	Makes the Robot follow the trajectory of a {@link robot.pathfinder.core.trajectory.TankDriveTrajectory TankDriveTrajectory}.<br>
  * 	<br>
  * 	Note: For this command to function correctly, the unit of length used in the trajectory must be <em>inches</em>,
  * 	and the unit for time must be <em>seconds</em>.
@@ -47,22 +47,21 @@ public class FollowTrajectory extends Command {
     	double dt = Timer.getFPGATimestamp() - lastTime;
     	double t = timeSinceInitialized();
     	
-    	//Retrieve the desired values from both sides
-    	Moment leftMoment = trajectory.getLeftSmooth(t);
-    	Moment rightMoment = trajectory.getRightSmooth(t);
+    	//Retrieve the data for the current time
+    	TankDriveMoment m = trajectory.get(t);
     	//Left and right errors
-    	double leftErr = leftMoment.getDistance() - Robot.drive.getLeftDistance();
-    	double rightErr = rightMoment.getDistance() - Robot.drive.getRightDistance();
+    	double leftErr = m.getLeftPosition() - Robot.drive.getLeftDistance();
+    	double rightErr = m.getRightPosition() - Robot.drive.getRightDistance();
     	//Calculate left and right position derivatives
     	//The desired velocity is subtracted to get the difference
     	double leftDeriv = (leftErr - leftLastErr) / dt 
-    			- leftMoment.getVelocity();
+    			- m.getLeftVelocity();
     	double rightDeriv = (rightErr - rightLastErr) / dt
-    			- rightMoment.getVelocity();
+    			- m.getRightVelocity();
     	//Calculate motor outputs
-    	double leftOutput = kA * leftMoment.getAcceleration() + kV * leftMoment.getVelocity()
+    	double leftOutput = kA * m.getLeftAcceleration() + kV * m.getLeftVelocity()
     			+ kP * leftErr + kD * leftDeriv;
-    	double rightOutput = kA * rightMoment.getAcceleration() + kV * rightMoment.getVelocity()
+    	double rightOutput = kA * m.getRightAcceleration() + kV * m.getRightVelocity()
     			+ kP * rightErr + kD * rightDeriv;
     	//Constrain
     	leftOutput = Math.max(-1, Math.min(1, leftOutput));
