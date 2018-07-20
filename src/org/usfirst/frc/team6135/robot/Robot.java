@@ -1,8 +1,6 @@
 
 package org.usfirst.frc.team6135.robot;
 
-import java.io.IOException;
-
 import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseline;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchAligned;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchMiddle;
@@ -11,8 +9,6 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPaths;
-import org.usfirst.frc.team6135.robot.misc.AutoPlayback;
-import org.usfirst.frc.team6135.robot.misc.AutoRecord;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
@@ -78,75 +74,6 @@ public class Robot extends TimedRobot {
 	//This keeps track of the command that runs in autonomous so we can cancel it when entering teleop
 	static Command autonomousCommand;
 	
-	/*
-	 * RECORDING AUTOS AND PLAYBACK
-	 */
-	
-	//Prefix for recorded autos
-	public static final String CSV_FILE_PREFIX = "/home/lvuser/auto";
-
-	/* Recorded auto ids
-	 * 
-	 * Default: Baseline
-	 * 
-	 * Structure:
-	 * prefix + (optional) direction + side + (optional)suffixes
-	 * 
-	 * Prefixes:
-	 * s = Switch
-	 * S = scale
-	 * N = multi-cube
-	 * 
-	 * Side:
-	 * L/R = left/right side or direction
-	 * M = middle
-	 * 
-	 * Suffixes:
-	 * A = aligned
-	 * O = opposite
-	 * 
-	 */
-	public static final String BASELINE = "B";
-	
-	public static final String SWITCH_LEFT = "sL"; //Record
-	public static final String SWITCH_RIGHT = "sR"; //Record
-	public static final String SWITCH_ALIGNED_LEFT = "sLA";
-	public static final String SWITCH_ALIGNED_RIGHT = "sRA";
-	public static final String SWITCH_ALIGNED = "sA"; //Record
-	public static final String SWITCH_MIDDLE = "sM";
-	public static final String SWITCH_MIDDLE_LEFT = "sLM"; //Record
-	public static final String SWITCH_MIDDLE_RIGHT = "sRM"; //Record
-	
-	public static final String SCALE_LEFT = "SL"; //Record
-	public static final String SCALE_LEFT_OPPOSITE = "SLO"; //Record
-	public static final String SCALE_RIGHT = "SR"; //Record
-	public static final String SCALE_RIGHT_OPPOSITE = "SRO"; //Record
-	
-	public static final String MULTI_LEFT = "NL";
-	public static final String MULTI_RIGHT = "NR";
-	public static final String MULTI_ALIGNED_LEFT = "NLA";
-	public static final String MULTI_ALIGNED_RIGHT = "NRA";
-	public static final String MULTI_MIDDLE = "NM";
-	public static final String MULTI_MIDDLE_LEFT = "NLM";
-	public static final String MULTI_MIDDLE_RIGHT = "NLM";
-	
-	public static final String CUSTOM = "$CUSTOM";
-	
-	//Toggle using recorded autos
-	//Must be changed in code
-	//Playback
-	public static boolean useRecordedAutos = false;
-	public static String selectedAuto = null;
-	public static String customAutoFileName = null;
-	
-	//Recording
-	public static String recordingString;
-	public static boolean recording = false;
-	public static boolean doneRecording = true;
-	
-	AutoPlayback player;
-	AutoRecord recorder;
-	
 	public static boolean inDebugMode = false;
 	static void putTunables() {
 		if(!inDebugMode)
@@ -176,20 +103,6 @@ public class Robot extends TimedRobot {
 		FollowTrajectory.kV = SmartDashboard.getNumber("Path Follower kV", FollowTrajectory.kV);
 		FollowTrajectory.kA = SmartDashboard.getNumber("Path Follower kA", FollowTrajectory.kA);
 		TeleopDrive.rampBand = SmartDashboard.getNumber("Teleop Drive Ramp Band", TeleopDrive.rampBand);
-		
-		String autoRecordingName;
-		//This makes sure that the file we save to/read from is in the valid location
-		//"/home/lvuser/"
-		if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", "")).length() > 0)
-			recordingString = CSV_FILE_PREFIX + autoRecordingName + ".csv";
-		else
-			recordingString = null;
-		
-		String autoPlaybackName;
-		if((autoPlaybackName = SmartDashboard.getString("Auto Playback File Name", "")).length() > 0)
-			customAutoFileName = CSV_FILE_PREFIX + autoPlaybackName + ".csv";
-		else
-			customAutoFileName = null;
 	}
 	
 	/**
@@ -225,13 +138,8 @@ public class Robot extends TimedRobot {
         AutoPaths.generateAll(RobotMap.specs);
         
         //Initialize the correct auto chooser
-        if(useRecordedAutos) {
-        	//Recorded autos
-            initRecordedAutoChooser();
-        } else {
-        	//Pre-written autos
-        	initAutoChooser();
-        }
+        //Pre-written autos
+        initAutoChooser();
 		
         //Output the tunable values
 		putTunables();
@@ -256,28 +164,6 @@ public class Robot extends TimedRobot {
 		//Display the choosers by sending them over the SmartDashboard
 		SmartDashboard.putData("Auto Mode", prewrittenAutoChooser);
 		SmartDashboard.putData("Robot Location", robotLocationChooser);
-	}
-	
-	/**
-	 * Initializes the autonomous chooser for recorded autos
-	 */
-	public void initRecordedAutoChooser() {
-		recordedAutoChooser.addDefault("Drive Past Baseline (Better to use one of the commands below)", BASELINE);
-		recordedAutoChooser.addObject("Place Cube from left side", SWITCH_LEFT);
-		recordedAutoChooser.addObject("Place Cube from right side", SWITCH_RIGHT);
-		recordedAutoChooser.addObject("Place Cube (Aligned with switch): Left", SWITCH_ALIGNED_LEFT);
-		recordedAutoChooser.addObject("Place Cube (Aligned with switch): Right", SWITCH_ALIGNED_RIGHT);
-		recordedAutoChooser.addObject("Place Cube From Middle", SWITCH_MIDDLE);
-		recordedAutoChooser.addObject("Shoot Cube into Scale: Left", SCALE_LEFT);
-		recordedAutoChooser.addObject("Shoot Cube into Scale: Right", SCALE_RIGHT);
-		recordedAutoChooser.addObject("Multi-Cube from left side", MULTI_LEFT);
-		recordedAutoChooser.addObject("Multi-Cube from right side", MULTI_RIGHT);
-		recordedAutoChooser.addObject("Multi-Cube (Aligned with switch): Left", MULTI_ALIGNED_LEFT);
-		recordedAutoChooser.addObject("Multi-Cube (Aligned with switch): Right", MULTI_ALIGNED_RIGHT);
-		recordedAutoChooser.addObject("Multi-Cube from middle", MULTI_MIDDLE);
-		recordedAutoChooser.addObject("Custom File", CUSTOM);
-		
-		SmartDashboard.putData("Auto mode (Recorded)", recordedAutoChooser);
 	}
 	
 	public static double leftMaxVel, rightMaxVel, leftMaxAccel, rightMaxAccel;
@@ -346,121 +232,18 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		
-		if(useRecordedAutos) {
-			//Set up recorded auto
-			//Get the selected auto
-			String macroAuto = recordedAutoChooser.getSelected();
-			setUpMacroAutos(macroAuto);
-			if(useRecordedAutos) {
-				try {
-		    		 player = new AutoPlayback(selectedAuto);
-				} catch (Exception e){
-					e.printStackTrace();
-				}
-				//Because the recorded autos are recorded with motors in coast, set them to coast
-				RobotMap.setAllMotorNeuralModes(NeutralMode.Coast);
-			}
-		} else {
-			//Get the location and auto mode from choosers
-			Location location = robotLocationChooser.getSelected();
-			Auto autoMode = prewrittenAutoChooser.getSelected();
-			
-			//Set motors to be in brake mode
-			RobotMap.setAllMotorNeuralModes(NeutralMode.Brake);
-			
-			runSetAuto(location, autoMode);
-		}
+		Location location = robotLocationChooser.getSelected();
+		Auto autoMode = prewrittenAutoChooser.getSelected();
+		
+		//Set motors to be in brake mode
+		RobotMap.setAllMotorNeuralModes(NeutralMode.Brake);
+		
+		runSetAuto(location, autoMode);
 
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VISION);
 		
 		updateTunables();
-	}
-	public void setUpMacroAutos(String macroAuto) {
-		if(macroAuto != null) {
-			//If a the "Custom" option is chosen, the auto to run is just the one given in the text box
-			if(macroAuto.equals(CUSTOM)) {
-				selectedAuto = customAutoFileName;
-				return;
-			}
-			gameData = DriverStation.getInstance().getGameSpecificMessage().toUpperCase();
-			if(gameData.length() > 0){
-				//Depending on which side the alliance switch is on, some commands need to change
-				//Check if command is a scale command
-				if(macroAuto.equals(BASELINE)) {
-					new DrivePastBaseline().start();
-					useRecordedAutos = false;
-				} else if(macroAuto.startsWith("S")) {
-					//Check the second character of the game data for the direction of the alliance scale
-					if(gameData.charAt(1) == 'L') {
-						if(macroAuto.charAt(1) == 'L') {
-							selectedAuto = CSV_FILE_PREFIX + SCALE_LEFT + ".csv";
-						} else {
-							selectedAuto = CSV_FILE_PREFIX + SCALE_LEFT_OPPOSITE + ".csv";
-						}
-					} else {
-						if(macroAuto.charAt(1) == 'R') {
-							selectedAuto = CSV_FILE_PREFIX + SCALE_RIGHT + ".csv";
-						} else {
-							selectedAuto = CSV_FILE_PREFIX + SCALE_RIGHT_OPPOSITE + ".csv";
-						}
-					}
-				} else {
-					//Check the first character of the game data for the direction of the alliance switch
-					
-					if(gameData.charAt(0) == 'L'){
-						//If the alliance switch is on the left side
-						if(macroAuto.equals(SWITCH_MIDDLE)) {
-							selectedAuto = CSV_FILE_PREFIX + SWITCH_MIDDLE_LEFT + ".csv";
-						} else if(macroAuto.equals(SWITCH_ALIGNED_RIGHT)) {
-							//If command is to place a cube from the right, give up placing the cube and
-							//instead drive past the baseline
-							new FollowTrajectory(AutoPaths.aligned_driveForward).start();
-							useRecordedAutos = false;
-						} else if(macroAuto.equals(SWITCH_RIGHT)) {
-							new DrivePastBaseline().start();
-							useRecordedAutos = false;
-						} else if(macroAuto.equals(SWITCH_ALIGNED_LEFT)) {
-							selectedAuto = CSV_FILE_PREFIX + SWITCH_ALIGNED + ".csv";
-						} else if(macroAuto.equals(MULTI_RIGHT)) {
-							(new DrivePastBaseline()).start();
-							useRecordedAutos = false;
-						} else if(macroAuto.equals(MULTI_ALIGNED_RIGHT)) {
-							new FollowTrajectory(AutoPaths.aligned_driveForward).start();
-							useRecordedAutos = false;
-						} else if(macroAuto.equals(MULTI_MIDDLE)) {
-							selectedAuto = CSV_FILE_PREFIX + MULTI_MIDDLE_LEFT + ".csv";
-						} else {
-							selectedAuto = CSV_FILE_PREFIX + macroAuto + ".csv";
-						}
-					} else {
-						if(macroAuto.equals(SWITCH_MIDDLE)) {
-							selectedAuto = CSV_FILE_PREFIX + SWITCH_MIDDLE_RIGHT + ".csv";
-						} else if(macroAuto.equals(SWITCH_ALIGNED_LEFT)) {
-							//If command is to place a cube from the right, give up placing the cube and
-							//instead drive past the baseline
-							new FollowTrajectory(AutoPaths.aligned_driveForward).start();
-							useRecordedAutos = false;
-						} else if(macroAuto.equals(SWITCH_ALIGNED_RIGHT)) {
-							selectedAuto = CSV_FILE_PREFIX + SWITCH_ALIGNED + ".csv";
-						} else if(macroAuto.equals(SWITCH_LEFT)) {
-							new DrivePastBaseline().start();
-							useRecordedAutos = false;
-						} else if(macroAuto.equals(MULTI_LEFT)) {
-							(new DrivePastBaseline()).start();
-							useRecordedAutos = false;
-						} else if(macroAuto.equals(MULTI_ALIGNED_LEFT)) {
-							new FollowTrajectory(AutoPaths.aligned_driveForward).start();
-							useRecordedAutos = false;
-						} else if(macroAuto.equals(MULTI_MIDDLE)) {
-							selectedAuto = CSV_FILE_PREFIX + MULTI_MIDDLE_RIGHT + ".csv";
-						} else {
-							selectedAuto = CSV_FILE_PREFIX + macroAuto + ".csv";
-						}
-					}
-				}
-			}
-		}
 	}
 	
 	/**
@@ -517,16 +300,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		if(useRecordedAutos) {
-			//Run the auto player if we are playing a recorded auto
-			try {
-				if (player != null && !player.finished()){
-					player.play();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	@Override
@@ -537,17 +310,6 @@ public class Robot extends TimedRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		
-		if(useRecordedAutos) {
-			//Shut down the player
-			if(player != null) {
-				try {
-					player.end();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 		
 		//Set camera config
 		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
@@ -562,42 +324,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		if(recording) {
-			try{
-				//Dynamic recording, so we don't have to enable/disable teleop
-				if(doneRecording) {
-					String autoRecordingName;
-					if((autoRecordingName = SmartDashboard.getString("Auto Recording Save Name", null)) != null)
-						recordingString = CSV_FILE_PREFIX + autoRecordingName + ".csv";
-					else
-						recordingString = null;
-				}
-				//If recordingString is not null, then start recording
-				if(recordingString != null) {
-					if(recorder == null)
-						recorder = new AutoRecord(recordingString);
-					recorder.record();
-					doneRecording = false;
-					SmartDashboard.putString("Recording file name", recordingString);
-				} else {
-					recording = false;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				recording = false;
-			}
-		} else {
-			if(!doneRecording) {
-				try {
-					recorder.end();
-					//Set to null, to allow for dynamic recording
-					recorder = null;
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				doneRecording = true;
-			}
-		}
 	}
 
 	/**
