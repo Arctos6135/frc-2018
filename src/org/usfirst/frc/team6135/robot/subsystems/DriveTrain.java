@@ -56,8 +56,24 @@ public class DriveTrain extends Subsystem {
 	 */
 	public void setMotorsVBus(double leftMotorVBus, double rightMotorVBus) {
 		//Constrain to [-1, 1]
-		RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, Math.max(-1, Math.min(1, leftMotorVBus)));
-		RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, Math.max(-1, Math.min(1, -rightMotorVBus)));
+		RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, Math.max(-1, Math.min(1, leftMotorVBus * speedMultiplier)));
+		RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, Math.max(-1, Math.min(1, -rightMotorVBus * speedMultiplier)));
+	}
+	/**
+	 * Sets the speed of the left drive motor.
+	 * The motor speed is first scaled by the scaling constant, and then constrained to [-1, 1].
+	 * @param speed The output percentage
+	 */
+	public void setLeftMotor(double speed) {
+		RobotMap.leftDriveTalon1.set(ControlMode.PercentOutput, Math.max(-1, Math.min(1, speed * speedMultiplier)));
+	}
+	/**
+	 * Sets the speed of the right drive motor.
+	 * The motor speed is first scaled by the scaling constant, and then constrained to [-1, 1].
+	 * @param speed The output percentage
+	 */
+	public void setRightMotor(double speed) {
+		RobotMap.rightDriveTalon1.set(ControlMode.PercentOutput, Math.max(-1, Math.min(1, -speed * speedMultiplier)));
 	}
 	
     public void initDefaultCommand() {
