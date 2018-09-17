@@ -69,7 +69,6 @@ public class Robot extends TimedRobot {
 	//Autonomous command choosers
 	public static SendableChooser<Location> robotLocationChooser = new SendableChooser<>();
 	public static SendableChooser<Auto> prewrittenAutoChooser = new SendableChooser<>();
-	public static SendableChooser<String> recordedAutoChooser = new SendableChooser<>();
 	
 	//This keeps track of the command that runs in autonomous so we can cancel it when entering teleop
 	static Command autonomousCommand;
