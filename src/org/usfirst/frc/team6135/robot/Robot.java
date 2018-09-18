@@ -79,9 +79,6 @@ public class Robot extends TimedRobot {
 			return;
 		//Output these values to the SmartDashboard for tuning
 		//They will show up as modifiable text boxes on the SmartDashboard
-		SmartDashboard.putNumber("Turn kP", AutoTurn.kP);
-		SmartDashboard.putNumber("Turn kI", AutoTurn.kI);
-		SmartDashboard.putNumber("Turn kD", AutoTurn.kD);
 		SmartDashboard.putNumber("Path Follower kP", FollowTrajectory.kP);
 		SmartDashboard.putNumber("Path Follower kD", FollowTrajectory.kD);
 		SmartDashboard.putNumber("Path Follower kV", FollowTrajectory.kV);
@@ -94,9 +91,6 @@ public class Robot extends TimedRobot {
 	static void updateTunables() {
 		//Read the textbox values and overwrite the old ones with the new ones
 		//The value is not changed by default (new value = old value)
-		AutoTurn.kP = SmartDashboard.getNumber("Turn kP", AutoTurn.kP);
-		AutoTurn.kI = SmartDashboard.getNumber("Turn kI", AutoTurn.kI);
-		AutoTurn.kD = SmartDashboard.getNumber("Turn kD", AutoTurn.kD);
 		FollowTrajectory.kP = SmartDashboard.getNumber("Path Follower kP", FollowTrajectory.kP);
 		FollowTrajectory.kD = SmartDashboard.getNumber("Path Follower kD", FollowTrajectory.kD);
 		FollowTrajectory.kV = SmartDashboard.getNumber("Path Follower kV", FollowTrajectory.kV);

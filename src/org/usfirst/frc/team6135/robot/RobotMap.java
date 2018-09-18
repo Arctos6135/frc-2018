@@ -1,8 +1,5 @@
 package org.usfirst.frc.team6135.robot;
 
-import org.usfirst.frc.team6135.robot.misc.PIDMotorController;
-import org.usfirst.frc.team6135.robot.misc.RampedPIDMotorController;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -152,12 +149,6 @@ public class RobotMap {
     public static TalonSRX rightDriveTalon2 = new TalonSRX(4);
     public static VictorSPX leftDriveVictor = new VictorSPX(5);
     public static VictorSPX rightDriveVictor = new VictorSPX(6);
-    
-    public static RampedPIDMotorController leftDrivePIDMotor = new RampedPIDMotorController(RobotMap.leftDriveTalon1, 0.05, false);
-    public static RampedPIDMotorController rightDrivePIDMotor = new RampedPIDMotorController(RobotMap.rightDriveTalon1, 0.05, true);
-    
-    public static PIDMotorController leftDrivePIDMotorUnramped = new PIDMotorController(RobotMap.leftDriveTalon1, false);
-    public static PIDMotorController rightDrivePIDMotorUnramped = new PIDMotorController(RobotMap.rightDriveTalon1, true);
     
     public static DoubleSolenoid gearshiftSolenoid = new DoubleSolenoid(0, 1);
     
