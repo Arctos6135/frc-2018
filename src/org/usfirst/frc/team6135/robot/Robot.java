@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.pathfinder.core.Waypoint;
 import robot.pathfinder.core.trajectory.TankDriveTrajectory;
+import robot.pathfinder.core.trajectory.TrajectoryGenerator;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -281,7 +282,7 @@ public class Robot extends TimedRobot {
 				break;
 			//For debug purposes only
 			case DEBUG:
-				
+				startAutoCommand(new AutoTurn(90, AutoTurn.LEFT));
 				break;
 			}
 		}

@@ -15,13 +15,13 @@ public class AutoTurn extends Command {
 	public static final double ROBOT_RADIUS = ROBOT_DIAM/2;
 	public static final double DISTANCE_PER_DEGREE = (ROBOT_DIAM*Math.PI)/360;
 
-	public static double kP = FollowTrajectory.kP;
-	public static double kD = FollowTrajectory.kD;
-	public static double kV = FollowTrajectory.kV;
-	public static double kA = FollowTrajectory.kA;
+	public static double kP = 0;
+	public static double kD = 0;
+	public static double kV = 0.0167;
+	public static double kA = 0;
 	
-	public static double maxVel = RobotMap.specs.getMaxVelocity();
-	public static double maxAccel = RobotMap.specs.getMaxAcceleration();
+	public static double maxVel = 60;
+	public static double maxAccel = 40;
 	
 	TrapezoidalMotionProfile leftProfile, rightProfile;
 	double lLastErr, rLastErr, lastTime;
@@ -54,6 +54,7 @@ public class AutoTurn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	System.out.println(leftProfile.veloAt(timeSinceInitialized()));
     	if(timeSinceInitialized() > leftProfile.totalTime() || timeSinceInitialized() > rightProfile.totalTime()) {
     		return;
     	}
