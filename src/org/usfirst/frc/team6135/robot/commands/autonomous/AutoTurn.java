@@ -5,8 +5,6 @@ import org.usfirst.frc.team6135.robot.RobotMap;
 import org.usfirst.frc.team6135.robot.misc.TrapezoidalMotionProfile;
 
 import edu.wpi.first.wpilibj.command.Command;
-import robot.pathfinder.core.trajectory.TankDriveMoment;
-import robot.pathfinder.math.MathUtils;
 
 /**
  *	A command that uses a trapezoidal motion profile to turn a set number of degrees.
