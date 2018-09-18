@@ -11,15 +11,11 @@ public class TrapezoidalMotionProfile {
 	
 	boolean reverse = false;
 	
-	static double absMin(double a, double b) {
-		return Math.abs(a) < Math.abs(b) ? a : b;
-	}
-	
 	public TrapezoidalMotionProfile(double dist, double maxVelocity, double maxAcceleration) {
-		this(dist, maxVelocity, maxAcceleration, false);
-	}
-	public TrapezoidalMotionProfile(double dist, double maxVelocity, double maxAcceleration, boolean reverse) {
-		this.reverse = reverse;
+		if(dist < 0) {
+			reverse = true;
+			dist = -dist;
+		}
 		distance = dist;
 		maxAcl = maxAcceleration;
 		maxVel = maxVelocity;
@@ -55,9 +51,9 @@ public class TrapezoidalMotionProfile {
 		}
 		//When decelerating
 		else if(time <= totalTime()) {
-			//The distance is the distance covered during acceleration and cruising, minus the distance covered during deceleration,
+			//The distance is the distance covered during acceleration and cruising, plus the distance covered during deceleration,
 			//which can be solved using the third kinematic formula
-			result = accelDist + cruiseDist - ((time - tAccel - tCruise) * cruiseVel - 
+			result = accelDist + cruiseDist + ((time - tAccel - tCruise) * cruiseVel - 
 					Math.pow(time - tAccel - tCruise, 2) * maxAcl * 1/2);
 		}
 		else {

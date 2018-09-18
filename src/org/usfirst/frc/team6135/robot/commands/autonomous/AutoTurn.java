@@ -2,12 +2,14 @@ package org.usfirst.frc.team6135.robot.commands.autonomous;
 
 import org.usfirst.frc.team6135.robot.Robot;
 import org.usfirst.frc.team6135.robot.RobotMap;
+import org.usfirst.frc.team6135.robot.misc.TrapezoidalMotionProfile;
 
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
+import robot.pathfinder.core.trajectory.TankDriveMoment;
+import robot.pathfinder.math.MathUtils;
 
 /**
- *	A command that uses PID to turn a set number of degrees.
+ *	A command that uses a trapezoidal motion profile to turn a set number of degrees.
  */
 public class AutoTurn extends Command {
 	
@@ -15,16 +17,16 @@ public class AutoTurn extends Command {
 	public static final double ROBOT_RADIUS = ROBOT_DIAM/2;
 	public static final double DISTANCE_PER_DEGREE = (ROBOT_DIAM*Math.PI)/360;
 
-	//To be tuned later
-	public static double kP = 0.02;
+	public static double kP = FollowTrajectory.kP;
+	public static double kD = FollowTrajectory.kD;
+	public static double kV = FollowTrajectory.kV;
+	public static double kA = FollowTrajectory.kA;
 	
-	public static double kI = 0.0018;
-	public static double kD = 0.016;
+	public static double maxVel = RobotMap.specs.getMaxVelocity();
+	public static double maxAccel = RobotMap.specs.getMaxAcceleration();
 	
-	public static final double TOLERANCE = 3.0;
-	
-	PIDController leftPID, rightPID;
-	double leftDistance, rightDistance;
+	TrapezoidalMotionProfile leftProfile, rightProfile;
+	double lLastErr, rLastErr, lastTime;
 
 	/**
 	 * Creates a new instance of the command that turns the Robot a number of degrees <b>counterclockwise</b>.<br>
@@ -36,8 +38,8 @@ public class AutoTurn extends Command {
         // eg. requires(chassis);
     	requires(Robot.drive);
     	
-    	leftDistance = -DISTANCE_PER_DEGREE * degrees;
-    	rightDistance = DISTANCE_PER_DEGREE * degrees;
+    	leftProfile = new TrapezoidalMotionProfile(-DISTANCE_PER_DEGREE * degrees, maxVel, maxAccel);
+    	rightProfile = new TrapezoidalMotionProfile(DISTANCE_PER_DEGREE * degrees, maxVel, maxAccel);
     }
     public static final int LEFT = 1;
     public static final int RIGHT = -1;
@@ -50,49 +52,58 @@ public class AutoTurn extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.drive.resetEncoders();
-    	
-    	leftPID = new PIDController(kP, kI, kD, Robot.drive.getLeftEncoder(), RobotMap.leftDrivePIDMotorUnramped);
-    	rightPID = new PIDController(kP, kI, kD, Robot.drive.getRightEncoder(), RobotMap.rightDrivePIDMotorUnramped);
-    	
-    	leftPID.setOutputRange(-1.0, 1.0);
-    	rightPID.setOutputRange(-1.0, 1.0);
-    	leftPID.setContinuous(false);
-    	rightPID.setContinuous(false);
-    	leftPID.setAbsoluteTolerance(TOLERANCE);
-    	rightPID.setAbsoluteTolerance(TOLERANCE);
-    	
-    	leftPID.setSetpoint(leftDistance);
-    	rightPID.setSetpoint(rightDistance);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(!leftPID.isEnabled())
-    		leftPID.enable();
-    	if(!rightPID.isEnabled())
-    		rightPID.enable();
+    	if(timeSinceInitialized() > leftProfile.totalTime() || timeSinceInitialized() > rightProfile.totalTime()) {
+    		return;
+    	}
+    	
+    	//Calculate current t and time difference from last iteration
+		double t = timeSinceInitialized();
+		double dt = t - lastTime;
+		
+		//Calculate left and right errors
+		double leftErr = Robot.drive.getLeftDistance() - leftProfile.distAt(t);
+		double rightErr = Robot.drive.getRightDistance() - rightProfile.distAt(t);
+		//Get the derivative of the errors
+		//Subtract away the desired velocity to get the true error
+		double leftDeriv = (leftErr - lLastErr) / dt 
+    			- leftProfile.veloAt(t);
+    	double rightDeriv = (rightErr - rLastErr) / dt
+    			- rightProfile.veloAt(t);
+
+    	//Calculate outputs
+    	double leftOutput = kA * leftProfile.accelAt(t) + kV * leftProfile.veloAt(t)
+				+ kP * leftErr + kD * leftDeriv;
+		double rightOutput = kA * rightProfile.accelAt(t) + kV * rightProfile.accelAt(t)
+				+ kP * rightErr + kD * rightDeriv;
+		//Constrain
+    	leftOutput = Math.max(-1, Math.min(1, leftOutput));
+    	rightOutput = Math.max(-1, Math.min(1, rightOutput));
+    	
+    	Robot.drive.setMotorsVBus(leftOutput, rightOutput);
+    	
+    	lastTime = t;
+    	lLastErr = leftErr;
+    	rLastErr = rightErr;
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	//Return true only if left and right PID are on target
-        return leftPID.onTarget() && rightPID.onTarget();
+    	//Return if the time since initialized is more than the total time of the trajectory
+    	return timeSinceInitialized() > leftProfile.totalTime();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	leftPID.disable();
-    	rightPID.disable();
-    	leftPID.free();
-    	rightPID.free();
+    	Robot.drive.setMotorsVBus(0, 0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	leftPID.disable();
-    	rightPID.disable();
-    	leftPID.free();
-    	rightPID.free();
+    	end();
     }
 }
