@@ -15,10 +15,10 @@ public class AutoTurn extends Command {
 	public static final double ROBOT_RADIUS = ROBOT_DIAM/2;
 	public static final double DISTANCE_PER_DEGREE = (ROBOT_DIAM*Math.PI)/360;
 
-	public static double kP = 0;
-	public static double kD = 0;
-	public static double kV = 0.0167;
-	public static double kA = 0;
+	public static double kP = FollowTrajectory.kP;
+	public static double kD = FollowTrajectory.kD;
+	public static double kV = FollowTrajectory.kV;
+	public static double kA = FollowTrajectory.kA;
 	
 	public static double maxVel = 60;
 	public static double maxAccel = 40;
