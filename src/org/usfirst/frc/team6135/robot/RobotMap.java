@@ -1,8 +1,4 @@
 package org.usfirst.frc.team6135.robot;
-
-import org.usfirst.frc.team6135.robot.misc.PIDMotorController;
-import org.usfirst.frc.team6135.robot.misc.RampedPIDMotorController;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -14,7 +10,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.VictorSP;
-import robot.pathfinder.RobotSpecs;
 
 
 /**
@@ -153,12 +148,6 @@ public class RobotMap {
     public static VictorSPX leftDriveVictor = new VictorSPX(5);
     public static VictorSPX rightDriveVictor = new VictorSPX(6);
     
-    public static RampedPIDMotorController leftDrivePIDMotor = new RampedPIDMotorController(RobotMap.leftDriveTalon1, 0.05, false);
-    public static RampedPIDMotorController rightDrivePIDMotor = new RampedPIDMotorController(RobotMap.rightDriveTalon1, 0.05, true);
-    
-    public static PIDMotorController leftDrivePIDMotorUnramped = new PIDMotorController(RobotMap.leftDriveTalon1, false);
-    public static PIDMotorController rightDrivePIDMotorUnramped = new PIDMotorController(RobotMap.rightDriveTalon1, true);
-    
     public static DoubleSolenoid gearshiftSolenoid = new DoubleSolenoid(0, 1);
     
     public static VictorSP elevatorVictor = new VictorSP(7);
@@ -176,9 +165,6 @@ public class RobotMap {
     public static DigitalInput wristSwitch = new DigitalInput(6);
     
     public static PowerDistributionPanel PDP = new PowerDistributionPanel();
-    
-    //Used to create trajectories
-    public static RobotSpecs specs = new RobotSpecs(78, 60, 23.25);
 
     public static void setAllMotorNeuralModes(NeutralMode mode) {
     	RobotMap.leftDriveTalon1.setNeutralMode(mode);

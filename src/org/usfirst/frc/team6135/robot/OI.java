@@ -5,8 +5,6 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.OperateIntake;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.PrecisionToggle;
@@ -62,9 +60,7 @@ public class OI {
 	 * 	<li>Right Analog Stick: Left/Right</li>
 	 * 	<li>Left Bumper: Shift gear to slower configuration</li>
 	 * 	<li>Right Bumper: Shift gear to faster configuration</li>
-	 * 	<li>Y Button: Auto Power Cube align</li>
 	 * 	<li>X Button: Toggle Precision Mode</li>
-	 * 	<li>B Button: Cancel auto align</li>
 	 * 	<li>A Button: Start/Stop autonomous recording</li>
 	 * 	<li>Back Button: Toggle Training Wheels</li>
 	 * 	<li>Start Button: Enter <em>Demo Mode</em>
@@ -110,9 +106,7 @@ public class OI {
 		public static final int LEFT_RIGHT = RobotMap.ControllerMap.RSTICK_X_AXIS;
 		public static final int SLOW_GEAR = RobotMap.ControllerMap.LBUMPER;
 		public static final int FAST_GEAR = RobotMap.ControllerMap.RBUMPER;
-		public static final int AUTO_CUBE_ALIGN = RobotMap.ControllerMap.BUTTON_Y;
 		public static final int PRECISION_TOGGLE = RobotMap.ControllerMap.BUTTON_X; //Precision toggle
-		public static final int CANCEL_ALIGN = RobotMap.ControllerMap.BUTTON_B;
 		public static final int RECORD_AUTO = RobotMap.ControllerMap.BUTTON_A;
 		
 		public static final int ELEVATOR = RobotMap.ControllerMap.LSTICK_Y_AXIS;
@@ -230,9 +224,6 @@ public class OI {
 	public static JoystickButton gearShiftFast;
 	public static JoystickButton gearShiftSlow;
 	
-	public static NonDemoButton autoCubeAlign;
-	public static NonDemoButton cancelAlign;
-	
 	public static NonDemoButton recordAuto;
 	
 	public static NonDemoButton scalePosition;
@@ -253,8 +244,6 @@ public class OI {
 		//Fast gear = right bumper
 		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
 		gearShiftSlow = new JoystickButton(driveController, Controls.SLOW_GEAR);
-		autoCubeAlign = new NonDemoButton(driveController, Controls.AUTO_CUBE_ALIGN);
-		cancelAlign = new NonDemoButton(driveController, Controls.CANCEL_ALIGN);
 		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
 		
 		recordAuto = new NonDemoButton(driveController, Controls.RECORD_AUTO);
@@ -275,10 +264,6 @@ public class OI {
 		scalePosition.whenPressed(new ScalingPosition());
 		
 		shootCube.whenPressed(new AutoIntake(1.5, -1.0));
-		
-		Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_TURN_SPEED);
-		autoCubeAlign.whenPressed(autoCubeAlignCmd);
-		cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd));
 		
 		demo_intake.whenPressed(new OperateIntake(0.7));
 		demo_outtake.whenPressed(new OperateIntake(-0.7));
