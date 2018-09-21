@@ -16,7 +16,7 @@ public class PrecisionToggle extends InstantCommand {
 
     // Called once when the command executes
     protected void initialize() {
-    	Robot.drive.setSpeedMultiplier(Robot.drive.getSpeedMultiplier() == 1.0 ? 0.5 : 1.0);
+    	Robot.drive.setSpeedMultiplier(Robot.drive.getSpeedMultiplier() == 1.0 ? 0.3 : 1.0);
     }
 
 }
