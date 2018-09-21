@@ -56,6 +56,13 @@ public class Robot extends TimedRobot {
 	//Autonomous command choosers
 	public static SendableChooser<Object> nullChooser = new SendableChooser<>();
 	
+	public void putTunables() {
+		SmartDashboard.putNumber("Drive Speed Percentage", Robot.drive.getSpeedMultiplier());
+	}
+	public void updateTunables() {
+		Robot.drive.setSpeedMultiplier(SmartDashboard.getNumber("Drive Speed Percentage", Robot.drive.getSpeedMultiplier()));
+	}
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -86,6 +93,7 @@ public class Robot extends TimedRobot {
 
         nullChooser.addDefault("(Autonomous Not Available)", null);
         SmartDashboard.putData(nullChooser);
+        putTunables();
 	}
 	
 	/**
@@ -136,8 +144,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		//Set camera config
-		visionSubsystem.setMode(VisionSubsystem.Mode.VIDEO);
+		updateTunables();
 
 		RobotMap.setAllMotorNeuralModes(NeutralMode.Coast);
 	}
