@@ -5,7 +5,6 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.DrivePastBaseline;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchAligned;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchMiddle;
 import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchSide;
-import org.usfirst.frc.team6135.robot.commands.autonomous.AutoTurn;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPaths;
@@ -26,7 +25,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.pathfinder.core.RobotSpecs;
+import robot.pathfinder.core.TrajectoryParams;
 import robot.pathfinder.core.Waypoint;
+import robot.pathfinder.core.path.PathType;
 import robot.pathfinder.core.trajectory.TankDriveTrajectory;
 import robot.pathfinder.core.trajectory.TrajectoryGenerator;
 
@@ -282,7 +284,19 @@ public class Robot extends TimedRobot {
 				break;
 			//For debug purposes only
 			case DEBUG:
-				startAutoCommand(new FollowTrajectory(TrajectoryGenerator.generateStraightTank(RobotMap.specs, 120)));
+				RobotSpecs robotSpecs = new RobotSpecs(100.0, 80.0, 23.0);
+				TrajectoryParams params = new TrajectoryParams();
+				params.waypoints = new Waypoint[] {
+						new Waypoint(0.0, 0.0, Math.PI / 2),
+						new Waypoint(48.0, 120.0, Math.PI / 2),
+				};
+				params.alpha = 200.0;
+				params.segmentCount = 1000;
+				params.isTank = true;
+				params.pathType = PathType.QUINTIC_HERMITE;
+				TankDriveTrajectory trajectory = new TankDriveTrajectory(robotSpecs, params);
+				Robot.drive.resetEncoders();
+				startAutoCommand(new FollowTrajectory(trajectory));
 				break;
 			}
 		}
