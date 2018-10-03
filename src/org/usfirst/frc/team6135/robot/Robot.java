@@ -282,7 +282,7 @@ public class Robot extends TimedRobot {
 				break;
 			//For debug purposes only
 			case DEBUG:
-				startAutoCommand(new AutoTurn(90, AutoTurn.LEFT));
+				startAutoCommand(new FollowTrajectory(TrajectoryGenerator.generateStraightTank(RobotMap.specs, 120)));
 				break;
 			}
 		}

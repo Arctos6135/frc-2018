@@ -121,9 +121,6 @@ public class OI {
 		driveController = new XboxController(0);
 		attachmentsController = new XboxController(1);
 		
-		JoystickButton j = new JoystickButton(driveController, RobotMap.ControllerMap.BUTTON_A);
-		j.whenPressed(new DriveForward(3));
-		
 		//Fast gear = right bumper
 		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
 		gearShiftSlow = new JoystickButton(driveController, Controls.SLOW_GEAR);
