@@ -4,7 +4,7 @@ import org.usfirst.frc.team6135.robot.Robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.pathfinder.core.trajectory.TankDriveTrajectory;
 import robot.pathfinder.follower.Follower;
 import robot.pathfinder.follower.TankFollower;
@@ -39,7 +39,7 @@ public class FollowTrajectory extends Command {
 		return Robot.drive.getRightDistance();
 	};
 	
-	Follower follower;
+	TankFollower follower;
 	
     public FollowTrajectory(TankDriveTrajectory trajectory) {
         // Use requires() here to declare subsystem dependencies
@@ -57,6 +57,14 @@ public class FollowTrajectory extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	follower.run();
+    	if(Robot.inDebugMode) {
+    		SmartDashboard.putNumber("Left Error", follower.lastLeftError());
+    		SmartDashboard.putNumber("Right Error", follower.lastRightError());
+    		SmartDashboard.putNumber("Left Derivative", follower.lastLeftDerivative());
+    		SmartDashboard.putNumber("Right Derivative", follower.lastRightDerivative());
+    		SmartDashboard.putNumber("Left Output", follower.lastLeftOutput());
+    		SmartDashboard.putNumber("Right Output", follower.lastRightOutput());
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
