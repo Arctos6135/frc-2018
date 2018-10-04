@@ -3,7 +3,6 @@ package org.usfirst.frc.team6135.robot;
 import org.usfirst.frc.team6135.robot.commands.autonomous.AutoIntake;
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
-import org.usfirst.frc.team6135.robot.commands.debug.DriveForward;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
@@ -61,9 +60,7 @@ public class OI {
 	 * 	<li>Right Analog Stick: Left/Right</li>
 	 * 	<li>Left Bumper: Shift gear to slower configuration</li>
 	 * 	<li>Right Bumper: Shift gear to faster configuration</li>
-	 * 	<li>Y Button: Auto Power Cube align</li>
 	 * 	<li>X Button: Toggle Precision Mode</li>
-	 * 	<li>B Button: Cancel auto align</li>
 	 * 	<li>Back Button: Toggle Drive Ramping</li>
 	 * 	<li>Start Button: Toggle Debug Mode</li>
 	 * 	<li>XBOX Button: Enable rocket booster</li>
@@ -85,9 +82,7 @@ public class OI {
 		public static final int LEFT_RIGHT = RobotMap.ControllerMap.RSTICK_X_AXIS;
 		public static final int SLOW_GEAR = RobotMap.ControllerMap.LBUMPER;
 		public static final int FAST_GEAR = RobotMap.ControllerMap.RBUMPER;
-		public static final int AUTO_CUBE_ALIGN = RobotMap.ControllerMap.BUTTON_Y;
 		public static final int PRECISION_TOGGLE = RobotMap.ControllerMap.BUTTON_X; //Precision toggle
-		public static final int CANCEL_ALIGN = RobotMap.ControllerMap.BUTTON_B;
 		public static final int RECORD_AUTO = RobotMap.ControllerMap.BUTTON_A;
 		
 		public static final int ELEVATOR = RobotMap.ControllerMap.LSTICK_Y_AXIS;
@@ -124,8 +119,6 @@ public class OI {
 		//Fast gear = right bumper
 		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
 		gearShiftSlow = new JoystickButton(driveController, Controls.SLOW_GEAR);
-		autoCubeAlign = new JoystickButton(driveController, Controls.AUTO_CUBE_ALIGN);
-		cancelAlign = new JoystickButton(driveController, Controls.CANCEL_ALIGN);
 		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
 		//recordAuto = new JoystickButton(driveController, Controls.RECORD_AUTO);
 		scalePosition = new JoystickButton(attachmentsController, Controls.SCALE_POSITION);
