@@ -52,11 +52,14 @@ public class FollowTrajectory extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	follower.initialize();
+    	last = System.currentTimeMillis();
     }
 
+    long last;
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	follower.run();
+    	
     	if(Robot.inDebugMode) {
     		SmartDashboard.putNumber("Left Error", follower.lastLeftError());
     		SmartDashboard.putNumber("Right Error", follower.lastRightError());
@@ -64,6 +67,9 @@ public class FollowTrajectory extends Command {
     		SmartDashboard.putNumber("Right Derivative", follower.lastRightDerivative());
     		SmartDashboard.putNumber("Left Output", follower.lastLeftOutput());
     		SmartDashboard.putNumber("Right Output", follower.lastRightOutput());
+    		long now = System.currentTimeMillis();
+    		SmartDashboard.putNumber("Time Between Loops", now - last);
+    		last = now;
     	}
     }
 

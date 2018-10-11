@@ -135,10 +135,6 @@ public class OI {
 		
 		shootCube.whenPressed(new AutoIntake(1.5, -1.0));
 		
-		Command autoCubeAlignCmd = new AutoCubeAlign(RobotMap.Speeds.AUTO_TURN_SPEED);
-		autoCubeAlign.whenPressed(autoCubeAlignCmd);
-		cancelAlign.whenPressed(new CancelOperation(autoCubeAlignCmd));
-		
 		//Trigger for the Back button
 		Trigger trainingWheels = new Trigger() {
 			@Override
