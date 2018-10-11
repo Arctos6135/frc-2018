@@ -113,7 +113,6 @@ public class OI {
 		public static final int WRIST = RobotMap.ControllerMap.RSTICK_Y_AXIS;
 		public static final int INTAKE_IN = RobotMap.ControllerMap.RTRIGGER;
 		public static final int INTAKE_OUT = RobotMap.ControllerMap.LTRIGGER;
-		public static final int SCALE_POSITION = RobotMap.ControllerMap.BUTTON_Y;
 		public static final int SHOOT_CUBE = RobotMap.ControllerMap.LBUMPER;
 		//Note: Some buttons such as the Start button and the D-Pad do not have mappings.
 		//Triggers are created for them to read their states and process them.
@@ -226,8 +225,6 @@ public class OI {
 	
 	public static NonDemoButton recordAuto;
 	
-	public static NonDemoButton scalePosition;
-	
 	public static NonDemoButton shootCube;
 	
 	public static JoystickButton precisionToggle;
@@ -247,7 +244,6 @@ public class OI {
 		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
 		
 		recordAuto = new NonDemoButton(driveController, Controls.RECORD_AUTO);
-		scalePosition = new NonDemoButton(attachmentsController, Controls.SCALE_POSITION);
 		shootCube = new NonDemoButton(attachmentsController, Controls.SHOOT_CUBE);
 		
 		demo_blockAttachments = new DemoButton(driveController, Controls.DEMO_BLOCK_ATTACHMENTS, false);
@@ -260,8 +256,6 @@ public class OI {
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
 		
 		precisionToggle.whenPressed(new PrecisionToggle());
-		
-		scalePosition.whenPressed(new ScalingPosition());
 		
 		shootCube.whenPressed(new AutoIntake(1.5, -1.0));
 		
