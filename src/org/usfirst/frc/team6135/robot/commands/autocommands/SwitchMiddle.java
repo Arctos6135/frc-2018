@@ -34,21 +34,24 @@ public class SwitchMiddle extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	//Place first cube
     	addParallel(new RaiseElevator());
     	addSequential(new FollowTrajectory(direction == Robot.LEFT ? AutoPaths.middle_left : AutoPaths.middle_right));
+    	addSequential(new OperateIntake(OperateIntake.OPEN));
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
-    	
+  
     	addParallel(new LowerElevator());
-    	addParallel(new LowerWrist());
+    	addParallel(new LowerWrist()); //Lower elevator and wrist and drive back at the same time
     	addSequential(new FollowTrajectory(direction == Robot.LEFT ? AutoPaths.middle_left2 : AutoPaths.middle_right2));
-    	addParallel(new OperateIntake(RobotMap.Speeds.INTAKE_SPEED));
-    	addSequential(new FollowTrajectory(AutoPaths.middle_3));
-    	addParallel(new OperateIntake(0.2));
-    	addSequential(new FollowTrajectory(AutoPaths.middle_4));
-    	addParallel(new OperateIntake(0));
+    	addParallel(new OperateIntake(RobotMap.Speeds.INTAKE_SPEED)); //Run the intake
+    	addSequential(new FollowTrajectory(AutoPaths.middle_3)); //Drive forward
+    	addSequential(new OperateIntake(OperateIntake.CLOSE)); //Close the intake
+    	addSequential(new OperateIntake(0)); //Stop running the intake
+    	addSequential(new FollowTrajectory(AutoPaths.middle_4)); //Drive back
     	
     	addParallel(new RaiseElevator());
     	addSequential(new FollowTrajectory(direction == Robot.LEFT ? AutoPaths.middle_left : AutoPaths.middle_right));
+    	addSequential(new OperateIntake(OperateIntake.OPEN));
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
     	
     	addParallel(new LowerElevator());
