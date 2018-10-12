@@ -5,9 +5,8 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.ElevatorAnalog;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.AutoCubeAlign;
-import org.usfirst.frc.team6135.robot.commands.teleoperated.CancelOperation;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.GearShift;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.OperateIntake;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.PrecisionToggle;
 import org.usfirst.frc.team6135.robot.commands.teleoperated.ScalingPosition;
 import org.usfirst.frc.team6135.robot.triggers.POVTrigger;
@@ -71,6 +70,8 @@ public class OI {
 	 * 	<li>Right Analog Stick: Tilt Wrist</li>
 	 * 	<li>Left Trigger: Intake Out (Analog)</li>
 	 * 	<li>Right Trigger: Intake In (Analog)</li>
+	 * 	<li>Left Bumper: Close Intake</li>
+	 * 	<li>Right Bumper: Open Intake</li>
 	 * 	<li>D-Pad Up: Raise the elevator to the top</li>
 	 * 	<li>D-Pad Down: Lower the elevator to the bottom</li>
 	 * 	<li>Y Button: Raise the elevator and wrist to Scale position</li>
@@ -89,8 +90,9 @@ public class OI {
 		public static final int WRIST = RobotMap.ControllerMap.RSTICK_Y_AXIS;
 		public static final int INTAKE_IN = RobotMap.ControllerMap.RTRIGGER;
 		public static final int INTAKE_OUT = RobotMap.ControllerMap.LTRIGGER;
+		public static final int INTAKE_OPEN = RobotMap.ControllerMap.RBUMPER;
+		public static final int INTAKE_CLOSE = RobotMap.ControllerMap.LBUMPER;
 		public static final int SCALE_POSITION = RobotMap.ControllerMap.BUTTON_Y;
-		public static final int SHOOT_CUBE = RobotMap.ControllerMap.LBUMPER;
 		//Note: Some buttons such as the Start button and the D-Pad do not have mappings.
 		//Triggers are created for them to read their states and process them.
 	}
@@ -108,9 +110,10 @@ public class OI {
 	
 	public static JoystickButton scalePosition;
 	
-	public static JoystickButton shootCube;
-	
 	public static JoystickButton precisionToggle;
+	
+	public static JoystickButton openIntake;
+	public static JoystickButton closeIntake;
 	
 	public OI() {
 		driveController = new XboxController(0);
@@ -120,11 +123,9 @@ public class OI {
 		gearShiftFast = new JoystickButton(driveController, Controls.FAST_GEAR);
 		gearShiftSlow = new JoystickButton(driveController, Controls.SLOW_GEAR);
 		precisionToggle = new JoystickButton(driveController, Controls.PRECISION_TOGGLE);
-		//recordAuto = new JoystickButton(driveController, Controls.RECORD_AUTO);
 		scalePosition = new JoystickButton(attachmentsController, Controls.SCALE_POSITION);
-		shootCube = new JoystickButton(attachmentsController, Controls.SHOOT_CUBE);
-		
-		//recordAuto.whenPressed(new ToggleRecording());
+		openIntake = new JoystickButton(attachmentsController, Controls.INTAKE_OPEN);
+		closeIntake = new JoystickButton(attachmentsController, Controls.INTAKE_CLOSE);
 		
 		gearShiftFast.whenPressed(new GearShift(GearShift.GEAR_FAST));
 		gearShiftSlow.whenPressed(new GearShift(GearShift.GEAR_SLOW));
@@ -133,7 +134,8 @@ public class OI {
 		
 		scalePosition.whenPressed(new ScalingPosition());
 		
-		shootCube.whenPressed(new AutoIntake(1.5, -1.0));
+		openIntake.whenPressed(new OperateIntake(OperateIntake.OPEN));
+		closeIntake.whenPressed(new OperateIntake(OperateIntake.CLOSE));
 		
 		//Trigger for the Back button
 		Trigger trainingWheels = new Trigger() {

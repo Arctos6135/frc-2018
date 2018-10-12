@@ -2,6 +2,7 @@ package org.usfirst.frc.team6135.robot.commands.teleoperated;
 
 import org.usfirst.frc.team6135.robot.Robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
@@ -10,7 +11,12 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  */
 public class OperateIntake extends InstantCommand {
 
-	final double speed;
+	double speed;
+	DoubleSolenoid.Value direction = null;
+	
+	public static final DoubleSolenoid.Value OPEN = DoubleSolenoid.Value.kForward;
+	public static final DoubleSolenoid.Value CLOSE = DoubleSolenoid.Value.kReverse;
+	
     public OperateIntake(double speed) {
         super();
         // Use requires() here to declare subsystem dependencies
@@ -18,10 +24,20 @@ public class OperateIntake extends InstantCommand {
         requires(Robot.intakeSubsystem);
         this.speed = speed;
     }
+    public OperateIntake(DoubleSolenoid.Value direction) {
+    	super();
+    	requires(Robot.intakeSubsystem);
+    	this.direction = direction;
+    }
 
     // Called once when the command executes
     protected void initialize() {
-    	Robot.intakeSubsystem.setSpeed(speed);
+    	if(direction == null) {
+    		Robot.intakeSubsystem.setSpeed(speed);
+    	}
+    	else {
+    		Robot.intakeSubsystem.setPneumatics(direction);
+    	}
     }
 
 }

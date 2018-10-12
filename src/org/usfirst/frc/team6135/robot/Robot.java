@@ -30,7 +30,6 @@ import robot.pathfinder.core.TrajectoryParams;
 import robot.pathfinder.core.Waypoint;
 import robot.pathfinder.core.path.PathType;
 import robot.pathfinder.core.trajectory.TankDriveTrajectory;
-import robot.pathfinder.core.trajectory.TrajectoryGenerator;
 
 /**
  * The VM is configured to automatically run this class, and to call the
