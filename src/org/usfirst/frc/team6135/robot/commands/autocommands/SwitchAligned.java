@@ -5,6 +5,7 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerElevator;
 import org.usfirst.frc.team6135.robot.commands.autonomous.LowerWrist;
 import org.usfirst.frc.team6135.robot.commands.autonomous.RaiseElevator;
+import org.usfirst.frc.team6135.robot.commands.teleoperated.OperateIntake;
 import org.usfirst.frc.team6135.robot.misc.AutoPaths;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -33,6 +34,7 @@ public class SwitchAligned extends CommandGroup {
         // arm.
     	addParallel(new RaiseElevator());
     	addSequential(new FollowTrajectory(AutoPaths.aligned_driveForward));
+    	addSequential(new OperateIntake(OperateIntake.OPEN));
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
     	
     	addParallel(new LowerElevator());
