@@ -42,14 +42,14 @@ public class AutoPaths {
 		middle_right = middle_left.mirrorLeftRight();
 		middle_left2 = middle_left.retrace();
 		middle_right2 = middle_right.retrace();
-		middle_3 = TrajectoryGenerator.generateStraightTank(specs, 60);
+		middle_3 = TrajectoryGenerator.generateStraightTank(specs, 72);
 		middle_4 = middle_3.retrace();
 		
 		params.waypoints = new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
 				new Waypoint(RobotMap.ArenaDimensions.SWITCH_EDGE_OFFSET, RobotMap.ArenaDimensions.SWITCH_CENTER_DISTANCE - RobotMap.ROBOT_LENGTH / 2, 0)
 		};
-		params.alpha = 100;
+		params.alpha = 200;
 		side_left = new TankDriveTrajectory(specs, params);
 		side_right = side_left.mirrorLeftRight();
 		

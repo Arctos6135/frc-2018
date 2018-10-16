@@ -58,12 +58,12 @@ public class RobotMap {
 		//Actual auto line is 10 feet from the alliance wall, but an extra 2ft is added just in case
 		public static final double BASELINE_DISTANCE = 10.0 * 12;
 		//Minus 28 inches since 14ft is to the middle of the switch
-		public static final double SWITCH_DISTANCE = 14.0 * 12 - 28 - 4;
+		public static final double SWITCH_DISTANCE = 14.0 * 12 - 28 + 8;
 		public static final double VISION_SAMPLING_DISTANCE = SWITCH_DISTANCE / 4;
-		public static final double SWITCH_CENTER_DISTANCE = 14.0 * 12;
+		public static final double SWITCH_CENTER_DISTANCE = 14.0 * 12 - 16;
 		//Alliance station width = 22ft, switch (including walls) width = 12ft 9 1/2in
 		//Leftover = 110 1/2in, so each side has 55 1/4in. Subtract away the Robot's width since we only want front of the Robot to be at the switch.
-		public static final double SWITCH_EDGE_OFFSET = 55.25 - ROBOT_WIDTH;
+		public static final double SWITCH_EDGE_OFFSET = 55.25 - ROBOT_WIDTH + 14;
 		//Minus 3ft since we want to target the middle
 		public static final double SWITCH_SIZE = 12.0 * 12 - 3.0 * 12;
 		public static final double BASELINE_OFFSET = 3.0 * 12;
