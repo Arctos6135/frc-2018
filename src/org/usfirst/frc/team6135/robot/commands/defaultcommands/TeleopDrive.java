@@ -44,12 +44,18 @@ public class TeleopDrive extends Command {
     protected void execute() {
     	double x = Math.abs(OI.driveController.getRawAxis(X_AXIS))>DEADZONE?OI.driveController.getRawAxis(X_AXIS):0;
         double y = Math.abs(OI.driveController.getRawAxis(Y_AXIS))>DEADZONE?-OI.driveController.getRawAxis(Y_AXIS):0;
-        double l = y + x, r = y - x;
+        
+        x = Math.copySign(x * x, x);
+        y = Math.copySign(y * y, y);
+        
+        double l = y + x, 
+        	   r = y - x;
+        
         
         //Square the final values to smooth out driving
         //Math.copySign ensures the direction is not lost
-        l = Math.copySign(l * l, l);
-        r = Math.copySign(r * r, r);
+        //l = Math.copySign(l * l, l);
+        //r = Math.copySign(r * r, r);
         
         if(rampingOn) {
         	l = Math.max(prevLeft - rampBand, Math.min(prevLeft + rampBand, l));
