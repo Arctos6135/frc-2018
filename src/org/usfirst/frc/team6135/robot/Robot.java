@@ -8,6 +8,7 @@ import org.usfirst.frc.team6135.robot.commands.autocommands.SwitchSide;
 import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPaths;
+import org.usfirst.frc.team6135.robot.misc.Autonomous;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
@@ -59,15 +60,64 @@ public class Robot extends TimedRobot {
 	public enum Location {
 		LEFT,
 		MIDDLE,
-		RIGHT,
+		RIGHT;
+		
+		public boolean matchesGameData(String gameData) {
+			return (this == LEFT && gameData.charAt(0) == 'L') || (this == RIGHT && gameData.charAt(0) == 'R') || this == MIDDLE;
+		}
 	}
 	public enum Auto {
 		DEBUG,
 		BASELINE,
 		ALIGNED,
 		SIDE,
-		MIDDLE,
+		MIDDLE;
+		
+		static final Autonomous baseline = (location, gameData) -> {
+			return new DrivePastBaseline();
+		};
+		static final Autonomous aligned = (location, gameData) -> {
+			return location.matchesGameData(gameData) ? new SwitchAligned() : new FollowTrajectory(AutoPaths.aligned_driveForward);
+		};
+		static final Autonomous middle = (location, gameData) -> {
+			return new SwitchMiddle(gameData.charAt(0) == 'L' ? LEFT : RIGHT);
+		};
+		static final Autonomous side = (location, gameData) -> {
+			return location.matchesGameData(gameData) ? new SwitchSide(gameData.charAt(0) == 'L' ? LEFT : RIGHT) : new DrivePastBaseline();
+		};
+		static final Autonomous debug = (location, gameData) -> {
+			RobotSpecs robotSpecs = new RobotSpecs(100.0, 80.0, 23.0);
+			TrajectoryParams params = new TrajectoryParams();
+			params.waypoints = new Waypoint[] {
+					new Waypoint(0.0, 0.0, Math.PI / 2),
+					new Waypoint(48.0, 120.0, Math.PI / 2),
+			};
+			params.alpha = 200.0;
+			params.segmentCount = 1000;
+			params.isTank = true;
+			params.pathType = PathType.QUINTIC_HERMITE;
+			TankDriveTrajectory trajectory = new TankDriveTrajectory(robotSpecs, params);
+			return new FollowTrajectory(trajectory);
+		};
+		
+		public Autonomous getAutonomous() {
+			switch(this) {
+			case DEBUG:
+				return debug;
+			case BASELINE:
+				return baseline;
+			case ALIGNED:
+				return aligned;
+			case SIDE:
+				return side;
+			case MIDDLE:
+				return middle;
+			default:
+				throw new RuntimeException("Invalid auto enum value");
+			}
+		}
 	}
+	
 	//Autonomous command choosers
 	public static SendableChooser<Location> robotLocationChooser = new SendableChooser<>();
 	public static SendableChooser<Auto> prewrittenAutoChooser = new SendableChooser<>();
@@ -254,50 +304,7 @@ public class Robot extends TimedRobot {
 		//Retrieve the locations of the switch plates (in game data)
 		gameData = DriverStation.getInstance().getGameSpecificMessage().toUpperCase();
 		if(gameData.length() > 0) {
-			switch(mode) {
-			case BASELINE:
-				startAutoCommand(new DrivePastBaseline());
-				break;
-			case ALIGNED:
-				//Run aligned with switch command only if the robot's position is the same as the switch plate's
-				if((location == Location.LEFT && gameData.charAt(0) == 'L') 
-						|| (location == Location.RIGHT && gameData.charAt(0) == 'R')) {
-					startAutoCommand(new SwitchAligned());
-				}
-				else {
-					startAutoCommand(new FollowTrajectory(AutoPaths.aligned_driveForward));
-				}
-				break;
-			case MIDDLE:
-				//Start the middle auto command with the correct direction
-				startAutoCommand(new SwitchMiddle(gameData.charAt(0) == 'L' ? LEFT : RIGHT));
-				break;
-			case SIDE:
-				if((location == Location.LEFT && gameData.charAt(0) == 'L') 
-						|| (location == Location.RIGHT && gameData.charAt(0) == 'R')) {
-					startAutoCommand(new SwitchSide(location == Location.LEFT ? LEFT : RIGHT));
-				}
-				else {
-					startAutoCommand(new DrivePastBaseline());
-				}
-				break;
-			//For debug purposes only
-			case DEBUG:
-				RobotSpecs robotSpecs = new RobotSpecs(100.0, 80.0, 23.0);
-				TrajectoryParams params = new TrajectoryParams();
-				params.waypoints = new Waypoint[] {
-						new Waypoint(0.0, 0.0, Math.PI / 2),
-						new Waypoint(48.0, 120.0, Math.PI / 2),
-				};
-				params.alpha = 200.0;
-				params.segmentCount = 1000;
-				params.isTank = true;
-				params.pathType = PathType.QUINTIC_HERMITE;
-				TankDriveTrajectory trajectory = new TankDriveTrajectory(robotSpecs, params);
-				Robot.drive.resetEncoders();
-				startAutoCommand(new FollowTrajectory(trajectory));
-				break;
-			}
+			startAutoCommand(mode.getAutonomous().getCommand(location, gameData));
 		}
 	}
 
