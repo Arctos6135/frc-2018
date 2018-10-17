@@ -27,6 +27,9 @@ public class AutoIntake extends TimedCommand {
     public AutoIntake(Direction direction) {
     	this(RobotMap.AUTO_INTAKE_TIME, direction == Direction.IN ? RobotMap.Speeds.AUTO_INTAKE_SPEED : -RobotMap.Speeds.AUTO_INTAKE_SPEED);
     }
+    public AutoIntake(Direction direction, double time) {
+    	this(time, direction == Direction.IN ? RobotMap.Speeds.AUTO_INTAKE_SPEED : -RobotMap.Speeds.AUTO_INTAKE_SPEED);
+    }
 
     // Called just before this Command runs the first time
     protected void initialize() {

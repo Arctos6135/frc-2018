@@ -15,7 +15,7 @@ public class LowerWrist extends TimedCommand {
     public LowerWrist() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	super(2.0);
+    	super(1.7);
     	requires(Robot.wristSubsystem);
     }
 

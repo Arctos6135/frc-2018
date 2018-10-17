@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class SwitchMiddle extends CommandGroup {
+public class SwitchAlignedDouble extends CommandGroup {
 
-    public SwitchMiddle(int direction) {
+    public SwitchAlignedDouble(int direction) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -33,12 +33,11 @@ public class SwitchMiddle extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	//Place first cube
     	addParallel(new RaiseElevator());
-    	addSequential(new FollowTrajectory(direction == Robot.LEFT ? AutoPaths.middle_left : AutoPaths.middle_right));
+    	addSequential(new FollowTrajectory(AutoPaths.aligned_driveForward));
     	addSequential(new OperateIntake(OperateIntake.OPEN));
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
-  
+    	
     	addParallel(new LowerElevator());
     	addParallel(new LowerWrist()); //Lower elevator and wrist and drive back at the same time
     	addSequential(new FollowTrajectory(direction == Robot.LEFT ? AutoPaths.middle_left2 : AutoPaths.middle_right2));
