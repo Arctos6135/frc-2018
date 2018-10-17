@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class SwitchSide extends CommandGroup {
 
-    public SwitchSide(int side) {
+    public SwitchSide(Robot.GenericLocation side) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -34,7 +34,7 @@ public class SwitchSide extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addParallel(new RaiseElevator());
-    	addSequential(new FollowTrajectory(side == Robot.LEFT ? AutoPaths.side_left : AutoPaths.side_right));
+    	addSequential(new FollowTrajectory(side == Robot.GenericLocation.LEFT ? AutoPaths.side_left : AutoPaths.side_right));
     	addSequential(new OperateIntake(OperateIntake.OPEN));
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
     	

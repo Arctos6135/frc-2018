@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class SwitchAlignedDouble extends CommandGroup {
 
-    public SwitchAlignedDouble(int direction) {
+    public SwitchAlignedDouble(Robot.GenericLocation direction) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -40,14 +40,14 @@ public class SwitchAlignedDouble extends CommandGroup {
     	
     	addParallel(new LowerElevator());
     	addParallel(new LowerWrist()); //Lower elevator and wrist and drive back at the same time
-    	addSequential(new FollowTrajectory(direction == Robot.LEFT ? AutoPaths.middle_left2 : AutoPaths.middle_right2));
+    	addSequential(new FollowTrajectory(direction == Robot.GenericLocation.LEFT ? AutoPaths.middle_left2 : AutoPaths.middle_right2));
     	addSequential(new FollowTrajectory(AutoPaths.middle_3)); //Drive forward
     	addSequential(new OperateIntake(OperateIntake.CLOSE)); //Close the intake
     	addSequential(new AutoIntake(AutoIntake.Direction.IN, 0.5)); //Run the intake for a bit to pull the cube in
     	addSequential(new FollowTrajectory(AutoPaths.middle_4)); //Drive back
     	
     	addParallel(new RaiseElevator());
-    	addSequential(new FollowTrajectory(direction == Robot.LEFT ? AutoPaths.middle_left : AutoPaths.middle_right));
+    	addSequential(new FollowTrajectory(direction == Robot.GenericLocation.LEFT ? AutoPaths.middle_left : AutoPaths.middle_right));
     	addSequential(new OperateIntake(OperateIntake.OPEN));
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
     	
