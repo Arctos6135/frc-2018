@@ -26,9 +26,14 @@ public class WristAnalog extends Command {
     protected void execute() {
     	double joystickVal = OI.attachmentsController.getRawAxis(OI.Controls.WRIST);
     	//Check if joystick is pushed
-    	
+    	boolean override = OI.attachmentsController.getRawButtonPressed(OI.Controls.WRIST_OVERRIDE);
     	if(Math.abs(joystickVal) > DEADZONE) {
-    		Robot.wristSubsystem.setRaw(joystickVal);
+    		if(override) {
+    			Robot.wristSubsystem.setRawOverride(joystickVal);
+    		}
+    		else {
+    			Robot.wristSubsystem.setRaw(joystickVal);
+    		}
     	}
     	else {
     		Robot.wristSubsystem.setRaw(0);

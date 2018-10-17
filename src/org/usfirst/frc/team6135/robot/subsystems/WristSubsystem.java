@@ -27,11 +27,11 @@ public class WristSubsystem extends Subsystem {
     		RobotMap.wristVictor.set(speed);
     	}
     	else {
-    		if(sign(speed) == DIRECTION_DOWN)
-    			RobotMap.wristVictor.set(speed);
-    		else
-    			RobotMap.wristVictor.set(0);
+    		RobotMap.wristVictor.set(sign(speed) == DIRECTION_DOWN ? speed : 0);
     	}
+    }
+    public void setRawOverride(double speed) {
+    	RobotMap.wristVictor.set(speed);
     }
     
     public boolean notAtTop() {

@@ -66,7 +66,11 @@ public class OI {
 	 * Attachments:
 	 * <ul>
 	 * 	<li>Left Analog Stick: Elevator</li>
-	 * 	<li>Right Analog Stick: Tilt Wrist</li>
+	 * 	<li>Right Analog Stick: Tilt Wrist
+	 * 		<ul>
+	 * 			<li>If the stick is pressed down at the same time, the limit switch will be overridden</li>
+	 * 		</ul>
+	 * 	</li>
 	 * 	<li>Left Trigger: Intake Out (Analog)</li>
 	 * 	<li>Right Trigger: Intake In (Analog)</li>
 	 * 	<li>Left Bumper: Close Intake</li>
@@ -87,6 +91,7 @@ public class OI {
 		
 		public static final int ELEVATOR = RobotMap.ControllerMap.LSTICK_Y_AXIS;
 		public static final int WRIST = RobotMap.ControllerMap.RSTICK_Y_AXIS;
+		public static final int WRIST_OVERRIDE = RobotMap.ControllerMap.BUTTON_RSTICK;
 		public static final int INTAKE_IN = RobotMap.ControllerMap.RTRIGGER;
 		public static final int INTAKE_OUT = RobotMap.ControllerMap.LTRIGGER;
 		public static final int INTAKE_OPEN = RobotMap.ControllerMap.RBUMPER;
