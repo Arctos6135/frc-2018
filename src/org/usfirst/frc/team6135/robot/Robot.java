@@ -9,6 +9,7 @@ import org.usfirst.frc.team6135.robot.commands.autonomous.FollowTrajectory;
 import org.usfirst.frc.team6135.robot.commands.defaultcommands.TeleopDrive;
 import org.usfirst.frc.team6135.robot.misc.AutoPaths;
 import org.usfirst.frc.team6135.robot.misc.Autonomous;
+import org.usfirst.frc.team6135.robot.misc.PowerUpGameData;
 import org.usfirst.frc.team6135.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team6135.robot.subsystems.ElevatorSubsystem;
 import org.usfirst.frc.team6135.robot.subsystems.GearShiftSubsystem;
@@ -52,19 +53,15 @@ public class Robot extends TimedRobot {
 	
 	public static Alliance color; //Red or Blue
 	public static int station; //Driver station number (1, 2 or 3)
-	public static String gameData; //Used to tell the locations of the switch/scale plates
+	public static PowerUpGameData gameData; //Used to tell the locations of the switch/scale plates
 	
 	public static final int LEFT = 1;
 	public static final int RIGHT = -1;
 	
-	public enum Location {
+	public enum GenericLocation {
 		LEFT,
 		MIDDLE,
 		RIGHT;
-		
-		public boolean matchesGameData(String gameData) {
-			return (this == LEFT && gameData.charAt(0) == 'L') || (this == RIGHT && gameData.charAt(0) == 'R') || this == MIDDLE;
-		}
 	}
 	public enum Auto {
 		DEBUG,
@@ -77,13 +74,13 @@ public class Robot extends TimedRobot {
 			return new DrivePastBaseline();
 		};
 		static final Autonomous aligned = (location, gameData) -> {
-			return location.matchesGameData(gameData) ? new SwitchAligned() : new FollowTrajectory(AutoPaths.aligned_driveForward);
+			return gameData.getOurSwitchLocation() == location ? new SwitchAligned() : new FollowTrajectory(AutoPaths.aligned_driveForward);
 		};
 		static final Autonomous middle = (location, gameData) -> {
-			return new SwitchMiddle(gameData.charAt(0) == 'L' ? LEFT : RIGHT);
+			return new SwitchMiddle(gameData.getOurSwitchLocation());
 		};
 		static final Autonomous side = (location, gameData) -> {
-			return location.matchesGameData(gameData) ? new SwitchSide(gameData.charAt(0) == 'L' ? LEFT : RIGHT) : new DrivePastBaseline();
+			return gameData.getOurSwitchLocation() == location ? new SwitchSide(gameData.getOurSwitchLocation()) : new DrivePastBaseline();
 		};
 		static final Autonomous debug = (location, gameData) -> {
 			RobotSpecs robotSpecs = new RobotSpecs(100.0, 80.0, 23.0);
@@ -119,7 +116,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	//Autonomous command choosers
-	public static SendableChooser<Location> robotLocationChooser = new SendableChooser<>();
+	public static SendableChooser<GenericLocation> robotLocationChooser = new SendableChooser<>();
 	public static SendableChooser<Auto> prewrittenAutoChooser = new SendableChooser<>();
 	
 	//This keeps track of the command that runs in autonomous so we can cancel it when entering teleop
@@ -195,9 +192,9 @@ public class Robot extends TimedRobot {
 	 */
 	public static void initAutoChooser() {
 		//Add options to choosers
-		robotLocationChooser.addObject("Left", Location.LEFT);
-		robotLocationChooser.addDefault("Middle", Location.MIDDLE);
-		robotLocationChooser.addObject("Right", Location.RIGHT);
+		robotLocationChooser.addObject("Left", GenericLocation.LEFT);
+		robotLocationChooser.addDefault("Middle", GenericLocation.MIDDLE);
+		robotLocationChooser.addObject("Right", GenericLocation.RIGHT);
 		
 		prewrittenAutoChooser.addDefault("Drive Past Baseline", Auto.BASELINE);
 		prewrittenAutoChooser.addObject("Switch Auto: Side", Auto.SIDE);
@@ -277,7 +274,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		
-		Location location = robotLocationChooser.getSelected();
+		GenericLocation location = robotLocationChooser.getSelected();
 		Auto autoMode = prewrittenAutoChooser.getSelected();
 		
 		//Set motors to be in brake mode
@@ -300,10 +297,10 @@ public class Robot extends TimedRobot {
 		autonomousCommand = autoCommand;
 		autoCommand.start();
 	}
-	public static void runSetAuto(Location location, Auto mode) {
+	public static void runSetAuto(GenericLocation location, Auto mode) {
 		//Retrieve the locations of the switch plates (in game data)
-		gameData = DriverStation.getInstance().getGameSpecificMessage().toUpperCase();
-		if(gameData.length() > 0) {
+		gameData = PowerUpGameData.getGameDataFromDS();
+		if(gameData.isValid()) {
 			startAutoCommand(mode.getAutonomous().getCommand(location, gameData));
 		}
 	}

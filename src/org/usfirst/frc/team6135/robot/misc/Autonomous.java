@@ -6,5 +6,5 @@ import edu.wpi.first.wpilibj.command.Command;
 
 @FunctionalInterface
 public interface Autonomous {
-	public Command getCommand(Robot.Location location, String gameData);
+	public Command getCommand(Robot.GenericLocation location, PowerUpGameData gameData);
 }
