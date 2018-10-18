@@ -42,14 +42,15 @@ public class SwitchMiddle extends CommandGroup {
     	addParallel(new LowerElevator());
     	addParallel(new LowerWrist()); //Lower elevator and wrist and drive back at the same time
     	addSequential(new FollowTrajectory(direction == Robot.GenericLocation.LEFT ? AutoPaths.middle_left2 : AutoPaths.middle_right2));
-    	addSequential(new FollowTrajectory(AutoPaths.middle_3)); //Drive forward
+    	addSequential(new FollowTrajectory(AutoPaths.middle_4)); //Drive forward
     	addSequential(new OperateIntake(OperateIntake.CLOSE)); //Close the intake
+
     	addSequential(new AutoIntake(AutoIntake.Direction.IN, 0.8)); //Run the intake for a bit to pull the cube in
     	addParallel(new AutoIntake(AutoIntake.Direction.IN, 0.7));
-    	addSequential(new FollowTrajectory(AutoPaths.middle_4)); //Drive back
+    	addSequential(new FollowTrajectory(AutoPaths.middle_5)); //Drive back
     	
     	addParallel(new RaiseElevator());
-    	addSequential(new FollowTrajectory(direction == Robot.GenericLocation.LEFT ? AutoPaths.middle_left : AutoPaths.middle_right));
+    	addSequential(new FollowTrajectory(direction == Robot.GenericLocation.LEFT ? AutoPaths.middle_left3 : AutoPaths.middle_right3));
     	addSequential(new OperateIntake(OperateIntake.OPEN));
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
     	

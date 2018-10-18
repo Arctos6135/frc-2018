@@ -17,7 +17,7 @@ public class AutoPaths {
 	
 	public static TankDriveTrajectory middle_left, middle_right;
 	public static TankDriveTrajectory middle_left2, middle_right2;
-	public static TankDriveTrajectory middle_3, middle_4;
+	public static TankDriveTrajectory middle_4, middle_5;
 	
 	public static TankDriveTrajectory side_left, side_right;
 	
@@ -29,9 +29,12 @@ public class AutoPaths {
 		params.pathType = PathType.QUINTIC_HERMITE;
 		params.segmentCount = 500;
 		
+		
 		baseline_driveForward = TrajectoryGenerator.generateStraightTank(specs, RobotMap.ArenaDimensions.BASELINE_DISTANCE);
 
+		
 		aligned_driveForward = TrajectoryGenerator.generateStraightTank(specs, RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH);
+		
 		
 		params.waypoints = new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
@@ -52,8 +55,9 @@ public class AutoPaths {
 		};
 		middle_left2 = new TankDriveTrajectory(specs, params).retrace();
 		middle_right2 = middle_right.retrace();
-		middle_3 = TrajectoryGenerator.generateStraightTank(specs, 78);
-		middle_4 = middle_3.retrace();
+		middle_4 = TrajectoryGenerator.generateStraightTank(specs, 78);
+		middle_5 = middle_4.retrace();
+		
 		
 		params.waypoints = new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
@@ -63,6 +67,7 @@ public class AutoPaths {
 		side_left = new TankDriveTrajectory(specs, params);
 		side_right = side_left.mirrorLeftRight();
 		
-		back_up = middle_4;
+		
+		back_up = middle_5;
 	}
 }

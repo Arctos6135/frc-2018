@@ -133,9 +133,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Path Follower kV", FollowTrajectory.kV);
 		SmartDashboard.putNumber("Path Follower kA", FollowTrajectory.kA);
 		SmartDashboard.putNumber("Teleop Drive Ramp Band", TeleopDrive.rampBand);
-		
-		SmartDashboard.putString("Auto Recording Save Name", "");
-		SmartDashboard.putString("Auto Playback File Name", "");
 	}
 	static void updateTunables() {
 		//Read the textbox values and overwrite the old ones with the new ones
