@@ -32,13 +32,13 @@ public class SwitchAligned extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	addParallel(new LowerWrist());
     	addParallel(new RaiseElevator());
     	addSequential(new FollowTrajectory(AutoPaths.aligned_driveForward));
     	addSequential(new OperateIntake(OperateIntake.OPEN));
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
     	
     	addParallel(new LowerElevator());
-    	addParallel(new LowerWrist());
     	addParallel(new FollowTrajectory(AutoPaths.back_up));
     }
 }

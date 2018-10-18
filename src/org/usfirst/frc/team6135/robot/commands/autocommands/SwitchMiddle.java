@@ -34,13 +34,13 @@ public class SwitchMiddle extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	//Place first cube
+    	addParallel(new LowerWrist());
     	addParallel(new RaiseElevator());
     	addSequential(new FollowTrajectory(direction == Robot.GenericLocation.LEFT ? AutoPaths.middle_left1 : AutoPaths.middle_right1));
     	addSequential(new OperateIntake(OperateIntake.OPEN));
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
   
     	addParallel(new LowerElevator());
-    	addParallel(new LowerWrist()); //Lower elevator and wrist and drive back at the same time
     	addSequential(new FollowTrajectory(direction == Robot.GenericLocation.LEFT ? AutoPaths.middle_left2 : AutoPaths.middle_right2));
     	addSequential(new FollowTrajectory(AutoPaths.middle_4)); //Drive forward
     	addSequential(new OperateIntake(OperateIntake.CLOSE)); //Close the intake
