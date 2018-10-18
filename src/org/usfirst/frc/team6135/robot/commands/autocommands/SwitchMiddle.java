@@ -35,7 +35,7 @@ public class SwitchMiddle extends CommandGroup {
         // arm.
     	//Place first cube
     	addParallel(new RaiseElevator());
-    	addSequential(new FollowTrajectory(direction == Robot.GenericLocation.LEFT ? AutoPaths.middle_left : AutoPaths.middle_right));
+    	addSequential(new FollowTrajectory(direction == Robot.GenericLocation.LEFT ? AutoPaths.middle_left1 : AutoPaths.middle_right1));
     	addSequential(new OperateIntake(OperateIntake.OPEN));
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
   
