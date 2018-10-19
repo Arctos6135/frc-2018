@@ -35,23 +35,23 @@ public class AutoPaths {
 		
 		params.waypoints = new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
-				new Waypoint(-(RobotMap.ArenaDimensions.SWITCH_SIZE / 2), RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
+				new Waypoint(RobotMap.ArenaDimensions.SWITCH_SIZE / 2, RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
 		};
 		params.alpha = 140;
-		middle_left = new TankDriveTrajectory(specs, params);
+		middle_right = new TankDriveTrajectory(specs, params);
 		//Add 12 to X for the offset
 		params.waypoints = new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
-				new Waypoint(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 + 12, RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
+				new Waypoint(-(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 + 12), RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
 		};
-		middle_right = new TankDriveTrajectory(specs, params);
+		middle_left = new TankDriveTrajectory(specs, params);
 		//Offset by a bit to compensate for the hardware errors
 		params.waypoints = new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
-				new Waypoint(-(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 + 16), RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
+				new Waypoint(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 + 16, RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
 		};
-		middle_left2 = new TankDriveTrajectory(specs, params).retrace();
-		middle_right2 = middle_right.retrace();
+		middle_right2 = new TankDriveTrajectory(specs, params).retrace();
+		middle_left2 = middle_left.retrace();
 		middle_3 = TrajectoryGenerator.generateStraightTank(specs, 78);
 		middle_4 = middle_3.retrace();
 		
