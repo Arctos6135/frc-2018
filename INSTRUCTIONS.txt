@@ -2,9 +2,12 @@ INSTRUCTIONS
 
 1. Test code in master and confirm that the correct auto is running. If not then restart SD, etc and figure out.
 	If yes and not working then go to step 2
-2. Test code in old-code-new. If not working then go to next step
-3. Test code in old-code. If still not working, then go to next step
-4. Test code in fail-safe. If still not working then go to next step.
-5. BLAME THE STUPID CARPET OR ANYTHING YOU CAN THINK OF
-6. YOU'RE SCREWED! ADMIT DEFEAT AND CRY.
-7. WHO THE HECK NEEDS WORKING AUTOS??????? SCREW EVERYTHING (╯°□°)╯︵ ┻━┻
+2. Test code in stupid-idea. If not working then go to next step
+3. Test code in old-code-new. If not working then go to next step
+4. Test code in old-code. If still not working, then go to next step
+5. Test code in fail-safe. If still not working then go to next step.
+6. Test code in ultra-fail-safe. If still not working then go to next step.
+7. BLAME THE STUPID CARPET OR ANYTHING YOU CAN THINK OF
+8. YOU'RE SCREWED! ADMIT DEFEAT AND CRY.
+9. WHO THE HECK NEEDS WORKING AUTOS??????? SCREW EVERYTHING (╯°□°)╯︵ ┻━┻ 
+10. FALL FIESTA IS CURSED
