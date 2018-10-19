@@ -39,7 +39,7 @@ public class AutoPaths {
 				new Waypoint(0, 0, Math.PI / 2),
 				new Waypoint(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 + 6, RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
 		};
-		params.alpha = 140;
+		params.alpha = 200;
 		middle_right1 = new TankDriveTrajectory(specs, params);
 		
 		//Offset by 12 when going from starting to switch
