@@ -49,7 +49,7 @@ public class SwitchMiddle extends CommandGroup {
     	addSequential(new FollowTrajectory(AutoPaths.middle_4)); //Drive back
     	
     	addParallel(new RaiseElevator());
-    	addSequential(new FollowTrajectory(direction == Robot.GenericLocation.LEFT ? AutoPaths.middle_left : AutoPaths.middle_right));
+    	addSequential(new FollowTrajectory(direction == Robot.GenericLocation.LEFT ? AutoPaths.middle_left3 : AutoPaths.middle_right3));
     	addSequential(new OperateIntake(OperateIntake.OPEN));
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
     	

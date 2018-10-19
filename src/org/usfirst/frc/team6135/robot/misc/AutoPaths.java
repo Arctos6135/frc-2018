@@ -17,6 +17,7 @@ public class AutoPaths {
 	
 	public static TankDriveTrajectory middle_left, middle_right;
 	public static TankDriveTrajectory middle_left2, middle_right2;
+	public static TankDriveTrajectory middle_left3, middle_right3;
 	public static TankDriveTrajectory middle_3, middle_4;
 	
 	public static TankDriveTrajectory side_left, side_right;
@@ -52,6 +53,12 @@ public class AutoPaths {
 		};
 		middle_right2 = new TankDriveTrajectory(specs, params).retrace();
 		middle_left2 = middle_left.retrace();
+		middle_left3 = middle_left;
+		params.waypoints = new Waypoint[] {
+				new Waypoint(0, 0, Math.PI / 2),
+				new Waypoint(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 + 16, RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
+		};
+		middle_right3 = new TankDriveTrajectory(specs, params);
 		middle_3 = TrajectoryGenerator.generateStraightTank(specs, 78);
 		middle_4 = middle_3.retrace();
 		
