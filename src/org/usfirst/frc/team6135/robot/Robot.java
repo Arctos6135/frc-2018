@@ -298,6 +298,7 @@ public class Robot extends TimedRobot {
 		//Retrieve the locations of the switch plates (in game data)
 		gameData = PowerUpGameData.getGameDataFromDS();
 		if(gameData.isValid()) {
+			System.out.println("Auto command: " + mode.getAutonomous().getCommand(location, gameData).toString());
 			startAutoCommand(mode.getAutonomous().getCommand(location, gameData));
 		}
 	}
