@@ -39,26 +39,26 @@ public class AutoPaths {
 		//No offsets for going from starting to switch
 		params.waypoints = new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
-				new Waypoint(-(RobotMap.ArenaDimensions.SWITCH_SIZE / 2), RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
+				new Waypoint(RobotMap.ArenaDimensions.SWITCH_SIZE / 2, RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
 		};
 		params.alpha = 140;
-		middle_left1 = new TankDriveTrajectory(specs, params);
+		middle_right1 = new TankDriveTrajectory(specs, params);
 		//Offset by 16 when going from switch back to start and back again
 		params.waypoints = new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
-				new Waypoint(-(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 + 16), RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
+				new Waypoint(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 + 16, RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
 		};
-		middle_left3 = new TankDriveTrajectory(specs, params);
-		middle_left2 = middle_left3.retrace();
+		middle_right2 = new TankDriveTrajectory(specs, params);
+		middle_right3 = middle_right2.retrace();
 		
 		//Offset by 12 when going from starting to switch
 		params.waypoints = new Waypoint[] {
 				new Waypoint(0, 0, Math.PI / 2),
-				new Waypoint(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 + 12, RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
+				new Waypoint(-(RobotMap.ArenaDimensions.SWITCH_SIZE / 2 + 12), RobotMap.ArenaDimensions.SWITCH_DISTANCE - RobotMap.ROBOT_LENGTH, Math.PI / 2),
 		};
-		middle_right1 = new TankDriveTrajectory(specs, params);
-		middle_right2 = middle_right1.retrace();
-		middle_right3 = middle_right1;
+		middle_left1 = new TankDriveTrajectory(specs, params);
+		middle_left2 = middle_left1.retrace();
+		middle_left3 = middle_left1;
 		
 		middle_4 = TrajectoryGenerator.generateStraightTank(specs, 78);
 		middle_5 = middle_4.retrace();
