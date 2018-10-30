@@ -40,6 +40,6 @@ public class SwitchSide extends CommandGroup {
     	addSequential(new AutoIntake(AutoIntake.Direction.OUT));
     	
     	addParallel(new LowerElevator());
-    	//addParallel(new FollowTrajectory(AutoPaths.back_up));
+    	addParallel(new FollowTrajectory(AutoPaths.back_up));
     }
 }

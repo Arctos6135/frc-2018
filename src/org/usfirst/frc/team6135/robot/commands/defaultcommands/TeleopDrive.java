@@ -47,6 +47,7 @@ public class TeleopDrive extends Command {
         
         x = Math.copySign(x * x, x);
         y = Math.copySign(y * y, y);
+        x /= 2;
         
         double l = y + x, 
         	   r = y - x;
