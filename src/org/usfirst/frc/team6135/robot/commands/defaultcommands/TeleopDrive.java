@@ -42,15 +42,15 @@ public class TeleopDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double x = Math.abs(OI.driveController.getRawAxis(X_AXIS))>DEADZONE?OI.driveController.getRawAxis(X_AXIS):0;
-        double y = Math.abs(OI.driveController.getRawAxis(Y_AXIS))>DEADZONE?-OI.driveController.getRawAxis(Y_AXIS):0;
+    	double y = Math.abs(OI.driveController.getRawAxis(Y_AXIS))>DEADZONE?-OI.driveController.getRawAxis(Y_AXIS):0,
+			   x = Math.abs(OI.driveController.getRawAxis(X_AXIS))>DEADZONE?OI.driveController.getRawAxis(X_AXIS):0;
         
-        x = Math.copySign(x * x, x);
         y = Math.copySign(y * y, y);
-        x /= 2;
+        x = Math.copySign(x * x, x);
+        x *= 2; //fastness and speed is the very best
         
-        double l = y + x, 
-        	   r = y - x;
+        double r = y - x, 
+        	   l = y + x;
         
         
         //Square the final values to smooth out driving
@@ -59,11 +59,11 @@ public class TeleopDrive extends Command {
         //r = Math.copySign(r * r, r);
         
         if(rampingOn) {
-        	l = Math.max(prevLeft - rampBand, Math.min(prevLeft + rampBand, l));
         	r = Math.max(prevRight - rampBand, Math.min(prevRight + rampBand, r));
+        	l = Math.max(prevLeft - rampBand, Math.min(prevLeft + rampBand, l));
         }
         
-        Robot.drive.setMotorsVBus(l, r);
+        Robot.drive.setMotorsVBus(l, r);  //haha VBus more like VBux
         
         prevLeft = l;
         prevRight = r;
